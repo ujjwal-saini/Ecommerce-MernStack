@@ -1,0 +1,200 @@
+/* .zoom-container {
+  width: 400px;
+  height: 400px;
+  margin: 0 auto;
+} */
+
+.img-zoom {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain;
+}
+
+.iiz {
+  width: 70% !important;
+  height: 70% !important;
+}
+
+/* 
+
+body[data-theme="light"] {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #fff;
+}
+
+body[data-theme="light"] .navbar {
+  background-color: #ffffff !important;
+}
+
+body[data-theme="dark"] .navbar {
+  background-color: #212529 !important;
+} */
+
+
+/* =====================
+   GLOBAL THEME COLORS
+===================== */
+
+/* LIGHT MODE */
+body[data-theme="light"] {
+  background-color: #f8f9fa;
+  color: #000;
+}
+
+/* DARK MODE */
+body[data-theme="dark"] {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* =====================
+   NAVBAR + BOTTOM NAV
+===================== */
+
+.app-navbar,
+.bottom-navbar {
+  transition: all 0.3s ease;
+}
+
+/* Light Navbar */
+body[data-theme="light"] .app-navbar,
+body[data-theme="light"] .bottom-navbar {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #dee2e6;
+}
+
+body[data-theme="light"] .app-navbar .nav-link,
+body[data-theme="light"] .bottom-navbar .nav-link,
+body[data-theme="light"] .app-navbar span {
+  color: #000 !important;
+}
+
+/* Dark Navbar */
+body[data-theme="dark"] .app-navbar,
+body[data-theme="dark"] .bottom-navbar {
+  background-color: #212529 !important;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+body[data-theme="dark"] .app-navbar .nav-link,
+body[data-theme="dark"] .bottom-navbar .nav-link,
+body[data-theme="dark"] .app-navbar span {
+  color: #fff !important;
+}
+
+/* =====================
+   BUTTONS
+===================== */
+
+body[data-theme="light"] .btn-outline-theme {
+  color: #000;
+  border: 1px solid #000;
+}
+
+body[data-theme="dark"] .btn-outline-theme {
+  color: #fff;
+  border: 1px solid #fff;
+}
+
+/* =====================
+   SEARCH INPUT
+===================== */
+
+body[data-theme="light"] input.form-control {
+  background: #fff;
+  color: #000;
+}
+
+body[data-theme="dark"] input.form-control {
+  background: #1e1e1e;
+  color: #fff;
+  border: 1px solid #444;
+}
+
+/* =====================
+   SEARCH INPUT THEME
+===================== */
+
+/* LIGHT MODE */
+body[data-theme="light"] input.form-control {
+  background-color: #ffffff;
+  color: #000000;
+  border: 1px solid #ced4da;
+}
+
+body[data-theme="light"] input.form-control::placeholder {
+  color: #6c757d;
+}
+
+/* DARK MODE */
+body[data-theme="dark"] input.form-control {
+  background-color: #1e1e1e;
+  color: #ffffff;               /* 👈 text white */
+  border: 1px solid #444;
+}
+
+body[data-theme="dark"] input.form-control::placeholder {
+  color: #bbbbbb;               /* 👈 placeholder light gray */
+}
+
+/* Focus fix */
+body[data-theme="dark"] input.form-control:focus {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border-color: #666;
+  box-shadow: none;
+}
+
+/* =====================
+   BOTTOM NAVBAR
+===================== */
+
+.bottom-navbar {
+  transition: all 0.3s ease;
+}
+
+/* LIGHT MODE */
+body[data-theme="light"] .bottom-navbar {
+  background-color: #ffffff;
+  border-bottom: 1px solid #dee2e6;
+}
+
+body[data-theme="light"] .bottom-navbar .nav-link,
+body[data-theme="light"] .bottom-nav-title {
+  color: #000 !important;
+}
+
+/* DARK MODE */
+body[data-theme="dark"] .bottom-navbar {
+  background-color: #212529;
+  border-bottom: 1px solid #2f2f2f;
+}
+
+body[data-theme="dark"] .bottom-navbar .nav-link,
+body[data-theme="dark"] .bottom-nav-title {
+  color: #fff !important;
+}
+
+/* =====================
+   BUTTON (shared)
+===================== */
+
+.btn-outline-theme {
+  background: transparent;
+}
+
+body[data-theme="light"] .btn-outline-theme {
+  color: #000;
+  border: 1px solid #000;
+}
+
+body[data-theme="dark"] .btn-outline-theme {
+  color: #fff;
+  border: 1px solid #fff;
+}
+
