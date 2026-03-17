@@ -72,7 +72,7 @@ function Profile() {
           <div className="row align-items-center mb-4">
             <div className="col-md-3 d-flex justify-content-center">
               <img
-                src={user.profile.profilePic}
+                src={`https://ecommerce-mernstack-backend.onrender.com/${user.profile.profilePic}`}
                 alt="profile"
                 className="rounded-circle img-fluid border"
                 style={{ width: "200px", height: "200px", objectFit: "cover" }}
