@@ -56,11 +56,12 @@ export const register = async (req, res) => {
     if (alreadyExist) {
       return res.status(409).json({ message: "User already registered" });
     }
+    console.log(process.env.BASE_URL);
 
     const hashpassword = await bcrypt.hash(password, 10);
 
     const profilePic = req.file
-      ? `http://localhost:3100/uploads/${req.file.filename}`
+      ? `${process.env.BASE_URL}/uploads/${req.file.filename}`
       : undefined;
 
     await Users.create({
@@ -164,7 +165,7 @@ export const cartLoader = async (req, res) => {
           price: product.price,
           image: product.image,
           qty: item.quantity,
-          stock:product.stock
+          stock: product.stock
         });
       }
     }
