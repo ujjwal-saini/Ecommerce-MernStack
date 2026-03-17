@@ -103,7 +103,7 @@ export const updateUserProfile = async (req, res) => {
     };
 
     if (req.file) {
-      updateData["profile.profilePic"] = `/uploads/${req.file.filename}`;
+     updateData["profile.profilePic"] = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
     }
 
     const user = await Users.findByIdAndUpdate(
@@ -134,15 +134,16 @@ export const checklogin = async (req, res) => {
 // LOGOUT
 export const logout = (req, res) => {
   res.clearCookie("token", {
-    httpOnly: true, // js not acces
-    secure: false, // localhost pe false
-    sameSite: "lax",
+    httpOnly: true,
+    secure: true,        
+    sameSite: "none",    
   });
 
   return res.status(200).json({
     message: "Logout successful",
   });
-};
+};\
+
 export const cartLoader = async (req, res) => {
   try {
 
