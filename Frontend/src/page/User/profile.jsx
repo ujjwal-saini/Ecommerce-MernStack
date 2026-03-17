@@ -23,7 +23,7 @@ function Profile() {
       });
     }
   }, [user]);
-  console.log(user.profile.profilePic,"userprofile",user);
+  console.log(user.profilePic,"userprofile",user);
 
   if (!user || !formData) return <Loader />;
 
