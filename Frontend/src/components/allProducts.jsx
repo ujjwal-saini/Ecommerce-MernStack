@@ -10,12 +10,12 @@ function AllProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const { theme } = useContext(AuthContext);
+  const { theme ,API } = useContext(AuthContext);
 
   useEffect(() => {
     const getData = async () => {
       try {
-        const res = await axios.get("http://localhost:3100/products");
+        const res = await axios.get(`${API}/products`);
         if (category === "all") {
           setProducts(res.data.data);
         } else {

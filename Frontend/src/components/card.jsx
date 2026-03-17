@@ -10,7 +10,7 @@ function Card({ products }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
-  const { isLoggedIn, user, theme } = useContext(AuthContext);
+  const { isLoggedIn, user, theme ,API} = useContext(AuthContext);
 
   const showLoginPopup = () => {
     Swal.fire({
@@ -28,7 +28,7 @@ function Card({ products }) {
   const handleAddToCart = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
     dispatch(addToCart(item));
-    await axios.post("http://localhost:3100/addtocart", {
+    await axios.post(`${API}/addtocart`, {
       userId: user._id,
       productId: item._id,
       quantity: 1,
@@ -50,7 +50,7 @@ const handleIncreaseQty = async (item) => {
 
   dispatch(increaseQty(item._id));
 
-  await axios.post("http://localhost:3100/updatecart", {
+  await axios.post(`${API}/updatecart`, {
     userId: user._id,
     productId: item._id,
     quantity: 1,
@@ -61,13 +61,13 @@ const handleDecreaseQty = async (item) => {
 
   if (cartItem.qty === 1) {
     dispatch(removeFromCart(item._id));
-    await axios.post("http://localhost:3100/removecart", {
+    await axios.post(`${API}/removecart`, {
       userId: user._id,
       productId: item._id,
     });
   } else {
     dispatch(decreaseQty(item._id));
-    await axios.post("http://localhost:3100/updatecart", {
+    await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: item._id,
       quantity: -1,

@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import axios from "axios";
+const API = import.meta.env.VITE_API_URL;
 
 export const AuthContext = createContext();
 
@@ -8,6 +9,7 @@ const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  console.log(API);
 
   //  THEME STATE
   const [theme, setTheme] = useState(
@@ -28,7 +30,7 @@ const AuthProvider = ({ children }) => {
   //  FETCH LOGGED IN USER
   const fetchMe = async () => {
     try {
-      const res = await axios.get("http://localhost:3100/me", {
+      const res = await axios.get(`${API}/me`, {
         withCredentials: true,
       });
       setIsLoggedIn(true);
@@ -43,7 +45,7 @@ const AuthProvider = ({ children }) => {
 
   //  LOGOUT
   const logout = async () => {
-    await fetch("http://localhost:3100/logout", {
+    await fetch(`${API}/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -70,6 +72,7 @@ const AuthProvider = ({ children }) => {
         // theme
         theme,
         toggleTheme,
+        API
       }}
     >
       {children}

@@ -7,7 +7,7 @@ import Main from './page/User/main';
 import ProductDetail from './components/productDetail';
 import ErrorPage from './components/errorpage';
 import '../public/global.css'
-import AllProduct from './components/allProduct';
+// import AllProduct from './components/allProduct';
 import Addtocart from './page/User/addtocart';
 import Adminpage from './page/Admin/landingpage';
 import Login from './page/Login Signup/login';
@@ -38,7 +38,7 @@ function App() {
           <Route path='' element={<Main />} />
           <Route path="productdetail/:id" element={<ProductDetail />} />
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />
-          <Route path='allproducts' element={<AllProduct />} />
+          {/* <Route path='allproducts' element={<AllProduct />} /> */}
           <Route path='addtocart' element={<Addtocart />} />
           <Route path='profile' element={<Profile />} />
           <Route path="allproducts/:category" element={<AllProducts/>} />

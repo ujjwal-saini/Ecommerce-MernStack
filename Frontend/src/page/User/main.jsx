@@ -7,7 +7,7 @@ import Loader from "../../components/loading";
 import { AuthContext } from "../../middleware/authContext";
 
 function Main() {
-  const { theme } = useContext(AuthContext);
+  const { theme ,API} = useContext(AuthContext);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const search = queryParams.get("search");
@@ -17,9 +17,9 @@ function Main() {
 
   const getData = async () => {
     try {
-      let url = "http://localhost:3100/products";
+      let url = `${API}/products`;
       if (search) {
-        url = `http://localhost:3100/productSearch?search=${search}`;
+        url = `${API}/productSearch?search=${search}`;
       }
       const res = await axios.get(url);
       setProducts(res.data.products || res.data.data);

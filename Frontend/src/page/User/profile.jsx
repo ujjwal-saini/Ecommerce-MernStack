@@ -4,7 +4,7 @@ import { AuthContext } from "../../middleware/authContext";
 import Loader from "../../components/loading";
 
 function Profile() {
-  const { user, fetchMe, theme } = useContext(AuthContext);
+  const { user, fetchMe, theme , API} = useContext(AuthContext);
 
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState(null);
@@ -40,7 +40,7 @@ function Profile() {
       Object.keys(formData).forEach((key) => fd.append(key, formData[key]));
       if (profilePic) fd.append("profilePic", profilePic);
 
-      await axios.put("http://localhost:3100/updateprofile", fd, {
+      await axios.put(`${API}/updateprofile`, fd, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });

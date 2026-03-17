@@ -7,14 +7,14 @@ import { AuthContext } from "../middleware/authContext";
 function CartLoader() {
 
   const dispatch = useDispatch();
-  const { user } = useContext(AuthContext);
+  const { user , API } = useContext(AuthContext);
 
   useEffect(() => {
     const loadCart = async () => {
       try {
         if (!user?._id) return;
         const res = await axios.get(
-          `http://localhost:3100/getcart/${user._id}`
+          `${API}/getcart/${user._id}`
         );
         const formattedCart = res.data.map((item) => ({
           _id: item._id,

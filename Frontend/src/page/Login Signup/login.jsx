@@ -7,7 +7,8 @@ import { useContext } from "react";
 
 function Login() {
   const navigate = useNavigate();
-  const { isLoggedIn, fetchMe, role } = useContext(AuthContext);
+  const { isLoggedIn, fetchMe, role , API} = useContext(AuthContext);
+  console.log(API);
   const [form, setfrom] = useState({
     email: "",
     password: ""
@@ -18,7 +19,7 @@ function Login() {
 
     try {
       const res = await axios.post(
-        "http://localhost:3100/login",
+        `${API}/login`,
         form,
         {
           withCredentials: true

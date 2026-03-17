@@ -14,7 +14,7 @@ import Swal from "sweetalert2";
 function Addtocart() {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
-  const { isLoggedIn, user } = useContext(AuthContext);
+  const { isLoggedIn, user ,API } = useContext(AuthContext);
 
   //  total price calculate
   const total = cartItems.reduce(
@@ -34,7 +34,7 @@ function Addtocart() {
       return;
     }
     dispatch(increaseQty(item._id));
-    await axios.post("http://localhost:3100/updatecart", {
+    await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: item._id,
       quantity: 1,
@@ -43,7 +43,7 @@ function Addtocart() {
 
   const handleDecreaseQty = async (item) => {
     dispatch(decreaseQty(item._id));
-    await axios.post("http://localhost:3100/updatecart", {
+    await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: item._id,
       quantity: -1,
@@ -52,7 +52,7 @@ function Addtocart() {
   const handleRemoveItem = async (item) => {
     try {
       dispatch(removeFromCart(item._id));
-      await axios.post("http://localhost:3100/removecart", {
+      await axios.post(`${API}/removecart`, {
         userId: user._id,
         productId: item._id,
       });

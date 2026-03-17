@@ -1,10 +1,12 @@
-import React, { useState } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import { AuthContext } from "../../middleware/authContext";
 
 function Signup() {
   const [formdata, setFormdata] = useState({ name: "", email: "", password: "", profilePic: "" })
+  const { API } = useContext(AuthContext);
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,16 +17,13 @@ function Signup() {
     data.append("profilePic", formdata.profilePic);
 
     try {
-      const res = await axios.post(
-        "http://localhost:3100/register",
-        data,
+       const res = await axios.post(`${API}/register`,data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-          },
+            },
         }
       );
-
       if (res.status === 200) {
         navigate("/login");
       }

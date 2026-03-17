@@ -21,12 +21,12 @@ function ProductDetail() {
   const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const { isLoggedIn, theme } = useContext(AuthContext);
+  const { isLoggedIn, theme , API} = useContext(AuthContext);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await axios.get(`http://localhost:3100/product/${id}`);
+        const res = await axios.get(`${API}/product/${id}`);
         const data = res.data.data;
         setProduct(data);
 
