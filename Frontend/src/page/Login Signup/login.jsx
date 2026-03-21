@@ -34,11 +34,12 @@ function Login() {
           navigate("/dashboard");
         }
       }
+      console.log(res.status , res.data);
       if(res.status === 404)
       {
         alert(res.message);
       }
-      
+
     } catch (err) {
       console.log(err);
     }
