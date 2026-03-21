@@ -34,6 +34,11 @@ function Login() {
           navigate("/dashboard");
         }
       }
+      if(res.status === 404)
+      {
+        alert(res.message);
+      }
+      
     } catch (err) {
       console.log(err);
     }
