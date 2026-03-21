@@ -64,7 +64,7 @@ function ProductDetail() {
   const handleBuyNow = (item) => {
     if (!isLoggedIn) return showLoginPopup();
     dispatch(addToCart(item));
-    navigate("/dashboard/addtocart");
+    navigate("/addtocart");
   };
 
   if (loading) return <Loader />;
