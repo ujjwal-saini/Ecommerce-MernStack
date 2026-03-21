@@ -100,7 +100,7 @@ function Navbar() {
               <button className="btn btn-outline-theme dropdown-toggle" data-bs-toggle="dropdown">
                 <img
                   src={user.profile.profilePic}
-                  alt="user"
+                  alt="img"
                   width="30"
                   height="30"
                   className="rounded-circle"
