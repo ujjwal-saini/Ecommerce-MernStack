@@ -20,7 +20,7 @@ function Navbar() {
     e.preventDefault();
     const searchValue = productSearch.trim();
     console.log(searchValue, "search");
-    navigate(`/dashboard?search=${searchValue}`);
+    navigate(`/?search=${searchValue}`);
   };
 
   const handleLogout = async () => {
