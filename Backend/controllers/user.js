@@ -12,7 +12,6 @@ export const login = async (req, res) => {
     if (email === "" || password === "") {
       return res.status(402).json({ message: "Email and password required" })
     }
-
     if (!user) {
       return res.status(404).json({ message: "User is not found" });
     }
@@ -66,7 +65,7 @@ export const register = async (req, res) => {
     }
 
     console.log(process.env.BASE_URL);
-    
+
     const hashpassword = await bcrypt.hash(password, 10);
 
     const profilePic = req.file

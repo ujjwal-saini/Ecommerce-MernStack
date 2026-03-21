@@ -26,6 +26,9 @@ function Signup() {
       );
       if (res.status === 200) {
         navigate("/login");
+      }else 
+      {
+        alert(res.message);
       }
     } catch (err) {
       console.log(err);
