@@ -30,11 +30,11 @@ function App() {
     <CartLoader/>
       <Routes>
         <Route path='login' element={<Login />} />
-        <Route path='/' element={<Landing />} />
+        {/* <Route path='/' element={<Landing />} /> */}
         <Route path='signup' element={<Signup />} />
 
 // user page route
-        <Route path="dashboard" element={<ProtectedRoute> <Landing /> </ProtectedRoute>}>
+        <Route path="/" element={<ProtectedRoute> <Landing /> </ProtectedRoute>}>
           <Route path='' element={<Main />} />
           <Route path="productdetail/:id" element={<ProductDetail />} />
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />

@@ -12,6 +12,7 @@ export const login = async (req, res) => {
     if (email === "" || password === "") {
       return res.status(402).json({ message: "Email and password required" })
     }
+
     if (!user) {
       return res.status(404).json({ message: "User is not found" });
     }
@@ -54,15 +55,17 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    if (email === "" || password === "") {
-      return res.status(402).json({ message: "Email and password required" })
-    }
-
     const alreadyExist = await Users.findOne({ email });
 
     if (alreadyExist) {
       return res.status(409).json({ message: "User already registered" });
     }
+    
+    if (email === "" || password === "") {
+      return res.status(402).json({ message: "Email and password required" })
+    }
+
+    
 
     console.log(process.env.BASE_URL);
 

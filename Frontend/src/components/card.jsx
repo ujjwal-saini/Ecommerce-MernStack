@@ -95,7 +95,7 @@ const handleDecreaseQty = async (item) => {
                 }`}>
 
                 <Link
-                  to={`/dashboard/productdetail/${item._id}`}
+                  to={`/productdetail/${item._id}`}
                   className={`text-decoration-none ${
                     theme === "dark" ? "text-white" : "text-dark"
                   }`}>

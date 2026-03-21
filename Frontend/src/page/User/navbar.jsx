@@ -40,7 +40,7 @@ function Navbar() {
         <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2">
 
           <li className="nav-item">
-            <Link className="nav-link" to="/dashboard">Home</Link>
+            <Link className="nav-link" to="/">Home</Link>
           </li>
 
           <li className="nav-item">
@@ -112,7 +112,7 @@ function Navbar() {
                   <Link className="dropdown-item" to="profile">Profile</Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/dashboard/setting">Settings</Link>
+                  <Link className="dropdown-item" to="/setting">Settings</Link>
                 </li>
                 <li><hr className="dropdown-divider" /></li>
                 <li>

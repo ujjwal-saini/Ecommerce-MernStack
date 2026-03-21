@@ -4,10 +4,9 @@ import axios from "axios"
 import { AuthContext } from "../../middleware/authContext";
 import { useContext } from "react";
 
-
 function Login() {
   const navigate = useNavigate();
-  const { isLoggedIn, fetchMe, role , API} = useContext(AuthContext);
+  const { isLoggedIn, fetchMe, role, API } = useContext(AuthContext);
   console.log(API);
   const [form, setfrom] = useState({
     email: "",
@@ -16,7 +15,6 @@ function Login() {
 
   const handlesubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await axios.post(
         `${API}/login`,
@@ -34,20 +32,27 @@ function Login() {
           navigate("/dashboard");
         }
       }
-      console.log(res.status , res.data);
-      if(res.status === 404)
-      {
-        alert(res.message);
-      }
-
     } catch (err) {
-      console.log(err);
+      const status = err.response.data.status;
+      if (err.response) {
+        if (status === 409) {
+          alert("User already registered ");
+        }
+        else if (status === 402) {
+          alert("Please fill email and password");
+        }
+        else {
+          alert(err.response.data.message);
+        }
+      } else {
+        alert("Server not responding ");
+      }
     }
   };
-  
+
 
   useEffect(() => {
-    console.log(isLoggedIn , role);
+    console.log(isLoggedIn, role);
     if (isLoggedIn === true && role === "user") {
       navigate("/dashboard");
     } else if (isLoggedIn === true && role === "admin") {

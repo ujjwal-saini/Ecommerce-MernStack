@@ -14,10 +14,10 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-
+// console.log(process.env.FrontendUrl);
 app.use(
   cors({
-    origin: "https://ecommerce-mernstack-frontend.onrender.com",
+    origin: process.env.FrontendUrl,
     credentials: true
   })
 );

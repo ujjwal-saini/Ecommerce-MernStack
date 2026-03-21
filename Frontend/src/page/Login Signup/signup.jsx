@@ -17,24 +17,38 @@ function Signup() {
     data.append("profilePic", formdata.profilePic);
 
     try {
-       const res = await axios.post(`${API}/register`,data,
+      const res = await axios.post(`${API}/register`, data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            },
+          },
         }
       );
       if (res.status === 200) {
         navigate("/login");
-      }else 
-      {
-        console.log(res.status , res.message);
+      } else {
+        console.log(res.status, res.message);
         alert(res.message);
       }
     } catch (err) {
-      console.log(err);
-      alert("Signup failed");
+      const status = err.response.status;
+      if (err.response) {
+        if (status === 409) {
+          alert("User already registered ");
+        }
+        else if (status === 402) {
+          alert("Please fill email and password");
+        } if (status === 401) {
+          alert("Invalid email or password");
+        }
+        else {
+          alert(err.response.data.message);
+        }
+      } else {
+        alert("Server not responding ");
+      }
     }
+
   };
 
   return (
@@ -107,9 +121,12 @@ function Signup() {
           <button type="submit" className="btn btn-warning w-100 fw-bold mb-3">
             Sign Up
           </button>
-          <button type="button" className=" btn w-100 ">
-            <GoogleLoginButton />
-          </button>
+          <div className="w-100">
+            <GoogleLoginButton
+              text="Log in with Google"
+            // onClick={handleGoogleLogin}
+            />
+          </div>
           <hr />
           <p className="text-center">
             Already have an account?{" "}
