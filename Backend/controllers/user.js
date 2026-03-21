@@ -9,6 +9,9 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await Users.findOne({ email });
+    if (email === "" || password === "") {
+      return res.status(402).json({ message: "Email and password required" })
+    }
 
     if (!user) {
       return res.status(404).json({ message: "User is not found" });
@@ -28,8 +31,8 @@ export const login = async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,       
-      sameSite: "none",    
+      secure: true,
+      sameSite: "none",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -52,12 +55,18 @@ export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
+    if (email === "" || password === "") {
+      return res.status(402).json({ message: "Email and password required" })
+    }
+
     const alreadyExist = await Users.findOne({ email });
+
     if (alreadyExist) {
       return res.status(409).json({ message: "User already registered" });
     }
-    console.log(process.env.BASE_URL);
 
+    console.log(process.env.BASE_URL);
+    
     const hashpassword = await bcrypt.hash(password, 10);
 
     const profilePic = req.file
@@ -103,7 +112,7 @@ export const updateUserProfile = async (req, res) => {
     };
 
     if (req.file) {
-     updateData["profile.profilePic"] = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+      updateData["profile.profilePic"] = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
     }
 
     const user = await Users.findByIdAndUpdate(
@@ -135,8 +144,8 @@ export const checklogin = async (req, res) => {
 export const logout = (req, res) => {
   res.clearCookie("token", {
     httpOnly: true,
-    secure: true,        
-    sameSite: "none",    
+    secure: true,
+    sameSite: "none",
   });
 
   return res.status(200).json({

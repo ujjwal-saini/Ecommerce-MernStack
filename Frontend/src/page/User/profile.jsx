@@ -40,12 +40,10 @@ function Profile() {
       const fd = new FormData();
       Object.keys(formData).forEach((key) => fd.append(key, formData[key]));
       if (profilePic) fd.append("profilePic", profilePic);
-
       await axios.put(`${API}/updateprofile`, fd, {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
-
       await fetchMe();
       setEditMode(false);
     } catch (err) {
@@ -56,16 +54,12 @@ function Profile() {
   const cardClass = `card shadow-lg border-0 p-4 ${
     theme === "dark" ? "bg-dark text-white" : ""
   }`;
-
   const inputClass = `form-control form-control-lg ${
     theme === "dark" ? "bg-secondary text-white border-0" : ""
   }`;
-
   const mutedText = theme === "dark" ? "text-secondary" : "text-muted";
-
   return (
     <div className={`container mt-3 mb-5 ${theme === "dark" ? "text-white" : ""}`}>
-
       {/* ===== VIEW MODE ===== */}
       {!editMode && (
         <div className={cardClass}>
@@ -78,7 +72,6 @@ function Profile() {
                 style={{ width: "200px", height: "200px", objectFit: "cover" }}
               />
             </div>
-
             <div className="col-md-9 position-relative">
               <button
                 className={`btn ${theme === "dark" ? "btn-outline-light" : "btn-primary"} position-absolute top-0 end-0 m-4`}
@@ -86,46 +79,37 @@ function Profile() {
               >
                 Edit Profile
               </button>
-
               <h2 className="fw-bold mb-1">{user.name}</h2>
               <p className={mutedText}>{user.email}</p>
               <span className="badge bg-secondary px-3 py-2">{user.role}</span>
             </div>
           </div>
-
           <hr />
-
           <div className="row g-4 mt-2 fs-5">
             <div className="col-md-6">
               <strong>Phone:</strong>
               <div className={mutedText}>{user.profile.phone}</div>
             </div>
-
             <div className="col-md-6">
               <strong>Date of Birth:</strong>
               <div className={mutedText}>{user.profile.dateOfBirth}</div>
             </div>
-
             <div className="col-md-6">
               <strong>Country:</strong>
               <div className={mutedText}>{user.profile.address?.country}</div>
             </div>
-
             <div className="col-md-6">
               <strong>City:</strong>
               <div className={mutedText}>{user.profile.address?.city}</div>
             </div>
-
             <div className="col-md-6">
               <strong>State:</strong>
               <div className={mutedText}>{user.profile.address?.state}</div>
             </div>
-
             <div className="col-md-6">
               <strong>Postal Code:</strong>
               <div className={mutedText}>{user.profile.address?.postalCode}</div>
             </div>
-
             <div className="col-12">
               <strong>Full Address:</strong>
               <div className={mutedText}>{user.profile.address?.fullAddress}</div>
