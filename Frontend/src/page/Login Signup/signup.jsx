@@ -28,6 +28,7 @@ function Signup() {
         navigate("/login");
       }else 
       {
+        console.log(res.status , res.message);
         alert(res.message);
       }
     } catch (err) {
