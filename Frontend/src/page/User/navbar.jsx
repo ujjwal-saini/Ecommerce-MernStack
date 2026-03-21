@@ -31,7 +31,7 @@ function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg px-3 app-navbar">
 
-      <Link className="navbar-brand fw-bold d-flex align-items-center gap-2" to="/dashboard">
+      <Link className="navbar-brand fw-bold d-flex align-items-center gap-2" to="/">
         <img src={Shopora} alt="Shopora Logo" height="38" />
       </Link>
 
