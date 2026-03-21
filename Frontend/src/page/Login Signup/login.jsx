@@ -29,7 +29,7 @@ function Login() {
           navigate("/admindashboard");
         } else {
           await fetchMe();
-          navigate("/dashboard");
+          navigate("/");
         }
       }
     } catch (err) {
