@@ -78,7 +78,7 @@ const handleDecreaseQty = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
     dispatch(addToCart(item));
     // handleIncreaseQty(item);
-    navigate("/dashboard/addtocart");
+    navigate("/addtocart");
   };
 
   return (
