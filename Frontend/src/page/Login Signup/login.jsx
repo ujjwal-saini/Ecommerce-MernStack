@@ -54,7 +54,7 @@ function Login() {
   useEffect(() => {
     console.log(isLoggedIn, role);
     if (isLoggedIn === true && role === "user") {
-      navigate("/dashboard");
+      navigate("/");
     } else if (isLoggedIn === true && role === "admin") {
       navigate("/admindashboard");
     }
