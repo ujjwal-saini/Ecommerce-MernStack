@@ -23,6 +23,8 @@ import AllProducts from './components/allProducts';
 import AdminRoute from './middleware/AdminRoute';
 import ProtectedRoute from './middleware/ProtectedRoute';
 import CartLoader from './middleware/cartLoader';
+import ForgotPassword from './page/Login Signup/forget';
+import UpdatePass from './page/Login Signup/updatePass';
 
 function App() {
   return (
@@ -32,13 +34,14 @@ function App() {
         <Route path='login' element={<Login />} />
         {/* <Route path='/' element={<Landing />} /> */}
         <Route path='signup' element={<Signup />} />
+        <Route path='forgot-password' element={<ForgotPassword/>}/>
+        <Route path="updatepass/reset/:email" element={<UpdatePass/>}/>
 
 // user page route
         <Route path="/" element={<ProtectedRoute> <Landing /> </ProtectedRoute>}>
           <Route path='' element={<Main />} />
           <Route path="productdetail/:id" element={<ProductDetail />} />
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />
-          {/* <Route path='allproducts' element={<AllProduct />} /> */}
           <Route path='addtocart' element={<Addtocart />} />
           <Route path='profile' element={<Profile />} />
           <Route path="allproducts/:category" element={<AllProducts/>} />
@@ -55,7 +58,6 @@ function App() {
           <Route path='analytic' element={<Analytic/>}/>
           <Route path='setting' element={<Setting />}/>
         </Route>
-
 
         <Route path='*' element={<ErrorPage />} />
       </Routes>
