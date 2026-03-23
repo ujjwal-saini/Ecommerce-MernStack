@@ -155,19 +155,14 @@ export const logout = (req, res) => {
 
 export const cartLoader = async (req, res) => {
   try {
-
     const user = await Users.findById(req.params.userId);
-
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     const cartItems = user.cartItems;
     let cartData = [];
-
     for (let item of cartItems) {
       const product = await Product.findById(item.productId);
-
       if (product) {
         cartData.push({
           _id: product._id,
@@ -179,8 +174,6 @@ export const cartLoader = async (req, res) => {
         });
       }
     }
-
-    console.log("cartData:", cartData);
     res.json(cartData);
 
   } catch (error) {
@@ -234,6 +227,27 @@ export const resetPassword = async (req, res) => {
       message: "Password updated successfully"
     });
 
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Server error"
+    });
+  }
+};
+
+export const deleteAccount = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Users.findByIdAndDelete(id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found"
+      });
+    }
+    console.log(user);
+    res.status(200).json({
+      message: "Account deleted successfully"
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({

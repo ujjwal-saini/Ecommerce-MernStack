@@ -1,17 +1,30 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../middleware/authContext";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Setting() {
-  const { user } = useContext(AuthContext);
-
+  const { user, toggleTheme, API } = useContext(AuthContext);
+const navigate = useNavigate();
   const [notifications, setNotifications] = useState(true);
   const [twoFactor, setTwoFactor] = useState(false);
-  const [theme, setTheme] = useState("light");
-
+  const [theme, setTheme] = useState("dark");
+  const handledDeleteAcc = async () => {
+    try {
+      console.log(user._id , API);
+      const res = await axios.delete(`${API}/delete/${user._id}`);
+      if (res.status === 200) {
+       alert("Account deleted successfully");
+       console.log("delete")
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Delete failed");
+    }
+  };
   return (
     <div className="container mt-5 mb-5">
-
-      {/* Page Header */}
       <div className="mb-4">
         <h2 className="fw-bold">Account Settings</h2>
         <p className="text-muted">
@@ -19,11 +32,9 @@ function Setting() {
         </p>
       </div>
 
-      {/* Profile Settings */}
       <div className="card shadow-sm mb-4">
         <div className="card-header fw-bold">Profile Settings</div>
         <div className="card-body">
-
           <div className="row g-3">
             <div className="col-md-6">
               <label className="form-label">Full Name</label>
@@ -49,7 +60,6 @@ function Setting() {
         </div>
       </div>
 
-      {/* Security Settings */}
       <div className="card shadow-sm mb-4">
         <div className="card-header fw-bold">Security</div>
         <div className="card-body">
@@ -88,7 +98,6 @@ function Setting() {
         </div>
       </div>
 
-      {/* Notification Settings */}
       <div className="card shadow-sm mb-4">
         <div className="card-header fw-bold">Notifications</div>
         <div className="card-body">
@@ -117,7 +126,10 @@ function Setting() {
           <select
             className="form-select w-25"
             value={theme}
-            onChange={(e) => setTheme(e.target.value)}
+            onChange={(e) => {
+              setTheme(e.target.value);
+              toggleTheme(e);
+            }}
           >
             <option value="light">Light</option>
             <option value="dark">Dark</option>
@@ -138,7 +150,7 @@ function Setting() {
               This action cannot be undone
             </p>
           </div>
-          <button className="btn btn-danger">
+          <button className="btn btn-danger" onClick={handledDeleteAcc}>
             Delete Account
           </button>
         </div>

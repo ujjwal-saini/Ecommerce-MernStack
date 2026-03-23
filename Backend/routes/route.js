@@ -1,7 +1,7 @@
 import express from "express";
 
 import {addProducts, getProducts, getSingleProduct, updateProduct,deleteProduct , productSearch} from "../controllers/products.js";
-import {register, login,checklogin,logout,updateUserProfile ,cartLoader ,forgetPassword , resetPassword} from "../controllers/user.js";
+import {register, login,checklogin,logout,updateUserProfile ,cartLoader ,forgetPassword , resetPassword, deleteAccount} from "../controllers/user.js";
 import {addToCart,updateCartItem , removeCartItem} from "../controllers/cart.js";
 import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
@@ -21,6 +21,7 @@ router.post("/login", login);
 router.post("/logout", logout);
 router.post("/forget-password", forgetPassword);
 router.patch("/reset-password", resetPassword);
+router.delete("/delete/:id", deleteAccount);
 
 // user page product routing
 router.post("/addproduct", addProducts);
