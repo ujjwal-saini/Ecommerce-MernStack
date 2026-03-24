@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useContext } from "react";
+import { AuthContext } from "../../middleware/authContext";
 function Productpage() {
   const [products, setProducts] = useState([]);
+  const { API } = useContext(AuthContext);
   console.log(products);
   // add product form
   const [form, setForm] = useState({
@@ -25,7 +27,7 @@ function Productpage() {
   }, []);
 
   const fetchProducts = async () => {
-    const res = await axios.get("http://localhost:3100/products");
+    const res = await axios.get(`${API}/products`);
     setProducts(res.data.data);
   };
 
@@ -37,7 +39,7 @@ function Productpage() {
   // add product
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:3100/addproduct", form);
+    await axios.post(`${API}/addproduct`, form);
 
     setForm({
       name: "",
@@ -69,7 +71,7 @@ function Productpage() {
   // update product
   const handleUpdate = async () => {
     await axios.put(
-      `http://localhost:3100/updateproduct/${editingId}`,
+      `${API}/updateproduct/${editingId}`,
       editForm
     );
     setEditingId(null);
@@ -81,7 +83,7 @@ function Productpage() {
     if (!window.confirm("Are you sure you want to delete?")) return;
 
     await axios.delete(
-      `http://localhost:3100/deleteproduct/${id}`
+      `${API}/deleteproduct/${id}`
     );
 
     fetchProducts();
