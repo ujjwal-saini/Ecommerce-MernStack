@@ -1,6 +1,8 @@
 import React from 'react'
-
+import { useContext } from 'react'
+import { AuthContext } from '../../middleware/authContext'
 function Nav() {
+  const {user} = useContext(AuthContext);
   return (
     <div className="d-flex w-full items-center justify-content-between px-3 py-2 border-b bg-white border">
 
@@ -22,7 +24,7 @@ function Nav() {
             data-bs-toggle="dropdown"
           >
             <img
-              src="https://i.pravatar.cc/40"
+              src={`https://ecommerce-mernstack-backend.onrender.com${user.profile.profilePic}`}
               alt="profile"
               className="rounded-circle me-2"
               width="35"
