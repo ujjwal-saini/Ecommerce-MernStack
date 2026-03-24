@@ -52,6 +52,7 @@ body[data-theme="dark"] {
   color: #fff;
 }
 
+
 /* =====================
    NAVBAR + BOTTOM NAV
 ===================== */
@@ -196,5 +197,14 @@ body[data-theme="light"] .btn-outline-theme {
 body[data-theme="dark"] .btn-outline-theme {
   color: #fff;
   border: 1px solid #fff;
+}
+
+
+.app-navbar.navbar-dark .navbar-toggler {
+  border-color: white;
+}
+
+.app-navbar.navbar-dark .navbar-toggler-icon {
+  filter: invert(1);
 }
 

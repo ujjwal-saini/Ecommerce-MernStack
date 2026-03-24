@@ -39,7 +39,7 @@ function Nav() {
             <li><Link className="dropdown-item" to="profile">Profile</Link></li>
             <li><Link className="dropdown-item" to="/setting">Settings</Link></li>
             <li><hr className="dropdown-divider" /></li>
-            <li><Link className="dropdown-item text-danger" href="#">Logout</Link></li>
+            <li><Link className="dropdown-item text-danger">Logout</Link></li>
           </ul>
         </div>
 
