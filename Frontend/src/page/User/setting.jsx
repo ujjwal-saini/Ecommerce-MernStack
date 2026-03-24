@@ -19,6 +19,7 @@ const navigate = useNavigate();
         navigate("/login");
       }
     } catch (err) {
+      
       console.log(err);
       alert("Delete failed");
     }
