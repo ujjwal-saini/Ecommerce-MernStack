@@ -29,13 +29,13 @@ import UpdatePass from './page/Login Signup/updatePass';
 function App() {
   return (
     <BrowserRouter>
-    <CartLoader/>
+      <CartLoader />
       <Routes>
         <Route path='login' element={<Login />} />
         {/* <Route path='/' element={<Landing />} /> */}
         <Route path='signup' element={<Signup />} />
-        <Route path='forgot-password' element={<ForgotPassword/>}/>
-        <Route path="updatepass/reset/:email" element={<UpdatePass/>}/>
+        <Route path='forgot-password' element={<ForgotPassword />} />
+        <Route path="updatepass/reset/:email" element={<UpdatePass />} />
 
 // user page route
         <Route path="/" element={<ProtectedRoute> <Landing /> </ProtectedRoute>}>
@@ -44,8 +44,8 @@ function App() {
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />
           <Route path='addtocart' element={<Addtocart />} />
           <Route path='profile' element={<Profile />} />
-          <Route path="allproducts/:category" element={<AllProducts/>} />
-          <Route path='setting' element={<Setting/> }/>
+          <Route path="allproducts/:category" element={<AllProducts />} />
+          <Route path='setting' element={<Setting />} />
           <Route path='*' element={<ErrorPage />} />
         </Route>
 
@@ -55,8 +55,9 @@ function App() {
           <Route path='order' element={<Order />} />
           <Route path='customer' element={<Customer />} />
           <Route path='products' element={<Productpage />} />
-          <Route path='analytic' element={<Analytic/>}/>
-          <Route path='setting' element={<Setting />}/>
+          <Route path='analytic' element={<Analytic />} />
+          <Route path='profile' element={<Profile />} />
+          <Route path='setting' element={<Setting />} />
         </Route>
 
         <Route path='*' element={<ErrorPage />} />
