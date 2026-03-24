@@ -150,9 +150,9 @@ function Addtocart() {
               <h4 className="text-success">
                 Total: ₹{total}
               </h4>
-              <button className="btn btn-primary w-100 mt-3">
+              <Link to="/order" className="btn btn-primary w-100 mt-3">
                 Proceed to Checkout
-              </button>
+              </Link>
             </div>
           </div>
         </div>

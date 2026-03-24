@@ -25,6 +25,7 @@ import ProtectedRoute from './middleware/ProtectedRoute';
 import CartLoader from './middleware/cartLoader';
 import ForgotPassword from './page/Login Signup/forget';
 import UpdatePass from './page/Login Signup/updatePass';
+import Payment from './page/User/payment';
 
 function App() {
   return (
@@ -46,6 +47,7 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path="allproducts/:category" element={<AllProducts />} />
           <Route path='setting' element={<Setting />} />
+          <Route path="order" element={<Payment/>} />
           <Route path='*' element={<ErrorPage />} />
         </Route>
 
