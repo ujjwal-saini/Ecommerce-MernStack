@@ -3,7 +3,11 @@ import { useContext } from 'react'
 import { AuthContext } from '../../middleware/authContext'
 import { Link } from 'react-router-dom';
 function Nav() {
-  const { user } = useContext(AuthContext);
+  const { user , logout} = useContext(AuthContext);
+   const handleLogout = async () => {
+    await logout();
+    navigate("/login");
+  };
 
   return (
     <div className="d-flex w-full items-center justify-content-between px-3 py-2 border-b bg-white border">
@@ -39,7 +43,7 @@ function Nav() {
             <li><Link className="dropdown-item" to="profile">Profile</Link></li>
             <li><Link className="dropdown-item" to="setting">Settings</Link></li>
             <li><hr className="dropdown-divider" /></li>
-            <li><Link className="dropdown-item text-danger">Logout</Link></li>
+            <li><Link onClick={handleLogout}  className="dropdown-item text-danger">Logout</Link></li>
           </ul>
         </div>
 
