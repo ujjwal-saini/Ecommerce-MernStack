@@ -99,7 +99,7 @@ function Navbar() {
             <div className="dropdown">
               <button className="btn btn-outline-theme dropdown-toggle" data-bs-toggle="dropdown">
                 <img
-                  src={user.profile.profilePic}
+                  src={`https://ecommerce-mernstack-backend.onrender.com${user.profile.profilePic}`}
                   alt="img"
                   width="30"
                   height="30"
