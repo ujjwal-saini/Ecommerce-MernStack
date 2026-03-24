@@ -2,7 +2,9 @@ import React from 'react'
 import { useContext } from 'react'
 import { AuthContext } from '../../middleware/authContext'
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 function Nav() {
+  const navigate = useNavigate();
   const { user , logout} = useContext(AuthContext);
    const handleLogout = async () => {
     await logout();
