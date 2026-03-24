@@ -2,27 +2,31 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import {v2 as cloudinary} from "cloudinary"
+import { v2 as cloudinary } from "cloudinary";
+import path from "path";
+
 import connectDB from "./connection/mongo.js";
 import Routes from "./routes/route.js";
 
 dotenv.config();
 
-cloudinary.config({
-  cloud_name:process.env.cloudinary_cloud_name,
-  api_key:process.env.cloudinary_api_key,
-  api_secret:process.env.cloudinary_api_secret
-});
-
-
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const __dirname = path.resolve();
+
+// cloudinary
+cloudinary.config({
+  cloud_name: process.env.cloudinary_cloud_name,
+  api_key: process.env.cloudinary_api_key,
+  api_secret: process.env.cloudinary_api_secret
+});
+
+// middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-// console.log(process.env.FrontendUrl);
+
 app.use(
   cors({
     origin: process.env.FrontendUrl,
@@ -35,8 +39,17 @@ app.use("/uploads", express.static("uploads"));
 // DB
 connectDB();
 
-// routes
-app.use("/", Routes);
+// API routes
+app.use("/api", Routes);
+
+
+
+app.use(express.static(path.join(__dirname, "frontend/build")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "frontend/build", "index.html"));
+});
+
 
 // server
 app.listen(PORT, () => {
