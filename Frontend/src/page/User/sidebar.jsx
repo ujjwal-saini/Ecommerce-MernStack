@@ -5,21 +5,7 @@ import { useContext } from "react";
 import { AuthContext } from "../../middleware/authContext";
 function Sidebar() {
   const {user } = useContext(AuthContext);
-  // const [user, setUser] = useState(null);
-
-  // useEffect(() => {
-  //   axios
-  //     .get("http://localhost:3100/me", {
-  //       withCredentials: true // 👈 COOKIE SEND
-  //     })
-  //     .then((res) => {
-  //       setUser(res.data); // { name, email }
-  //     })
-  //     .catch(() => {
-  //       setUser(null); // not logged in
-  //     });
-  // }, []);
-
+ 
   return (
     <div
       className="bg-dark text-white d-flex flex-column"
@@ -50,20 +36,20 @@ function Sidebar() {
       <div className="p-3 border-top">
         {user && (
           <div className="dropdown">
-            <a
-              href="/#"
+            <Link
+              to="/profile"
               className="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
               data-bs-toggle="dropdown"
             >
               <img
-                src="https://github.com/mdo.png"
+                src={`https://ecommerce-mernstack-backend.onrender.com${user.profile.profilePic}`}
                 alt="user"
                 width="32"
                 height="32"
                 className="rounded-circle me-2"
               />
               {user.name}
-            </a>
+            </Link>
 
             <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
               <li>
