@@ -67,11 +67,18 @@ function Navbar() {
         </li>
 
         {/* Location */}
-        <li className="nav-item d-flex align-items-center">
-          <span className="nav-link d-flex align-items-center gap-1">
-            <CiLocationOn size={20} className="text-danger" />
-            {user?.profile?.address?.city || "Select Location"}
-          </span>
+        <li className="nav-item">
+          <Link
+            to="/location"
+            className="nav-link d-flex align-items-center gap-1"
+          >
+            <CiLocationOn
+              size={20}
+              className="text-danger"
+            />
+            {user?.profile?.address?.city ||
+              "Select Location"}
+          </Link>
         </li>
 
       </ul>
