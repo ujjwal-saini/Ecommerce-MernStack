@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { AuthContext } from "../../middleware/authContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link } from "react-router-dom";
 
 function Setting() {
   const { user, toggleTheme, API } = useContext(AuthContext);
@@ -72,9 +72,9 @@ const navigate = useNavigate();
                 Update your account password
               </p>
             </div>
-            <button className="btn btn-outline-danger">
+            <Link to="/forgot-password" className="btn btn-outline-danger">
               Change Password
-            </button>
+            </Link>
           </div>
 
           <hr />

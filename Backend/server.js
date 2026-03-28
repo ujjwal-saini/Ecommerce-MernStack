@@ -14,16 +14,12 @@ cloudinary.config({
   api_secret:process.env.cloudinary_api_secret
 });
 
-
-
-
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
-// console.log(process.env.FrontendUrl);
 app.use(
   cors({
     origin: process.env.FrontendUrl,
@@ -33,13 +29,12 @@ app.use(
 
 app.use("/uploads", express.static("uploads"));
 
-// DB
+
 connectDB();
 
-// routes
 app.use("/", Routes);
 
-// server
+
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);
 });
