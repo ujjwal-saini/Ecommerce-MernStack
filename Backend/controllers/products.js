@@ -88,7 +88,7 @@ export const updateProduct = async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
-
+    
     if (!updatedProduct) {
       return res.status(404).json({
         success: false,

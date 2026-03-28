@@ -27,6 +27,8 @@ import ForgotPassword from './page/Login Signup/forget';
 import UpdatePass from './page/Login Signup/updatePass';
 import Payment from './page/User/payment';
 import Location from "./page/User/location";
+import Orders from './page/User/order/orders';
+import OrderSuccess from './page/User/order/OrderSuccess';
 
 function App() {
   return (
@@ -48,15 +50,17 @@ function App() {
           <Route path='profile' element={<Profile />} />
           <Route path="allproducts/:category" element={<AllProducts />} />
           <Route path='setting' element={<Setting />} />
-          <Route path="order" element={<Payment />} />
+          {/* <Route path="order" element={<Payment />} /> */}
           <Route path='*' element={<ErrorPage />} />
           <Route path="/location" element={<Location />} />
+          <Route path="/order" element={<Orders/>} />
+          <Route path="/success" element={<OrderSuccess/>} />
         </Route>
 
 // Admin page route
         <Route path='admindashboard' element={<AdminRoute> <Adminpage /> </AdminRoute>}>
           <Route path='' element={<Adminmain />} />
-          <Route path='order' element={<Order />} />
+          <Route path='order' element={<Orders />} />
           <Route path='customer' element={<Customer />} />
           <Route path='products' element={<Productpage />} />
           <Route path='analytic' element={<Analytic />} />

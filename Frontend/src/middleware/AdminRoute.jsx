@@ -7,7 +7,7 @@ const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
   if (loading)
      return <h3> <Loader/> </h3>;
-
+  
   if (!user || user.role !== "admin") {
     return <Navigate to="/login" />;
   }

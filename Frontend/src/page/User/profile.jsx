@@ -4,8 +4,8 @@ import { AuthContext } from "../../middleware/authContext";
 import Loader from "../../components/loading";
 
 function Profile() {
-  const { user, fetchMe, theme , API} = useContext(AuthContext);
 
+  const { user, fetchMe, theme , API} = useContext(AuthContext);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
@@ -26,11 +26,9 @@ function Profile() {
   console.log(user.profilePic,"userprofile",user);
 
   if (!user || !formData) return <Loader />;
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
   const handleImageChange = (e) => {
     setProfilePic(e.target.files[0]);
   };
@@ -102,14 +100,17 @@ function Profile() {
               <strong>City:</strong>
               <div className={mutedText}>{user.profile.address?.city}</div>
             </div>
+
             <div className="col-md-6">
               <strong>State:</strong>
               <div className={mutedText}>{user.profile.address?.state}</div>
             </div>
+
             <div className="col-md-6">
               <strong>Postal Code:</strong>
               <div className={mutedText}>{user.profile.address?.postalCode}</div>
             </div>
+            
             <div className="col-12">
               <strong>Full Address:</strong>
               <div className={mutedText}>{user.profile.address?.fullAddress}</div>
