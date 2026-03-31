@@ -4,9 +4,9 @@ export const placeOrder = async (req, res) => {
 
     try {
         const order = new Order(req.body);
-        console.log(order);
+     
         await order.save();
-        console.log(req.body.user);
+       
         await Users.findByIdAndUpdate(
             req.body.user,
             { cartItems: [] }
