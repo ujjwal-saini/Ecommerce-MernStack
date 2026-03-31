@@ -1,7 +1,7 @@
 import Order from "../models/orders.js";
 import Users from "../models/user.js";
-export const placeOrder = async (req, res) => {
 
+export const placeOrder = async (req, res) => {
     try {
         const order = new Order(req.body);
         await order.save();
