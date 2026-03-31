@@ -33,16 +33,18 @@ router.delete("/deleteproduct/:id", deleteProduct);
 router.get("/productSearch", productSearch);
 router.get("/getcart/:userId", cartLoader);
 
-// add to cart
-router.post("/addtocart", addToCart);
-router.post("/updatecart", updateCartItem);
-router.post("/removecart", removeCartItem);
-
 //orders
 router.post("/orders",  placeOrder);
 router.get("/getorders",  getAllOrders);
 router.get("/myorders/:userId",  getUserOrders);
 router.put("/orders/:id",  updateOrderStatus);
 router.put("/cancelorder/:id", cancelorder);
+
+// add to cart
+router.post("/addtocart", addToCart);
+router.post("/updatecart", updateCartItem);
+router.post("/removecart", removeCartItem);
+
+
 
 export default router;
