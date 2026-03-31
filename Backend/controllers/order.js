@@ -4,14 +4,12 @@ export const placeOrder = async (req, res) => {
 
     try {
         const order = new Order(req.body);
-     
         await order.save();
-       
+        console.log(req.body.user);
         await Users.findByIdAndUpdate(
             req.body.user,
             { cartItems: [] }
         );
-
         res.status(201).json({
             success: true,
             message: "Order placed successfully",
@@ -24,7 +22,6 @@ export const placeOrder = async (req, res) => {
             message: "Order failed",
             error: error.message
         });
-
     }
 };
 
