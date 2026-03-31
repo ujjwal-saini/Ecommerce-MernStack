@@ -42,7 +42,7 @@ function Sidebar() {
               data-bs-toggle="dropdown"
             >
               <img
-                src={`https://ecommerce-mernstack-backend.onrender.com${user.profile.profilePic}`}
+                src={user.profile.profilePic}
                 alt="user"
                 width="32"
                 height="32"

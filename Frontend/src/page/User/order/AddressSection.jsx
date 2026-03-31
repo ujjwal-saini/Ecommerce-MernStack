@@ -19,7 +19,9 @@ function AddressSection() {
     lng: "",
   });
 
-  // get current location
+  const [phone, setPhone] = useState("");
+
+  // get location
   const getCurrentLocation = () => {
 
     if (!navigator.geolocation) return;
@@ -34,7 +36,7 @@ function AddressSection() {
 
           setLoading(true);
 
-          const res = await fetch(
+          const res = await axios(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
           );
 
@@ -49,10 +51,9 @@ function AddressSection() {
             state: data.address.state || "",
             postalCode: data.address.postcode || "",
             fullAddress: data.display_name || "",
-            lat: lat,
-            lng: lng,
+            lat,
+            lng,
           });
-
         } catch (err) {
           console.log(err);
         } finally {
@@ -62,15 +63,15 @@ function AddressSection() {
     );
   };
 
-  // 🔥 Main Fix
   useEffect(() => {
-
     if (user?.profile?.address) {
       setAddressData(user.profile.address);
     } else {
       getCurrentLocation();
     }
-
+    if (user?.profile?.phone) {
+      setPhone(user.profile.phone);
+    }
   }, [user]);
 
   const handleChange = (e) => {
@@ -82,10 +83,21 @@ function AddressSection() {
 
   const saveAddress = () => {
 
+    if (!phone) {
+      alert("Phone number is required");
+      return;
+    }
+
+    if (phone.length < 10) {
+      alert("Enter valid phone number");
+      return;
+    }
+
     const updatedUser = {
       ...user,
       profile: {
         ...user.profile,
+        phone: phone,
         address: addressData,
       },
     };
@@ -93,7 +105,7 @@ function AddressSection() {
     setUser(updatedUser);
     setEdit(false);
 
-    alert("Address Saved Successfully");
+    alert("Address & Phone Saved Successfully");
   };
 
   return (
@@ -103,40 +115,45 @@ function AddressSection() {
 
         <h5>📍 Delivery Address</h5>
 
-        <div>
-          {!edit ? (
-            <button
-              className="btn btn-outline-primary btn-sm"
-              onClick={() => setEdit(true)}
-            >
-              Edit
-            </button>
-          ) : (
-            <button
-              className="btn btn-success btn-sm"
-              onClick={saveAddress}
-            >
-              Save
-            </button>
-          )}
-        </div>
-
+        {!edit ? (
+          <button
+            className="btn btn-outline-primary btn-sm"
+            onClick={() => setEdit(true)}
+          >
+            Edit
+          </button>
+        ) : (
+          <button
+            className="btn btn-success btn-sm"
+            onClick={saveAddress}
+          >
+            Save
+          </button>
+        )}
       </div>
-
       <hr />
-
       <h6>{user?.name}</h6>
-
       {loading ? (
         <p className="text-primary">
           Fetching current location...
         </p>
       ) : edit ? (
         <>
+          {/* Phone */}
+          <input
+            type="tel"
+            className="form-control mb-2"
+            placeholder="Enter Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
+
           <input
             type="text"
             className="form-control mb-2"
             name="city"
+            placeholder="City"
             value={addressData.city}
             onChange={handleChange}
           />
@@ -145,6 +162,7 @@ function AddressSection() {
             type="text"
             className="form-control mb-2"
             name="state"
+            placeholder="State"
             value={addressData.state}
             onChange={handleChange}
           />
@@ -153,6 +171,7 @@ function AddressSection() {
             type="text"
             className="form-control mb-2"
             name="postalCode"
+            placeholder="Postal Code"
             value={addressData.postalCode}
             onChange={handleChange}
           />
@@ -160,16 +179,21 @@ function AddressSection() {
           <textarea
             className="form-control mb-2"
             name="fullAddress"
+            placeholder="Full Address"
             value={addressData.fullAddress}
             onChange={handleChange}
           />
+
         </>
       ) : (
         <>
-          <p>{addressData.city}</p>
-          <p>{addressData.state}</p>
-          <p>{addressData.postalCode}</p>
-          <p>{addressData.fullAddress}</p>
+
+          <p><strong>Phone:</strong> {phone}</p>
+          <p><strong>City:</strong>{addressData.city}</p>
+          <p><strong>State:</strong>{addressData.state}</p>
+          <p><strong>PostalCode:</strong>{addressData.postalCode}</p>
+          <p><strong>Address:</strong>{addressData.fullAddress}</p>
+
         </>
       )}
 

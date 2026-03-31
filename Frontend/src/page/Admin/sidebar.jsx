@@ -27,7 +27,7 @@ const { user , logout} = useContext(AuthContext);
           </li>
 
           <li className="mb-2">
-            <Link to="order" className="nav-link text-white d-flex align-items-center gap-2">
+            <Link to="allorders" className="nav-link text-white d-flex align-items-center gap-2">
               <Cart /> Orders
             </Link>
           </li>

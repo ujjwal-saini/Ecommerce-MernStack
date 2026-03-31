@@ -16,12 +16,10 @@ function Landing() {
 
   return (
     <div className={`d-flex flex-column min-vh-100 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
-
       <Navbar />
       <BottomNav toggleSidebar={() => setShowSidebar(!showSidebar)} />
 
       <div className="position-relative flex-grow-1">
-
         {showSidebar && (
           <div
             className="position-fixed top-0 start-0 h-100 sidebar"
@@ -49,7 +47,7 @@ function Landing() {
         <div
           className="container-fluid"
           style={{
-            filter: showSidebar ? "brightness(70%)" : "brightness(100%)",
+            filter: showSidebar ? "brightness(100%)" : "brightness(100%)",
             transition: "0.3s",
           }}
         >

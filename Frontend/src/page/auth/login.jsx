@@ -23,6 +23,7 @@ function Login() {
           withCredentials: true
         }
       );
+      console.log(res );
       if (res.status === 200) {
         if (res.data.user.role === "admin") {
           await fetchMe();

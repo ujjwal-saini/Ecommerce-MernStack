@@ -3,7 +3,8 @@ import Users from "../models/user.js";
 import jwt from "jsonwebtoken";
 import Product from "../models/products.js";
 import User from "../models/user.js";
-
+import cloudinary from "../connection/cloudnary.js";
+import path from "path";
 // LOGIN
 export const login = async (req, res) => {
   try {
@@ -50,8 +51,6 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-// REGISTER
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -62,29 +61,44 @@ export const register = async (req, res) => {
       return res.status(409).json({ message: "User already registered" });
     }
 
-    if (email === "" || password === "") {
-      return res.status(402).json({ message: "Email and password required" })
+    if (!email || !password) {
+      return res.status(402).json({ message: "Email and password required" });
     }
 
-    console.log(process.env.BASE_URL);
+    if (!req.file) {
+      return res.status(400).json({
+        message: "Profile image required"
+      });
+    }
+
     const hashpassword = await bcrypt.hash(password, 10);
 
-    const profilePic = req.file
-      ? `${process.env.BASE_URL}/uploads/${req.file.filename}`
-      : undefined;
+    const filePath = req.file.path;
+
+    console.log("File Path:", filePath);
+
+    const uploadedImage = await cloudinary.uploader.upload(filePath,{resource_type:"auto"});
+
+    console.log("Cloudinary URL:", uploadedImage.url);
 
     await Users.create({
       name,
       email,
       password: hashpassword,
       profile: {
-        profilePic,
+        profilePic: uploadedImage.url,
       },
     });
 
-    res.status(200).json({ message: "User registered" });
+    res.status(200).json({
+      message: "User registered successfully"
+    });
+
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.log("Register Error:", error);
+    res.status(500).json({
+      error: error.message
+    });
   }
 };
 
@@ -183,6 +197,7 @@ export const cartLoader = async (req, res) => {
 
 export const forgetPassword = async (req, res) => {
   const { email } = req.body;
+  const otp = 12345;
 
   console.log(email, "email");
   const existingItem = Users.findOne({ email: email });
@@ -191,7 +206,7 @@ export const forgetPassword = async (req, res) => {
     return res.status(402).json({ message: "email is invalid" })
   }
 
-  res.status(200).json({ message: "sent otp", otp: 12345 });
+  res.status(200).json({ message: "sent otp", otp });
 
 
 }
@@ -200,8 +215,8 @@ export const resetPassword = async (req, res) => {
   try {
 
     const { email, newPassword, confirmPassword } = req.body;
-    console.log(email, newPassword, confirmPassword);
 
+    console.log(email, newPassword, confirmPassword);
     if (!email || !newPassword || !confirmPassword) {
       return res.status(400).json({
         message: "All fields are required"
@@ -213,9 +228,7 @@ export const resetPassword = async (req, res) => {
         message: "Passwords do not match"
       });
     }
-
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
     const user = await Users.findOneAndUpdate({ email: email }, { $set: { password: hashedPassword } }, { new: true });
     if (!user) {
       return res.status(404).json({

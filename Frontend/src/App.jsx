@@ -6,15 +6,14 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import Main from './page/User/main';
 import ProductDetail from './components/productDetail';
 import ErrorPage from './components/errorpage';
-import '../public/global.css'
-// import AllProduct from './components/allProduct';
+import "../public/global.css"
+
 import Addtocart from './page/User/addtocart';
 import Adminpage from './page/Admin/landingpage';
-import Login from './page/Login Signup/login';
-import Signup from './page/Login Signup/signup';
+import Login from './page/auth/login';
+import Signup from './page/auth/signup';
 import Profile from './page/User/profile';
 import Adminmain from './page/Admin/main';
-import Order from './page/Admin/order';
 import Customer from './page/Admin/customer';
 import Productpage from './page/Admin/productpage';
 import Setting from './page/User/setting';
@@ -23,52 +22,59 @@ import AllProducts from './components/allProducts';
 import AdminRoute from './middleware/AdminRoute';
 import ProtectedRoute from './middleware/ProtectedRoute';
 import CartLoader from './middleware/cartLoader';
-import ForgotPassword from './page/Login Signup/forget';
-import UpdatePass from './page/Login Signup/updatePass';
-import Payment from './page/User/payment';
+import ForgotPassword from './page/auth/forget';
+import UpdatePass from './page/auth/updatePass';
 import Location from "./page/User/location";
 import Orders from './page/User/order/orders';
 import OrderSuccess from './page/User/order/OrderSuccess';
+import UserOrders from './page/User/userOrder';
+import AdminOrders from './page/Admin/adminOrder';
 
 function App() {
   return (
     <BrowserRouter>
       <CartLoader />
+
       <Routes>
+
         <Route path='login' element={<Login />} />
-        {/* <Route path='/' element={<Landing />} /> */}
         <Route path='signup' element={<Signup />} />
         <Route path='forgot-password' element={<ForgotPassword />} />
         <Route path="updatepass/reset/:email" element={<UpdatePass />} />
 
-// user page route
-        <Route path="/" element={<ProtectedRoute> <Landing /> </ProtectedRoute>}>
-          <Route path='' element={<Main />} />
+        {/* user page route */}
+        <Route path="/" element={<ProtectedRoute><Landing /></ProtectedRoute>}>
+
+          <Route index element={<Main />} />
           <Route path="productdetail/:id" element={<ProductDetail />} />
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />
           <Route path='addtocart' element={<Addtocart />} />
           <Route path='profile' element={<Profile />} />
           <Route path="allproducts/:category" element={<AllProducts />} />
           <Route path='setting' element={<Setting />} />
-          {/* <Route path="order" element={<Payment />} /> */}
+          <Route path="location" element={<Location />} />
+          <Route path="order" element={<Orders />} />
+          <Route path="success" element={<OrderSuccess />} />
+          <Route path="myorders" element={<UserOrders />} />
           <Route path='*' element={<ErrorPage />} />
-          <Route path="/location" element={<Location />} />
-          <Route path="/order" element={<Orders/>} />
-          <Route path="/success" element={<OrderSuccess/>} />
+
         </Route>
 
-// Admin page route
-        <Route path='admindashboard' element={<AdminRoute> <Adminpage /> </AdminRoute>}>
-          <Route path='' element={<Adminmain />} />
-          <Route path='order' element={<Orders />} />
+        {/* Admin page route */}
+        <Route path='admindashboard' element={<AdminRoute><Adminpage /></AdminRoute>}>
+
+          <Route index element={<Adminmain />} />
+          <Route path="allorders" element={<AdminOrders />} />
           <Route path='customer' element={<Customer />} />
           <Route path='products' element={<Productpage />} />
           <Route path='analytic' element={<Analytic />} />
           <Route path='profile' element={<Profile />} />
           <Route path='setting' element={<Setting />} />
+
         </Route>
 
         <Route path='*' element={<ErrorPage />} />
+
       </Routes>
 
     </BrowserRouter>

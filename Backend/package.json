@@ -7,13 +7,14 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
-      "build": "cd frontend && npm install && npm run build"
+    "build": "cd frontend && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.9.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

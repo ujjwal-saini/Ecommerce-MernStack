@@ -10,7 +10,7 @@ function OrderSuccess() {
         Order Placed Successfully 🎉
       </h2>
 
-      <p>Your order will be delivered in 3 days</p>
+      <p>Your order will be delivered in 2 days</p>
 
       <Link to="/" className="btn btn-primary">
         Continue Shopping

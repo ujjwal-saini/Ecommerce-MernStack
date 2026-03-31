@@ -24,7 +24,6 @@ function AllProducts() {
           );
           setProducts(filtered);
         }
-
       } catch (err) {
         console.error(err);
       } finally {

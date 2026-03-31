@@ -120,7 +120,7 @@ function Navbar() {
               data-bs-toggle="dropdown"
             >
               <img
-                src={`https://ecommerce-mernstack-backend.onrender.com${user.profile.profilePic}`}
+                src={user.profile.profilePic}
                 alt="img"
                 width="30"
                 height="30"
@@ -133,9 +133,14 @@ function Navbar() {
               <li>
                 <Link className="dropdown-item" to="profile">Profile</Link>
               </li>
+               <li>
+                <Link className="dropdown-item" to="/myorders">Orders</Link>
+              </li>
               <li>
                 <Link className="dropdown-item" to="/setting">Settings</Link>
               </li>
+
+
               <li><hr className="dropdown-divider" /></li>
               <li>
                 <button onClick={handleLogout} className="dropdown-item text-danger">
