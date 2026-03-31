@@ -35,7 +35,9 @@ function OrderSummary() {
       paymentMethod: "COD",
       orderStatus: "Pending"
     };
-    console.log(orderData);
+    console.log("order:",orderData);
+    console.log("API:", API);
+    console.log("URL:", `${API}/orders`);
     try {
       const res = await axios.post(`${API}/orders`, orderData);
       console.log(res.data);
@@ -72,8 +74,7 @@ function OrderSummary() {
 
       <button
         className="btn btn-success w-100 mt-3"
-        onClick={placeOrder}
-      >
+        onClick={placeOrder}>
         Place Order
       </button>
 
