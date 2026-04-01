@@ -199,7 +199,7 @@ export const forgetPassword = async (req, res) => {
   const { email } = req.body;
   const otp = 12345;
 
-  console.log(email, "email");
+
   const existingItem = Users.findOne({ email: email });
 
   if (!existingItem) {

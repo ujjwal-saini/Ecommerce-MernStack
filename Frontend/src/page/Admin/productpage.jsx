@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../middleware/authContext";
+import Loader from "../../components/loading";
 function Productpage() {
   const [products, setProducts] = useState([]);
   const { API } = useContext(AuthContext);
@@ -21,7 +22,13 @@ function Productpage() {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
 
+
+  if(!products)
+  {
+    return <Loader/>
+  }
   // fetch products
+
   useEffect(() => {
     fetchProducts();
   }, []);
