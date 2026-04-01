@@ -23,10 +23,6 @@ function Productpage() {
   const [editForm, setEditForm] = useState({});
 
 
-  if(!products)
-  {
-    return <Loader/>
-  }
   // fetch products
 
   useEffect(() => {
@@ -98,6 +94,7 @@ function Productpage() {
 
   return (
     <div className="container my-4">
+
       {/* ADD PRODUCT */}
       <h2 className="mb-4">Add Product</h2>
 
@@ -201,126 +198,132 @@ function Productpage() {
 
       {/* PRODUCT LIST */}
       <h2 className="mb-4">Existing Products</h2>
+      {products.length === 0 ? (
+        <div className="text-center mt-5">
+          <Loader />
+        </div>
+      ) : (
 
-      <div className="row">
-        {products.map((p) => (
-          <div className="col-md-4 mb-4" key={p._id}>
-            <div className="card h-100 shadow-sm p-3">
+        <div className="row">
+          {products.map((p) => (
+            <div className="col-md-4 mb-4" key={p._id}>
+              <div className="card h-100 shadow-sm p-3">
 
-              {editingId === p._id ? (
-                <>
-                  <input
-                    className="form-control mb-2"
-                    name="name"
-                    value={editForm.name}
-                    onChange={handleEditChange}
-                    placeholder="Product Name"
-                  />
+                {editingId === p._id ? (
+                  <>
+                    <input
+                      className="form-control mb-2"
+                      name="name"
+                      value={editForm.name}
+                      onChange={handleEditChange}
+                      placeholder="Product Name"
+                    />
 
-                  <input
-                    className="form-control mb-2"
-                    name="price"
-                    type="number"
-                    value={editForm.price}
-                    onChange={handleEditChange}
-                    placeholder="Price"
-                  />
+                    <input
+                      className="form-control mb-2"
+                      name="price"
+                      type="number"
+                      value={editForm.price}
+                      onChange={handleEditChange}
+                      placeholder="Price"
+                    />
 
-                  <input
-                    className="form-control mb-2"
-                    name="stock"
-                    type="number"
-                    value={editForm.stock}
-                    onChange={handleEditChange}
-                    placeholder="Stock"
-                  />
+                    <input
+                      className="form-control mb-2"
+                      name="stock"
+                      type="number"
+                      value={editForm.stock}
+                      onChange={handleEditChange}
+                      placeholder="Stock"
+                    />
 
-                  <input
-                    className="form-control mb-2"
-                    name="category"
-                    value={editForm.category}
-                    onChange={handleEditChange}
-                    placeholder="Category"
-                  />
+                    <input
+                      className="form-control mb-2"
+                      name="category"
+                      value={editForm.category}
+                      onChange={handleEditChange}
+                      placeholder="Category"
+                    />
 
-                  <input
-                    className="form-control mb-2"
-                    name="brand"
-                    value={editForm.brand}
-                    onChange={handleEditChange}
-                    placeholder="Brand"
-                  />
+                    <input
+                      className="form-control mb-2"
+                      name="brand"
+                      value={editForm.brand}
+                      onChange={handleEditChange}
+                      placeholder="Brand"
+                    />
 
-                  <input
-                    className="form-control mb-2"
-                    name="image"
-                    value={editForm.image}
-                    onChange={handleEditChange}
-                    placeholder="Image URL"
-                  />
+                    <input
+                      className="form-control mb-2"
+                      name="image"
+                      value={editForm.image}
+                      onChange={handleEditChange}
+                      placeholder="Image URL"
+                    />
 
-                  <textarea
-                    className="form-control mb-2"
-                    name="description"
-                    value={editForm.description}
-                    onChange={handleEditChange}
-                    placeholder="Description"
-                    rows="2"
-                  />
+                    <textarea
+                      className="form-control mb-2"
+                      name="description"
+                      value={editForm.description}
+                      onChange={handleEditChange}
+                      placeholder="Description"
+                      rows="2"
+                    />
 
-                  <div className="d-flex gap-2">
-                    <button
-                      className="btn btn-success btn-sm"
-                      onClick={handleUpdate}
-                    >
-                      Save Changes
-                    </button>
+                    <div className="d-flex gap-2">
+                      <button
+                        className="btn btn-success btn-sm"
+                        onClick={handleUpdate}
+                      >
+                        Save Changes
+                      </button>
 
-                    <button
-                      className="btn btn-secondary btn-sm"
-                      onClick={() => setEditingId(null)}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{
-                      height: "200px",
-                      objectFit: "contain",
-                      width: "100%",
-                    }}
-                  />
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => setEditingId(null)}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <img
+                      src={p.image}
+                      alt={p.name}
+                      style={{
+                        height: "200px",
+                        objectFit: "contain",
+                        width: "100%",
+                      }}
+                    />
 
-                  <h5 className="mt-2">{p.name}</h5>
-                  <p>{p.description}</p>
-                  <p><b>₹{p.price}</b></p>
+                    <h5 className="mt-2">{p.name}</h5>
+                    <p>{p.description}</p>
+                    <p><b>₹{p.price}</b></p>
 
-                  <div className="d-flex gap-2">
-                    <button
-                      className="btn btn-warning btn-sm"
-                      onClick={() => handleEditClick(p)}
-                    >
-                      Edit
-                    </button>
+                    <div className="d-flex gap-2">
+                      <button
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleEditClick(p)}
+                      >
+                        Edit
+                      </button>
 
-                    <button
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(p._id)}
-                    >
-                      Delete
-                    </button>
-                  </div>
-                </>
-              )}
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDelete(p._id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
