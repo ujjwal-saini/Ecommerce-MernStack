@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { AuthContext } from "../../middleware/authContext";
+import Loader from "../../components/loading";
 
 function AdminOrders() {
 
@@ -71,7 +72,7 @@ function AdminOrders() {
       <h3 className="mb-4">🛒 Admin Orders Dashboard</h3>
       {orders.length === 0 ? (
         <div className="text-center mt-5">
-          <p>No orders available</p>
+        return <Loader/>
         </div>
       ) : (
         <table className="table table-bordered table-hover">
