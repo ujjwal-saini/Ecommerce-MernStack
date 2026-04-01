@@ -38,7 +38,7 @@ function Nav() {
               width="35"
               height="35"
             />
-            Ujjwal
+            {user.name}
           </button>
 
           <ul className="dropdown-menu dropdown-menu-end shadow">
