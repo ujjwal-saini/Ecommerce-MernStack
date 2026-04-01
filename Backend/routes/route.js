@@ -34,10 +34,10 @@ router.get("/productSearch", productSearch);
 router.get("/getcart/:userId", cartLoader);
 
 //orders
-router.post("/orders",  placeOrder);
-router.get("/getorders",  getAllOrders);
-router.get("/myorders/:userId",  getUserOrders);
-router.put("/orders/:id",  updateOrderStatus);
+router.post("/orders",placeOrder);
+router.get("/getorders",getAllOrders);
+router.get("/myorders/:userId",getUserOrders);
+router.put("/orders/:id",updateOrderStatus);
 router.put("/cancelorder/:id", cancelorder);
 
 // add to cart
