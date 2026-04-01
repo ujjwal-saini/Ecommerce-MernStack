@@ -5,7 +5,7 @@ import { register, login, checklogin, logout, updateUserProfile, cartLoader, for
 import { addToCart, updateCartItem, removeCartItem } from "../controllers/cart.js";
 import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
-import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus , cancelorder} from "../controllers/order.js";
+import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder} from "../controllers/productorder.js";
 
 
 const router = express.Router();

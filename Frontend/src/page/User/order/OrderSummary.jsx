@@ -19,6 +19,8 @@ function OrderSummary() {
   );
 
   const placeOrder = async () => {
+        console.log("API:", API);
+    console.log("URL:", `${API}/orders`);
     const orderData = {
       user: user._id,
       customerName: user.name,
@@ -36,8 +38,6 @@ function OrderSummary() {
       orderStatus: "Pending"
     };
     console.log("order:",orderData);
-    console.log("API:", API);
-    console.log("URL:", `${API}/orders`);
     try {
       const res = await axios.post(`${API}/orders`, orderData);
       console.log(res.data);
