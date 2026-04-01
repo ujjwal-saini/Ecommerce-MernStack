@@ -72,7 +72,7 @@ function AdminOrders() {
       <h3 className="mb-4">🛒 Admin Orders Dashboard</h3>
       {orders.length === 0 ? (
         <div className="text-center mt-5">
-        return <Loader/>
+         <Loader/>
         </div>
       ) : (
         <table className="table table-bordered table-hover">
