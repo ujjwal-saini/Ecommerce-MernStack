@@ -2,6 +2,7 @@ import Order from "../models/orders.js";
 import Users from "../models/user.js";
 
 export const placeOrder = async (req, res) => {
+    console.log("trigger");
     try {
         const order = new Order(req.body);
         await order.save();
