@@ -29,11 +29,16 @@ import Orders from './page/User/order/orders';
 import OrderSuccess from './page/User/order/OrderSuccess';
 import UserOrders from './page/User/userOrder';
 import AdminOrders from './page/Admin/adminOrder';
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   return (
     <BrowserRouter>
       <CartLoader />
+
+
+      <ToastContainer position="top-left" autoClose={2000} 
+            />
 
       <Routes>
 

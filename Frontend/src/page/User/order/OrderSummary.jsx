@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../middleware/authContext";
-import { useDispatch } from "react-redux";
 import { clearCart } from "../../../redux/cartSlice";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function OrderSummary() {
 
@@ -19,8 +19,14 @@ function OrderSummary() {
   );
 
   const placeOrder = async () => {
-        console.log("API:", API);
-    console.log("URL:", `${API}/orders`);
+
+    if (!cartItems.length) {
+      toast.error("Cart is empty ❌");
+      return;
+    }
+
+    const toastId = toast.loading("Placing your order...");
+
     const orderData = {
       user: user._id,
       customerName: user.name,
@@ -37,18 +43,39 @@ function OrderSummary() {
       paymentMethod: "COD",
       orderStatus: "Pending"
     };
-    console.log("order:",orderData);
+
     try {
-      const res = await axios.post(`${API}/orders`, orderData);
-      console.log(res.data);
+
+      const res = await axios.post(`${API}/orders`, orderData, {
+        withCredentials: true
+      });
 
       if (res.data) {
-        alert("Order Placed Successfully ✅");
+
+        toast.update(toastId, {
+          render: "Order placed successfully ✅",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000
+        });
+
         dispatch(clearCart());
-        navigate("/success");
+
+        setTimeout(() => {
+          navigate("/success");
+        }, 2000);
       }
 
     } catch (error) {
+
+      toast.dismiss(toastId);
+
+      if (error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("Server not responding ❌");
+      }
+
       console.log(error);
     }
   };
@@ -74,7 +101,8 @@ function OrderSummary() {
 
       <button
         className="btn btn-success w-100 mt-3"
-        onClick={placeOrder}>
+        onClick={placeOrder}
+      >
         Place Order
       </button>
 

@@ -1,21 +1,27 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios"
+import axios from "axios";
 import { AuthContext } from "../../middleware/authContext";
-import { useContext } from "react";
+import { toast } from "react-toastify";
 
 function Login() {
+
   const navigate = useNavigate();
   const { isLoggedIn, fetchMe, role, API } = useContext(AuthContext);
-  console.log(API);
+
   const [form, setfrom] = useState({
     email: "",
     password: ""
   });
 
   const handlesubmit = async (e) => {
+
     e.preventDefault();
+
+    const toastId = toast.loading("Logging in...");
+
     try {
+
       const res = await axios.post(
         `${API}/login`,
         form,
@@ -23,94 +29,151 @@ function Login() {
           withCredentials: true
         }
       );
-      console.log(res );
+
       if (res.status === 200) {
-        if (res.data.user.role === "admin") {
-          await fetchMe();
-          navigate("/admindashboard");
-        } else {
-          await fetchMe();
-          navigate("/");
-        }
+
+        toast.update(toastId, {
+          render: "Login Successful ",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000
+        });
+
+        await fetchMe();
+
+        setTimeout(() => {
+          if (res.data.user.role === "admin") {
+            navigate("/admindashboard");
+          } else {
+            navigate("/");
+          }
+        }, 4000);
       }
+
     } catch (err) {
-      const status = err.response.data.status;
+
+      toast.dismiss(toastId);
+
       if (err.response) {
+
+        const status = err.response.status;
+
         if (status === 409) {
-          alert("User already registered ");
+          toast.error("User already registered");
         }
         else if (status === 402) {
-          alert("Please fill email and password");
+          toast.error("Please fill email and password");
+        }
+        else if (status === 401) {
+          toast.error("Invalid email or password");
         }
         else {
-          alert(err.response.data.message);
+          toast.error(err.response.data.message);
         }
+
       } else {
-        alert("Server not responding ");
+        toast.error("Server not responding");
       }
     }
   };
 
-
   useEffect(() => {
-    console.log(isLoggedIn, role);
+
     if (isLoggedIn === true && role === "user") {
       navigate("/");
-    } else if (isLoggedIn === true && role === "admin") {
+    }
+    else if (isLoggedIn === true && role === "admin") {
       navigate("/admindashboard");
     }
-  }, [isLoggedIn])
 
+  }, [isLoggedIn, role]);
 
   return (
-    <div className="container-fluid bg-light d-flex justify-content-center align-items-center vh-100"
+    <div
+      className="container-fluid d-flex justify-content-center align-items-center vh-100"
       style={{
         background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)"
-      }}>
+      }}
+    >
+
       <div className="card shadow p-4" style={{ width: "400px" }}>
-        <h3 className="text-center mb-4 fw-bold">Login to ShopPoint</h3>
+
+        <h3 className="text-center mb-4 fw-bold">
+          Login to ShopPoint
+        </h3>
+
         <form onSubmit={handlesubmit}>
+
+          {/* Email */}
           <div className="mb-3">
-            <label className="form-label">Email address</label>
+            <label className="form-label">
+              Email address
+            </label>
+
             <input
               type="email"
               className="form-control"
               placeholder="Enter your email"
-              onChange={(e) => {
+              onChange={(e) =>
                 setfrom({ ...form, email: e.target.value })
-              }}
+              }
             />
           </div>
+
+          {/* Password */}
           <div className="mb-3">
-            <label className="form-label">Password</label>
+            <label className="form-label">
+              Password
+            </label>
+
             <input
               type="password"
               className="form-control"
               placeholder="Enter your password"
-              onChange={(e) => {
+              onChange={(e) =>
                 setfrom({ ...form, password: e.target.value })
-              }}
+              }
             />
           </div>
+
           <div className="d-flex justify-content-between mb-3">
             <div>
-              <input type="checkbox" className="form-check-input me-2" />
-              <label className="form-check-label">Remember me</label>
+              <input
+                type="checkbox"
+                className="form-check-input me-2"
+              />
+              <label className="form-check-label">
+                Remember me
+              </label>
             </div>
-            <Link to="/forgot-password" className="text-decoration-none">
+
+            <Link
+              to="/forgot-password"
+              className="text-decoration-none"
+            >
               Forgot Password?
             </Link>
           </div>
-          <button type="submit" className="btn btn-warning w-100 fw-bold">
+
+          <button
+            type="submit"
+            className="btn btn-warning w-100 fw-bold"
+          >
             Login
           </button>
+
           <hr />
+
           <p className="text-center">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="text-decoration-none fw-bold">
+            Don’t have an account?
+            <Link
+              to="/signup"
+              className="text-decoration-none fw-bold ms-2"
+            >
               Sign Up
             </Link>
           </p>
+
         </form>
       </div>
     </div>
