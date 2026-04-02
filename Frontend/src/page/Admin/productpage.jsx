@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useContext } from "react";
 import { AuthContext } from "../../middleware/authContext";
 import Loader from "../../components/loading";
+
 function Productpage() {
-  const [products, setProducts] = useState([]);
   const { API } = useContext(AuthContext);
-  console.log(products);
-  // add product form
+
+  const [products, setProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -18,12 +19,8 @@ function Productpage() {
     brand: "",
   });
 
-  // edit states
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({});
-
-
-  // fetch products
 
   useEffect(() => {
     fetchProducts();
@@ -34,14 +31,13 @@ function Productpage() {
     setProducts(res.data.data);
   };
 
-  // add form change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // add product
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     await axios.post(`${API}/addproduct`, form);
 
     setForm({
@@ -54,16 +50,15 @@ function Productpage() {
       brand: "",
     });
 
+    setShowModal(false);
     fetchProducts();
   };
 
-  // edit click
   const handleEditClick = (product) => {
     setEditingId(product._id);
     setEditForm(product);
   };
 
-  // edit change
   const handleEditChange = (e) => {
     setEditForm({
       ...editForm,
@@ -71,259 +66,299 @@ function Productpage() {
     });
   };
 
-  // update product
   const handleUpdate = async () => {
-    await axios.put(
-      `${API}/updateproduct/${editingId}`,
-      editForm
-    );
+    await axios.put(`${API}/updateproduct/${editingId}`, editForm);
     setEditingId(null);
     fetchProducts();
   };
 
-  // delete product
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete?")) return;
+    if (!window.confirm("Delete product?")) return;
 
-    await axios.delete(
-      `${API}/deleteproduct/${id}`
-    );
-
+    await axios.delete(`${API}/deleteproduct/${id}`);
     fetchProducts();
   };
 
   return (
-    <div className="container my-4">
+    <div className="container-fluid p-4">
 
-      {/* ADD PRODUCT */}
-      <h2 className="mb-4">Add Product</h2>
+      {/* HEADER */}
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <h2 className="fw-bold">Products</h2>
 
-      <div className="card shadow-sm mb-5">
-        <div className="card-body">
-          <form onSubmit={handleSubmit}>
-            <div className="row">
-              <div className="col-md-6 mb-3">
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Product Name"
-                  required
-                />
-              </div>
-
-              <div className="col-md-3 mb-3">
-                <input
-                  type="number"
-                  name="price"
-                  value={form.price}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Price"
-                  required
-                />
-              </div>
-
-              <div className="col-md-3 mb-3">
-                <input
-                  type="number"
-                  name="stock"
-                  value={form.stock}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Stock"
-                  required
-                />
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <input
-                  type="text"
-                  name="category"
-                  value={form.category}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Category"
-                  required
-                />
-              </div>
-
-              <div className="col-md-6 mb-3">
-                <input
-                  type="text"
-                  name="brand"
-                  value={form.brand}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Brand"
-                  required
-                />
-              </div>
-
-              <div className="col-12 mb-3">
-                <textarea
-                  name="description"
-                  value={form.description}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Description"
-                  rows="3"
-                  required
-                />
-              </div>
-
-              <div className="col-12 mb-3">
-                <input
-                  type="text"
-                  name="image"
-                  value={form.image}
-                  onChange={handleChange}
-                  className="form-control"
-                  placeholder="Image URL"
-                  required
-                />
-              </div>
-
-              <div className="col-12">
-                <button className="btn btn-success w-100">
-                  Add Product
-                </button>
-              </div>
-            </div>
-          </form>
-        </div>
+        <button
+          className="btn btn-success"
+          onClick={() => setShowModal(true)}
+        >
+          + Add Product
+        </button>
       </div>
 
-      {/* PRODUCT LIST */}
-      <h2 className="mb-4">Existing Products</h2>
+      {/* TABLE */}
+
       {products.length === 0 ? (
         <div className="text-center mt-5">
           <Loader />
         </div>
       ) : (
+        <div className="card shadow">
 
-        <div className="row">
-          {products.map((p) => (
-            <div className="col-md-4 mb-4" key={p._id}>
-              <div className="card h-100 shadow-sm p-3">
+          <div className="card-body table-responsive">
 
-                {editingId === p._id ? (
-                  <>
-                    <input
-                      className="form-control mb-2"
-                      name="name"
-                      value={editForm.name}
-                      onChange={handleEditChange}
-                      placeholder="Product Name"
-                    />
+            <table className="table align-middle product-table">
 
-                    <input
-                      className="form-control mb-2"
-                      name="price"
-                      type="number"
-                      value={editForm.price}
-                      onChange={handleEditChange}
-                      placeholder="Price"
-                    />
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Category</th>
+                  <th>Brand</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Description</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
 
-                    <input
-                      className="form-control mb-2"
-                      name="stock"
-                      type="number"
-                      value={editForm.stock}
-                      onChange={handleEditChange}
-                      placeholder="Stock"
-                    />
+              <tbody>
 
-                    <input
-                      className="form-control mb-2"
-                      name="category"
-                      value={editForm.category}
-                      onChange={handleEditChange}
-                      placeholder="Category"
-                    />
+                {products.map((p) => (
+                  <tr key={p._id}>
 
-                    <input
-                      className="form-control mb-2"
-                      name="brand"
-                      value={editForm.brand}
-                      onChange={handleEditChange}
-                      placeholder="Brand"
-                    />
+                    {editingId === p._id ? (
+                      <>
+                        <td>
+                          <input
+                            name="image"
+                            value={editForm.image}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                    <input
-                      className="form-control mb-2"
-                      name="image"
-                      value={editForm.image}
-                      onChange={handleEditChange}
-                      placeholder="Image URL"
-                    />
+                        <td>
+                          <input
+                            name="name"
+                            value={editForm.name}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                    <textarea
-                      className="form-control mb-2"
-                      name="description"
-                      value={editForm.description}
-                      onChange={handleEditChange}
-                      placeholder="Description"
-                      rows="2"
-                    />
+                        <td>
+                          <input
+                            name="category"
+                            value={editForm.category}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                    <div className="d-flex gap-2">
-                      <button
-                        className="btn btn-success btn-sm"
-                        onClick={handleUpdate}
-                      >
-                        Save Changes
-                      </button>
+                        <td>
+                          <input
+                            name="brand"
+                            value={editForm.brand}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        onClick={() => setEditingId(null)}
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <img
-                      src={p.image}
-                      alt={p.name}
-                      style={{
-                        height: "200px",
-                        objectFit: "contain",
-                        width: "100%",
-                      }}
-                    />
+                        <td>
+                          <input
+                            name="price"
+                            value={editForm.price}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                    <h5 className="mt-2">{p.name}</h5>
-                    <p>{p.description}</p>
-                    <p><b>₹{p.price}</b></p>
+                        <td>
+                          <input
+                            name="stock"
+                            value={editForm.stock}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                    <div className="d-flex gap-2">
-                      <button
-                        className="btn btn-warning btn-sm"
-                        onClick={() => handleEditClick(p)}
-                      >
-                        Edit
-                      </button>
+                        <td>
+                          <textarea
+                            name="description"
+                            value={editForm.description}
+                            onChange={handleEditChange}
+                            className="form-control"
+                          />
+                        </td>
 
-                      <button
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleDelete(p._id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>
-          ))}
+                        <td>
+                          <button
+                            className="btn btn-success btn-sm me-2"
+                            onClick={handleUpdate}
+                          >
+                            Save
+                          </button>
+
+                          <button
+                            className="btn btn-secondary btn-sm"
+                            onClick={() => setEditingId(null)}
+                          >
+                            Cancel
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td>
+                          <img
+                            src={p.image}
+                            alt=""
+                            className="product-img"
+                          />
+                        </td>
+
+                        <td title={p.name}>{p.name}</td>
+
+                        <td>{p.category}</td>
+
+                        <td>{p.brand}</td>
+
+                        <td>₹{p.price}</td>
+
+                        <td>{p.stock}</td>
+
+                        <td title={p.description}>
+                          {p.description}
+                        </td>
+
+                        <td>
+                          <button
+                            className="btn btn-warning btn-sm me-2"
+                            onClick={() => handleEditClick(p)}
+                          >
+                            Edit
+                          </button>
+
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(p._id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </>
+                    )}
+
+                  </tr>
+                ))}
+
+              </tbody>
+            </table>
+
+          </div>
         </div>
       )}
+
+      {/* MODAL */}
+
+      {showModal && (
+        <div className="modal-overlay">
+
+          <div className="modal-box">
+
+            <div className="d-flex justify-content-between mb-3">
+              <h4>Add Product</h4>
+
+              <button
+                className="btn-close"
+                onClick={() => setShowModal(false)}
+              ></button>
+            </div>
+
+            <form onSubmit={handleSubmit}>
+              <div className="row">
+
+                <div className="col-md-6 mb-3">
+                  <input
+                    className="form-control"
+                    name="name"
+                    placeholder="Product Name"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <input
+                    className="form-control"
+                    name="price"
+                    placeholder="Price"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <input
+                    className="form-control"
+                    name="stock"
+                    placeholder="Stock"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <input
+                    className="form-control"
+                    name="category"
+                    placeholder="Category"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-md-6 mb-3">
+                  <input
+                    className="form-control"
+                    name="brand"
+                    placeholder="Brand"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-12 mb-3">
+                  <textarea
+                    className="form-control"
+                    name="description"
+                    placeholder="Description"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <div className="col-12 mb-3">
+                  <input
+                    className="form-control"
+                    name="image"
+                    placeholder="Image URL"
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+
+                <button className="btn btn-success">
+                  Add Product
+                </button>
+
+              </div>
+            </form>
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 }

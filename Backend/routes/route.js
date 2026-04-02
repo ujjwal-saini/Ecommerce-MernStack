@@ -6,7 +6,7 @@ import { addToCart, updateCartItem, removeCartItem } from "../controllers/cart.j
 import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
 import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder} from "../controllers/productorder.js";
-
+import { adminDashboard ,getAllCustomers , deleteCustomer } from "../controllers/adminController.js"
 
 const router = express.Router();
 
@@ -45,6 +45,11 @@ router.post("/addtocart", addToCart);
 router.post("/updatecart", updateCartItem);
 router.post("/removecart", removeCartItem);
 
+
+// admin
+router.get("/getAdminData",adminDashboard);
+router.get("/customers", getAllCustomers);
+router.delete("/deletecustomer/:id", deleteCustomer);
 
 
 export default router;

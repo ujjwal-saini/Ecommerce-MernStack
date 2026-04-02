@@ -53,7 +53,7 @@ function AdminOrders() {
     try {
 
       await axios.put(
-        `${API}/orders/${id}`,
+        `${API}/cancelorder/${id}`,
         { orderStatus: "Cancelled" },
         { withCredentials: true }
       );
