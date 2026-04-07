@@ -4,7 +4,7 @@ import { AuthContext } from "../../middleware/authContext";
 import Loader from "../../components/loading";
 import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProduct } from "../../redux/productSlice";
-import AddProductModal from "../../components/admin/AddProductModal";
+import AddProductModal from "./editproductCompoent/AddProductModal";
 import { useNavigate } from "react-router-dom";
 import { toast ,ToastContainer} from "react-toastify";
 
@@ -65,7 +65,7 @@ function Productpage() {
 
   return (
     <div className="container-fluid p-4">
-<ToastContainer position="top-center" />
+     <ToastContainer position="top-center" />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold">Product Management</h2>
         <button className="btn btn-success" onClick={openModal}>

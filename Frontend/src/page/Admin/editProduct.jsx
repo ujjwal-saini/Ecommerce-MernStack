@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../middleware/authContext";
-import CategoryFields from "../../components/admin/CategoryFields";
+import CategoryFields from "./editproductCompoent/CategoryFields";
 import { toast } from "react-toastify";
 
 function EditProduct() {
