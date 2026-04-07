@@ -96,7 +96,7 @@ function Addtocart() {
                 <div className="row align-items-center">
                   <div className="col-md-3 text-center">
                     <img
-                      src={item.image}
+                      src={item.mainImage}
                       alt={item.name}
                       className="img-fluid rounded"
                       style={{ height: "100px", objectFit: "contain" }}

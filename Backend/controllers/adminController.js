@@ -1,7 +1,6 @@
 import User from "../models/user.js";
 import Product from "../models/products.js";
 import Order from "../models/orders.js";
-
 export const adminDashboard = async (req, res) => {
     try {
 
@@ -44,31 +43,58 @@ export const adminDashboard = async (req, res) => {
                 $group: {
                     _id: { $month: "$createdAt" },
                     total: { $sum: "$totalAmount" },
-                    orders: { $sum: 1 }   // 👈 total orders in month
+                    orders: { $sum: 1 }
                 },
             },
-            {
-                $sort: { _id: 1 },
-            },
+            { $sort: { _id: 1 } },
         ]);
 
-        // month name convert
+
+        //  Today Date
+        const today = new Date();
+        const todayMonth = today.getMonth() + 1;
+        const todayDate = today.getDate();
+
+        //  Birthday Users
+        const users = await User.find({
+            role: { $ne: "admin" },
+            "profile.dateOfBirth": { $exists: true }
+        }).select("name email profile.dateOfBirth profile.profilePic");
+
+        const formattedBirthdayUsers = users.filter(user => {
+            const dob = new Date(user.profile.dateOfBirth);
+            return (
+                dob.getDate() === todayDate &&
+                dob.getMonth() + 1 === todayMonth
+            );
+        })
+            .map(user => {
+                const dob = new Date(user.profile.dateOfBirth);
+                console.log("dob",dob.getFullYear());
+                let age = today.getFullYear() - dob.getFullYear();
+                const monthDiff = today.getMonth() - dob.getMonth();
+                if (
+                    monthDiff < 0 ||
+                    (monthDiff === 0 && today.getDate() < dob.getDate())
+                ) {
+                    age--;
+                }
+                return {
+                    name: user.name,
+                    email: user.email,
+                    profilePic:user.profile.profilePic,
+                    dateOfBirth: dob.toISOString().split("T")[0],
+                    age
+                };
+            });
+
         const months = [
             "",
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
         ];
 
+        // monthly format
         const formattedMonthlySales = monthlySales.map((m) => ({
             month: months[m._id],
             total: m.total,
@@ -83,6 +109,7 @@ export const adminDashboard = async (req, res) => {
             recentOrders,
             recentUsers,
             monthlySales: formattedMonthlySales,
+            birthdayUsers: formattedBirthdayUsers
         });
 
     } catch (error) {
@@ -98,11 +125,21 @@ export const getAllCustomers = async (req, res) => {
 
         const customers = await User.find(
             { role: { $ne: "admin" } },
-            {
-                password: 0,
-                cartItems: 0
+            { password: 0, cartItems: 0 }
+        )
+        .sort({ createdAt: -1 })
+        .lean();   // 👈 important
+
+        customers.forEach(user => {
+            if (user.profile?.dateOfBirth) {
+                user.profile.dateOfBirth =
+                    new Date(user.profile.dateOfBirth)
+                        .toISOString()
+                        .split("T")[0];
             }
-        ).sort({ createdAt: -1 });
+        });
+
+        console.log(customers);
 
         res.status(200).json({
             success: true,
@@ -110,36 +147,25 @@ export const getAllCustomers = async (req, res) => {
         });
 
     } catch (error) {
-
         console.log(error);
-
         res.status(500).json({
             success: false,
             message: "Customer fetch error"
         });
-
     }
 };
-
 export const deleteCustomer = async (req, res) => {
     try {
-
         const { id } = req.params;
-
         await User.findByIdAndDelete(id);
-
         res.status(200).json({
             success: true,
             message: "Customer deleted successfully"
         });
-
     } catch (error) {
-
         console.log(error);
-
         res.status(500).json({
             message: "Delete error"
         });
-
     }
 };

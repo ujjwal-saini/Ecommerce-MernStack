@@ -36,10 +36,9 @@ function Analytic() {
   useEffect(() => {
     fetchAnalytics();
   }, []);
-  console.log(monthlySales);
+
   const fetchAnalytics = async () => {
     try {
-
       const res = await axios.get(`${API}/getAdminData`, {
         headers: {
           Authorization: `Bearer ${user?.token}`

@@ -13,11 +13,8 @@ function Nav() {
 
   return (
     <div className="d-flex w-full items-center justify-content-between px-3 py-2 border-b bg-white border">
-
       <h2 className="text-xl font-semibold">Welcome Admin</h2>
-
       <div className="d-flex items-center gap-6">
-
         <form className="d-flex me-1 align-item-center justify-content-center mt-1" style={{ width: "41vh", height: "40px" }}>
           <input
             className="form-control"
@@ -40,7 +37,6 @@ function Nav() {
             />
             {user.name}
           </button>
-
           <ul className="dropdown-menu dropdown-menu-end shadow">
             <li><Link className="dropdown-item" to="profile">Profile</Link></li>
             <li><Link className="dropdown-item" to="setting">Settings</Link></li>
@@ -48,7 +44,6 @@ function Nav() {
             <li><Link onClick={handleLogout}  className="dropdown-item text-danger">Logout</Link></li>
           </ul>
         </div>
-
       </div>
     </div>
   )

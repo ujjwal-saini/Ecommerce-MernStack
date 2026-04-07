@@ -36,7 +36,6 @@ function Card({ products }) {
   };
 const handleIncreaseQty = async (item) => {
   const cartItem = cartItems.find((ci) => ci._id === item._id);
-
   if (cartItem && cartItem.qty >= item.stock) {
     Swal.fire({
       icon: "warning",
@@ -49,7 +48,6 @@ const handleIncreaseQty = async (item) => {
   }
 
   dispatch(increaseQty(item._id));
-
   await axios.post(`${API}/updatecart`, {
     userId: user._id,
     productId: item._id,
@@ -77,7 +75,7 @@ const handleDecreaseQty = async (item) => {
   const handleBuyNow = (item) => {
     if (!isLoggedIn) return showLoginPopup();
     dispatch(addToCart(item));
-    // handleIncreaseQty(item);
+    handleAddToCart(item);
     navigate("/addtocart");
   };
 
@@ -105,7 +103,7 @@ const handleDecreaseQty = async (item) => {
                     style={{ height: "220px" }}>
 
                     <img
-                      src={item.thumbnail || item.image}
+                      src={item.mainImage}
                       alt={item.name}
                       style={{
                         maxHeight: "220px",

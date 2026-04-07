@@ -1,4 +1,4 @@
-import productJson from "./products.json" with { type: "json" };
+import productJson from "./newProducts.json" with { type: "json" };
 import Product from "./models/products.js";
 import connectDB from "./connection/mongo.js";
 import "dotenv/config";

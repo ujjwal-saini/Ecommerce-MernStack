@@ -6,6 +6,7 @@ import Footer from "./footer";
 import BottomNav from "./bottom_nav";
 import { AuthContext } from "../../middleware/authContext";
 
+
 function Landing() {
   const [showSidebar, setShowSidebar] = useState(false);
   const { theme } = useContext(AuthContext);
@@ -18,6 +19,7 @@ function Landing() {
     <div className={`d-flex flex-column min-vh-100 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
       <Navbar />
       <BottomNav toggleSidebar={() => setShowSidebar(!showSidebar)} />
+ 
 
       <div className="position-relative flex-grow-1">
         {showSidebar && (

@@ -1,11 +1,11 @@
 import express from "express";
 
-import { addProducts, getProducts, getSingleProduct, updateProduct, deleteProduct, productSearch } from "../controllers/products.js";
+import { addProducts, getProducts, getSingleProduct, updateProduct, deleteProduct, productSearch ,addCommentproduct } from "../controllers/products.js";
 import { register, login, checklogin, logout, updateUserProfile, cartLoader, forgetPassword, resetPassword, deleteAccount } from "../controllers/user.js";
 import { addToCart, updateCartItem, removeCartItem } from "../controllers/cart.js";
 import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
-import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder} from "../controllers/productorder.js";
+import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder } from "../controllers/productorder.js";
 import { adminDashboard ,getAllCustomers , deleteCustomer } from "../controllers/adminController.js"
 
 const router = express.Router();
@@ -32,6 +32,8 @@ router.put("/updateproduct/:id", updateProduct);
 router.delete("/deleteproduct/:id", deleteProduct);
 router.get("/productSearch", productSearch);
 router.get("/getcart/:userId", cartLoader);
+router.patch("/addcomment/:id", addCommentproduct);
+
 
 //orders
 router.post("/orders",placeOrder);

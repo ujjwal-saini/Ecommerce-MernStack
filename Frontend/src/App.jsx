@@ -21,7 +21,7 @@ import Analytic from './page/Admin/analytic';
 import AllProducts from './components/allProducts';
 import AdminRoute from './middleware/AdminRoute';
 import ProtectedRoute from './middleware/ProtectedRoute';
-import CartLoader from './middleware/cartLoader';
+import CartLoader from './reduxFile/cartLoader';
 import ForgotPassword from './page/auth/forget';
 import UpdatePass from './page/auth/updatePass';
 import Location from "./page/User/location";
@@ -31,25 +31,21 @@ import UserOrders from './page/User/userOrder';
 import AdminOrders from './page/Admin/adminOrder';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Getproductsdata from './reduxFile/productLoader';
+import EditProduct from './page/Admin/editProduct';
 function App() {
   return (
     <BrowserRouter>
       <CartLoader />
-
-
-      <ToastContainer position="top-left" autoClose={2000} 
-            />
-
+      <Getproductsdata/>
+      <ToastContainer position="top-left" autoClose={2000} />
       <Routes>
-
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />
         <Route path='forgot-password' element={<ForgotPassword />} />
         <Route path="updatepass/reset/:email" element={<UpdatePass />} />
-
         {/* user page route */}
         <Route path="/" element={<ProtectedRoute><Landing /></ProtectedRoute>}>
-
           <Route index element={<Main />} />
           <Route path="productdetail/:id" element={<ProductDetail />} />
           <Route path="allproducts/productdetail/:id" element={<ProductDetail />} />
@@ -62,26 +58,21 @@ function App() {
           <Route path="success" element={<OrderSuccess />} />
           <Route path="myorders" element={<UserOrders />} />
           <Route path='*' element={<ErrorPage />} />
-
         </Route>
 
         {/* Admin page route */}
         <Route path='admindashboard' element={<AdminRoute><Adminpage /></AdminRoute>}>
-
           <Route index element={<Adminmain />} />
           <Route path="allorders" element={<AdminOrders />} />
           <Route path='customer' element={<Customer />} />
           <Route path='products' element={<Productpage />} />
           <Route path='analytic' element={<Analytic />} />
           <Route path='profile' element={<Profile />} />
+          <Route path='products/editproduct/:id' element={<EditProduct/>} />
           <Route path='setting' element={<Setting />} />
-
         </Route>
-
         <Route path='*' element={<ErrorPage />} />
-
       </Routes>
-
     </BrowserRouter>
   )
 }

@@ -50,7 +50,7 @@ function Main() {
             {[
               { title: "Men Fashion", cat: "men" },
               { title: "Laptop", cat: "laptop" },
-              { title: "Phone Products", cat: "phone" },
+              { title: "Phone Products", cat: "Mobile" },
               { title: "Electronics", cat: "electronics" },
               { title: "Kitchen", cat: "kitchen" }
             ].map((section) => (

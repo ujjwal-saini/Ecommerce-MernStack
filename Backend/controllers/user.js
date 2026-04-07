@@ -77,7 +77,7 @@ export const register = async (req, res) => {
 
     console.log("File Path:", filePath);
 
-    const uploadedImage = await cloudinary.uploader.upload(filePath,{resource_type:"auto"});
+    const uploadedImage = await cloudinary.uploader.upload(filePath, { resource_type: "auto" });
 
     console.log("Cloudinary URL:", uploadedImage.url);
 
@@ -115,6 +115,12 @@ export const updateUserProfile = async (req, res) => {
       postalCode,
     } = req.body;
 
+    let formattedDOB = null;
+console.log(dateOfBirth);
+    // if (dateOfBirth) {
+    //   formattedDOB = new Date(dateOfBirth).toISOString().split("T")[0];
+    // }
+
     const updateData = {
       "profile.phone": phone,
       "profile.dateOfBirth": dateOfBirth,
@@ -126,7 +132,8 @@ export const updateUserProfile = async (req, res) => {
     };
 
     if (req.file) {
-      updateData["profile.profilePic"] = `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+      updateData["profile.profilePic"] =
+        `${process.env.BASE_URL}/uploads/${req.file.filename}`;
     }
 
     const user = await Users.findByIdAndUpdate(
@@ -136,7 +143,9 @@ export const updateUserProfile = async (req, res) => {
     ).select("-password");
 
     res.json({ success: true, user });
+
   } catch (err) {
+    console.log(err);
     res.status(500).json({ success: false });
   }
 };
