@@ -10,7 +10,6 @@ function EditProduct() {
     const { id } = useParams();
     const navigate = useNavigate();
     const { API } = useContext(AuthContext);
-
     const [form, setForm] = useState({
         name: "",
         description: "",
