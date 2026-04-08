@@ -5,6 +5,7 @@ import Shopora from "../../../public/image/Shopora.png";
 import { useSelector } from "react-redux";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearchOutline } from "react-icons/io5";
+import { FaShopify } from "react-icons/fa";
 
 function Navbar() {
 
@@ -43,7 +44,8 @@ function Navbar() {
           
           <Link className="navbar-brand fw-bold m-0" to="/">
             {/* <img src={Shopora} alt="Logo" height="30" className="d-inline-block align-top" /> */}
-            shopra
+            <FaShopify/>
+            {/* shopra */}
           </Link>
         </div>
 

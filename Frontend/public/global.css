@@ -535,3 +535,51 @@ body[data-theme="dark"] .btn-outline-theme {
 
 
 
+
+
+.product-card {
+  border-radius: 12px;
+  transition: 0.3s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+}
+
+.product-img {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  width: auto;
+}
+
+.product-img img {
+  max-height: 160px;
+  object-fit: contain;
+}
+
+.product-title {
+  font-size: 14px;
+  min-height: 40px;
+}
+
+/* Mobile responsive */
+
+@media (max-width: 576px) {
+
+  .product-img {
+    height: 140px;
+  }
+
+  .product-title {
+    font-size: 13px;
+  }
+
+  .btn-sm {
+    font-size: 12px;
+    padding: 4px 6px;
+  }
+
+}

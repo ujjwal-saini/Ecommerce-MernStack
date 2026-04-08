@@ -1,7 +1,12 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, increaseQty, decreaseQty ,removeFromCart } from "../redux/cartSlice";
+import {
+  addToCart,
+  increaseQty,
+  decreaseQty,
+  removeFromCart,
+} from "../redux/cartSlice";
 import Swal from "sweetalert2";
 import { AuthContext } from "../middleware/authContext";
 import axios from "axios";
@@ -11,16 +16,14 @@ function Card({ products }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const cartItems = useSelector((state) => state.cart.items);
-  const { isLoggedIn, user, theme ,API} = useContext(AuthContext);
+  const { isLoggedIn, user, theme, API } = useContext(AuthContext);
 
   const showLoginPopup = () => {
     Swal.fire({
       title: "Login Required",
       text: "Please login to continue",
       icon: "warning",
-      showCancelButton: true,
       confirmButtonText: "Login",
-      confirmButtonColor: "#0d6efd",
     }).then((result) => {
       if (result.isConfirmed) navigate("/login");
     });
@@ -28,7 +31,9 @@ function Card({ products }) {
 
   const handleAddToCart = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
+
     dispatch(addToCart(item));
+
     await axios.post(`${API}/addtocart`, {
       userId: user._id,
       productId: item._id,
@@ -38,11 +43,11 @@ function Card({ products }) {
 
   const handleIncreaseQty = async (item) => {
     const cartItem = cartItems.find((ci) => ci._id === item._id);
+
     if (cartItem && cartItem.qty >= item.stock) {
       Swal.fire({
         icon: "warning",
         title: "Stock Limit Reached",
-        text: "You cannot add more than available stock",
         timer: 1500,
         showConfirmButton: false,
       });
@@ -50,6 +55,7 @@ function Card({ products }) {
     }
 
     dispatch(increaseQty(item._id));
+
     await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: item._id,
@@ -62,12 +68,14 @@ function Card({ products }) {
 
     if (cartItem.qty === 1) {
       dispatch(removeFromCart(item._id));
+
       await axios.post(`${API}/removecart`, {
         userId: user._id,
         productId: item._id,
       });
     } else {
       dispatch(decreaseQty(item._id));
+
       await axios.post(`${API}/updatecart`, {
         userId: user._id,
         productId: item._id,
@@ -84,98 +92,89 @@ function Card({ products }) {
 
   return (
     <div className="container-fluid mt-4">
-      
-      {/* ✅ Mobile me 2 products per row */}
-      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-4">
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-3">
 
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
 
           return (
-            <div className="col px-2" key={item._id}>
+            <div className="col d-flex justify-content-center" key={item._id}>
               <div
-                className={`card h-100 shadow-sm p-2 ${
-                  theme === "dark" ? "bg-dark text-white border-secondary" : ""
-                }`}>
-
+                className={`card h-100 border-0 shadow-sm product-card ${theme === "dark"
+                    ? "bg-dark text-white border-secondary"
+                    : ""
+                  }`}
+              >
+                {/* IMAGE */}
                 <Link
                   to={`/productdetail/${item._id}`}
-                  className={`text-decoration-none ${
-                    theme === "dark" ? "text-white" : "text-dark"
-                  }`}>
-
-                  <div
-                    className="d-flex justify-content-center align-items-center"
-                    style={{ height: "220px" }}>
-
+                  className="text-decoration-none"
+                >
+                  <div className="product-img">
                     <img
                       src={item.mainImage}
                       alt={item.name}
-                      style={{
-                        maxHeight: "220px",
-                        maxWidth: "100%",
-                        objectFit: "contain",
-                      }}
+                      className="product-image"
                     />
                   </div>
                 </Link>
 
                 {/* BODY */}
-                <div className="card-body d-flex flex-column text-center">
-                  <h6 className="card-title">{item.name}</h6>
+                <div className="card-body d-flex flex-column text-center p-2">
 
-                  <p className="card-text text-success fw-semibold mb-3">
+                  <h6 className="product-title">
+                    {item.name}
+                  </h6>
+
+                  <p className="text-success fw-bold mb-2">
                     ₹{item.discountPrice || item.price}
                   </p>
 
                   {!cartItem ? (
-                    <div className="d-flex justify-content-center gap-3 mt-auto">
+                    <div className="d-flex gap-2 mt-auto">
 
-                      {/* Add to Cart */}
                       <button
-                        className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                        style={{ width: "100px", height: "32px" }}
+                        className="btn btn-primary flex-fill btn-sm"
                         onClick={() => handleAddToCart(item)}
                       >
-                        <FaShoppingCart />
-                     
+                        <FaShoppingCart /> Add
                       </button>
 
-                      {/* Buy Now */}
                       <button
-                        className="btn btn-warning d-flex align-items-center justify-content-center gap-2"
-                        style={{  width: "100px", height: "32px" }}
-                        onClick={() => handleBuyNow(item)}>
-                        <FaBolt />
-                    
+                        className="btn btn-warning flex-fill btn-sm"
+                        onClick={() => handleBuyNow(item)}
+                      >
+                        <FaBolt /> Buy
                       </button>
 
                     </div>
                   ) : (
-                    <div className="d-flex justify-content-center align-items-center gap-4 mt-auto">
+                    <div className="d-flex justify-content-center align-items-center gap-3 mt-auto">
+
                       <button
-                        className={`btn ${
-                          theme === "dark"
+                        className={`btn btn-sm ${theme === "dark"
                             ? "btn-outline-light"
                             : "btn-outline-secondary"
-                        }`}
-                        style={{ width: "40px", height: "40px" }}
-                        onClick={() => handleDecreaseQty(item)}>
+                          }`}
+                        onClick={() => handleDecreaseQty(item)}
+                      >
                         −
                       </button>
 
-                      <span className="fw-bold">{cartItem.qty}</span>
+                      <span className="fw-bold">
+                        {cartItem.qty}
+                      </span>
 
                       <button
-                        className={`btn ${
-                          theme === "dark"
+                        className={`btn btn-sm ${theme === "dark"
                             ? "btn-outline-light"
                             : "btn-outline-secondary"
-                        }`}
-                        style={{ width: "40px", height: "40px" }}
-                        onClick={() => handleIncreaseQty(item)}>
+                          }`}
+                        onClick={() => handleIncreaseQty(item)}
+                      >
                         +
                       </button>
+
                     </div>
                   )}
                 </div>
@@ -183,7 +182,6 @@ function Card({ products }) {
             </div>
           );
         })}
-
       </div>
     </div>
   );
