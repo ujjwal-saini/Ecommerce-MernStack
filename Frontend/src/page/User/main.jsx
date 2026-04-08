@@ -38,7 +38,7 @@ function Main() {
 
   return (
     <div className={`w-100 px-0 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
-      <div className="px-5">
+      <div className="px-2">
         {search ? (
           <>
             <h4 className="fw-bold mt-5 mb-3">Search Results { count }</h4>

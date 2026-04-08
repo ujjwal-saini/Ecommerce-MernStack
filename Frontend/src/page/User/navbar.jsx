@@ -42,12 +42,13 @@ function Navbar() {
           </button>
           
           <Link className="navbar-brand fw-bold m-0" to="/">
-            <img src={Shopora} alt="Logo" height="30" className="d-inline-block align-top" />
+            {/* <img src={Shopora} alt="Logo" height="30" className="d-inline-block align-top" /> */}
+            shopra
           </Link>
         </div>
 
 
-        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1" style={{ maxWidth: '500px' }}>
+        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1" style={{ maxWidth: '150px' }}>
           <div className="input-group input-group-sm">
             <input
               className="form-control border-end-0 shadow-none"
