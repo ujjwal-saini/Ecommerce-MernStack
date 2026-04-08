@@ -15,7 +15,7 @@ function CarouselSlider() {
             </div>
 
      
-            <div className="carousel-inner" style={{ height: "50vh" }}>
+            <div className="carousel-inner" style={{ height: "auto" }}>
 
 
                 <div className="carousel-item">

@@ -191,7 +191,7 @@ export const cartLoader = async (req, res) => {
           _id: product._id,
           name: product.name,
           price: product.price,
-          image: product.image,
+          mainImage: product.mainImage,
           qty: item.quantity,
           stock: product.stock
         });

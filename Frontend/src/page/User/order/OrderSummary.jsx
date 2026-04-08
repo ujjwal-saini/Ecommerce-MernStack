@@ -36,7 +36,7 @@ function OrderSummary() {
       items: cartItems.map(item => ({
         name: item.name,
         price: item.price,
-        image: item.image,
+        image: item.mainImage,
         quantity: item.qty
       })),
       totalAmount: total,

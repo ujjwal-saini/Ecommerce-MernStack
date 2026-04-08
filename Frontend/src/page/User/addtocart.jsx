@@ -11,12 +11,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../middleware/authContext";
 import Swal from "sweetalert2";
 
+
 function Addtocart() {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
-  const { isLoggedIn, user ,API } = useContext(AuthContext);
+  const { isLoggedIn, user, API } = useContext(AuthContext);
 
-  //  total price calculate
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
@@ -61,8 +61,6 @@ function Addtocart() {
     }
   };
 
-
-
   if (isLoggedIn === false) {
     return (
       <div className="container mt-5 text-center">
@@ -86,13 +84,11 @@ function Addtocart() {
         </div>
       ) : (
         <div className="row">
-
           <div className="col-md-8">
             {cartItems.map((item) => (
               <div
                 key={item._id}
-                className="card mb-3 shadow-sm p-3"
-              >
+                className="card mb-3 shadow-sm p-3">
                 <div className="row align-items-center">
                   <div className="col-md-3 text-center">
                     <img
@@ -111,8 +107,7 @@ function Addtocart() {
                   <div className="col-md-3 d-flex align-items-center gap-2">
                     <button
                       className="btn btn-outline-secondary"
-                      onClick={() => handleDecreaseQty(item)}
-                    >
+                      onClick={() => handleDecreaseQty(item)}>
                       −
                     </button>
 
@@ -120,9 +115,7 @@ function Addtocart() {
 
                     <button
                       className="btn btn-outline-secondary"
-                      onClick={() => handleIncreaseQty(item)}
-
-                    >
+                      onClick={() => handleIncreaseQty(item)}>
                       +
                     </button>
                   </div>

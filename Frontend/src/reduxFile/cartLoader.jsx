@@ -16,15 +16,16 @@ function CartLoader() {
         const res = await axios.get(
           `${API}/getcart/${user._id}`
         );
+
         const formattedCart = res.data.map((item) => ({
           _id: item._id,
           name: item.name,
           price: item.price,
-          image: item.image,
+          mainImage: item.mainImage,
           qty: item.qty,
           stock:item.stock
         }));
-        // console.log(formattedCart);
+
         dispatch(setCart(formattedCart));
       } catch (error) {
         console.error("Cart Load Error:", error);

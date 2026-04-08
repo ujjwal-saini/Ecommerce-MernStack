@@ -5,6 +5,7 @@ import { addToCart, increaseQty, decreaseQty ,removeFromCart } from "../redux/ca
 import Swal from "sweetalert2";
 import { AuthContext } from "../middleware/authContext";
 import axios from "axios";
+import { FaShoppingCart, FaBolt } from "react-icons/fa";
 
 function Card({ products }) {
   const dispatch = useDispatch();
@@ -34,54 +35,59 @@ function Card({ products }) {
       quantity: 1,
     });
   };
-const handleIncreaseQty = async (item) => {
-  const cartItem = cartItems.find((ci) => ci._id === item._id);
-  if (cartItem && cartItem.qty >= item.stock) {
-    Swal.fire({
-      icon: "warning",
-      title: "Stock Limit Reached",
-      text: "You cannot add more than available stock",
-      timer: 1500,
-      showConfirmButton: false,
-    });
-    return;
-  }
 
-  dispatch(increaseQty(item._id));
-  await axios.post(`${API}/updatecart`, {
-    userId: user._id,
-    productId: item._id,
-    quantity: 1,
-  });
-};
-const handleDecreaseQty = async (item) => {
-  const cartItem = cartItems.find((ci) => ci._id === item._id);
+  const handleIncreaseQty = async (item) => {
+    const cartItem = cartItems.find((ci) => ci._id === item._id);
+    if (cartItem && cartItem.qty >= item.stock) {
+      Swal.fire({
+        icon: "warning",
+        title: "Stock Limit Reached",
+        text: "You cannot add more than available stock",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      return;
+    }
 
-  if (cartItem.qty === 1) {
-    dispatch(removeFromCart(item._id));
-    await axios.post(`${API}/removecart`, {
-      userId: user._id,
-      productId: item._id,
-    });
-  } else {
-    dispatch(decreaseQty(item._id));
+    dispatch(increaseQty(item._id));
     await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: item._id,
-      quantity: -1,
+      quantity: 1,
     });
-  }
-};
+  };
+
+  const handleDecreaseQty = async (item) => {
+    const cartItem = cartItems.find((ci) => ci._id === item._id);
+
+    if (cartItem.qty === 1) {
+      dispatch(removeFromCart(item._id));
+      await axios.post(`${API}/removecart`, {
+        userId: user._id,
+        productId: item._id,
+      });
+    } else {
+      dispatch(decreaseQty(item._id));
+      await axios.post(`${API}/updatecart`, {
+        userId: user._id,
+        productId: item._id,
+        quantity: -1,
+      });
+    }
+  };
+
   const handleBuyNow = (item) => {
     if (!isLoggedIn) return showLoginPopup();
-    dispatch(addToCart(item));
     handleAddToCart(item);
     navigate("/addtocart");
   };
 
   return (
     <div className="container-fluid mt-4">
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+      
+      {/* ✅ Mobile me 2 products per row */}
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-4">
+
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
 
@@ -124,20 +130,26 @@ const handleDecreaseQty = async (item) => {
 
                   {!cartItem ? (
                     <div className="d-flex justify-content-center gap-3 mt-auto">
+
+                      {/* Add to Cart */}
                       <button
-                        className="btn btn-primary"
-                        style={{ width: "120px", height: "42px" }}
+                        className="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                        style={{ width: "100px", height: "32px" }}
                         onClick={() => handleAddToCart(item)}
                       >
-                        Add to Cart
+                        <FaShoppingCart />
+                     
                       </button>
 
+                      {/* Buy Now */}
                       <button
-                        className="btn btn-warning"
-                        style={{ width: "120px", height: "42px" }}
+                        className="btn btn-warning d-flex align-items-center justify-content-center gap-2"
+                        style={{  width: "100px", height: "32px" }}
                         onClick={() => handleBuyNow(item)}>
-                        Buy Now
+                        <FaBolt />
+                    
                       </button>
+
                     </div>
                   ) : (
                     <div className="d-flex justify-content-center align-items-center gap-4 mt-auto">
@@ -148,8 +160,7 @@ const handleDecreaseQty = async (item) => {
                             : "btn-outline-secondary"
                         }`}
                         style={{ width: "40px", height: "40px" }}
-                        onClick={() => handleDecreaseQty(item)}
-                      >
+                        onClick={() => handleDecreaseQty(item)}>
                         −
                       </button>
 
@@ -172,6 +183,7 @@ const handleDecreaseQty = async (item) => {
             </div>
           );
         })}
+
       </div>
     </div>
   );
