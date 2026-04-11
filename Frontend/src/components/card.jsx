@@ -92,7 +92,7 @@ function Card({ products }) {
 
   return (
     <div className="container-fluid mt-4">
-      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-3">
+      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-5">
 
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
@@ -103,8 +103,7 @@ function Card({ products }) {
                 className={`card h-100 border-0 shadow-sm product-card ${theme === "dark"
                     ? "bg-dark text-white border-secondary"
                     : ""
-                  }`}
-              >
+                  }`}>
                 {/* IMAGE */}
                 <Link
                   to={`/productdetail/${item._id}`}
@@ -126,7 +125,7 @@ function Card({ products }) {
                     {item.name}
                   </h6>
 
-                  <p className="text-success fw-bold mb-2">
+                  <p className="text-success fw-bold m-2">
                     ₹{item.discountPrice || item.price}
                   </p>
 

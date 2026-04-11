@@ -28,51 +28,34 @@ function Navbar() {
   };
 
   return (
-  <nav className={`navbar navbar-expand-lg px-2 px-md-3 app-navbar sticky-top ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-white shadow-sm"}`}>
-      <div className="container-fluid d-flex align-items-center justify-content-between">
-
-
+    <nav className={`navbar navbar-expand-lg px-2 px-md-3 app-navbar sticky-top ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-white shadow-sm"}`}>
+      <div className="container-fluid d-flex align-items-center ">
         <div className="d-flex align-items-center">
           <button
             className="navbar-toggler border-0 p-1 me-1"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarContent"
-          >
+            data-bs-target="#navbarContent">
             <span className="navbar-toggler-icon" style={{ width: '1.2rem', height: '1.2rem' }}></span>
           </button>
-          
-          <Link className="navbar-brand fw-bold m-0" to="/">
-            {/* <img src={Shopora} alt="Logo" height="30" className="d-inline-block align-top" /> */}
-            <FaShopify/>
-            {/* shopra */}
+          <Link className="navbar-brand d-flex fw-bold m-0" to="/">
+            <FaShopify style={{ fontSize: "28px" }} />
+            <h1 className="d-none d-md-block ps-2 " style={{fontSize:"25px"}}>shopra</h1>
           </Link>
         </div>
 
 
-        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1" style={{ maxWidth: '150px' }}>
-          <div className="input-group input-group-sm">
-            <input
-              className="form-control border-end-0 shadow-none"
-              type="search"
-              placeholder="Search products..."
-              value={productSearch}
-              onChange={(e) => setproductSearch(e.target.value)}
-            />
-            <button className="btn btn-outline-secondary border-start-0 d-flex justify-content-center align-item-center" type="submit">
-              <IoSearchOutline/>
-            </button>
-          </div>
-        </form>
-
-        <div className="collapse navbar-collapse" id="navbarContent">
+        <div className="collapse navbar-collapse mx-2" id="navbarContent">
           <hr className="d-lg-none my-2 text-secondary" />
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item"><Link className="nav-link" to="/">Home</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="allproducts/men">Men</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="allproducts/women">Women</Link></li>
-            <li className="nav-item"><Link className="nav-link" to="allproducts/sports">Sports</Link></li>
-            <li className="nav-item">
+          <ul className="navbar-nav me-auto px-5 mb-2 mb-lg-0" style={{ paddingRight:"30px"}}>
+            <li className="nav-item pe-3"><Link className="nav-link" to="/">Home</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/men">Men</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/women">Women</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/sports">Sports</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/men">Men</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/women">Women</Link></li>
+            <li className="nav-item pe-3"><Link className="nav-link" to="allproducts/sports">Sports</Link></li>
+            <li className="nav-item pe-3">
               <Link to="/location" className="nav-link text-danger d-flex align-items-center gap-1">
                 <CiLocationOn size={18} /> {user?.profile?.address?.city || "Location"}
               </Link>
@@ -80,10 +63,26 @@ function Navbar() {
           </ul>
         </div>
 
-        <div className="d-flex align-items-center gap-1 gap-md-3">
-          
+        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1" style={{ maxWidth: "510px" }}>
+          <div className="input-group input-group-sm">
+            <input
+              className="form-control border-end-0 shadow-none"
+              style={{ maxWidth: "510px" }}
+              type="search"
+              placeholder="Search..."
+              value={productSearch}
+              onChange={(e) => setproductSearch(e.target.value)}
+            />
+            <button className="btn btn-outline-secondary border border-start-0 d-flex justify-content-center align-item-center bg-dark" type="submit">
+              <IoSearchOutline />
+            </button>
+          </div>
+        </form>
+
+        <div className="d-flex align-items-center gap-1 gap-md-3 me-2 px-2">
+
           {/* Cart */}
-          <Link to="addtocart" className="btn btn-sm p-1 position-relative">
+          <Link to="addtocart" className="btn btn-sm  position-relative">
             <span style={{ fontSize: '1.2rem' }}>🛒</span>
             {cartCount > 0 && (
               <span className="badge rounded-pill bg-danger position-absolute top-0 start-100 translate-middle" style={{ fontSize: '0.6rem' }}>
@@ -93,34 +92,34 @@ function Navbar() {
           </Link>
 
 
-          <button onClick={toggleTheme} className="btn btn-sm p-1 d-none d-lg-block">
+          <button onClick={toggleTheme} className="btn btn-sm  d-none d-lg-block">
             {theme === "dark" ? "🌙" : "☀️"}
           </button>
         </div>
 
 
-          {user ? (
-            <div className="dropdown">
-              <div className="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" style={{ cursor: 'pointer' }}>
-                <img
-                  src={user.profile.profilePic}
-                  alt="user"
-                  width="30"
-                  height="30"
-                  className="rounded-circle border"
-                />
-                <span className="d-none d-lg-inline ms-2 small">{user.name}</span>
-              </div>
-              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                <li><Link className="dropdown-item" to="profile">Profile</Link></li>
-                <li><Link className="dropdown-item" to="/myorders">Orders</Link></li>
-                <li><hr className="dropdown-divider" /></li>
-                <li><button onClick={handleLogout} className="dropdown-item text-danger">Logout</button></li>
-              </ul>
+        {user ? (
+          <div className="dropdown">
+            <div className="dropdown-toggle d-flex align-items-center" data-bs-toggle="dropdown" role="button" style={{ cursor: 'pointer' }}>
+              <img
+                src={user.profile.profilePic}
+                alt="user"
+                width="30"
+                height="30"
+                className="rounded-circle border"
+              />
+              <span className="d-none d-lg-inline ms-2 small">{user.name}</span>
             </div>
-          ) : (
-            <Link to="/login" className="btn btn-sm btn-warning fw-bold d-none d-md-block">Login</Link>
-          )}
+            <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+              <li><Link className="dropdown-item" to="profile">Profile</Link></li>
+              <li><Link className="dropdown-item" to="/myorders">Orders</Link></li>
+              <li><hr className="dropdown-divider" /></li>
+              <li><button onClick={handleLogout} className="dropdown-item text-danger">Logout</button></li>
+            </ul>
+          </div>
+        ) : (
+          <Link to="/login" className="btn btn-sm btn-warning fw-bold d-md-block">Login</Link>
+        )}
 
       </div>
     </nav>

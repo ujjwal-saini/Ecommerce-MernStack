@@ -548,16 +548,22 @@ body[data-theme="dark"] .btn-outline-theme {
 
 .product-img {
   height: 200px;
+
+ 
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 10px;
   width: auto;
+  max-width: 400px;
 }
 
 .product-img img {
-  max-height: 160px;
+  height: 200px;
+ max-height: 230px;
   object-fit: contain;
+      overflow: hidden;
+      box-sizing: border-box;
 }
 
 .product-title {
@@ -570,8 +576,10 @@ body[data-theme="dark"] .btn-outline-theme {
 @media (max-width: 576px) {
 
   .product-img {
-    height: 140px;
+            height: 105px;
+
   }
+
 
   .product-title {
     font-size: 13px;
