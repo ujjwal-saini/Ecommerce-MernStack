@@ -29,7 +29,7 @@ function Navbar() {
 
   return (
     <nav className={`navbar navbar-expand-lg px-2 px-md-3 app-navbar sticky-top ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-white shadow-sm"}`}>
-      <div className="container-fluid d-flex align-items-center ">
+      <div className="container-fluid d-flex align-items-center justify-content-center nav-resp">
         <div className="d-flex align-items-center">
           <button
             className="navbar-toggler border-0 p-1 me-1"
@@ -63,7 +63,7 @@ function Navbar() {
           </ul>
         </div>
 
-        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1" style={{ maxWidth: "510px" }}>
+        <form onSubmit={formSubmit} className="d-flex mx-2 mx-lg-4 flex-grow-1 res-search" style={{ minWidth: "50px"}}>
           <div className="input-group input-group-sm">
             <input
               className="form-control border-end-0 shadow-none"
@@ -92,7 +92,7 @@ function Navbar() {
           </Link>
 
 
-          <button onClick={toggleTheme} className="btn btn-sm  d-none d-lg-block">
+          <button onClick={toggleTheme} className="btn btn-sm   d-lg-block">
             {theme === "dark" ? "🌙" : "☀️"}
           </button>
         </div>

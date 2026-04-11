@@ -579,7 +579,19 @@ body[data-theme="dark"] .btn-outline-theme {
             height: 105px;
 
   }
+  .product-img img {
+    height: 122px;
+  }
+  .res-search{
+   
+        min-width: 50px;
+    max-width: 119px;
+  }
 
+  .nav-resp{
+    margin: 0px;
+    padding: 0px;
+  }
 
   .product-title {
     font-size: 13px;
