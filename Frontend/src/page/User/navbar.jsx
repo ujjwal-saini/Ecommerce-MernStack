@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaShopify } from "react-icons/fa";
+import 'bootstrap/dist/js/bootstrap.min.js';
 
 function Navbar() {
 
@@ -103,28 +104,25 @@ function Navbar() {
             {theme === "dark" ? "🌙" : "☀️"}
           </button>
 
-          {/* Profile */}
-          {user ? (
-            <div className="dropdown">
-              <div className="dropdown-toggle" data-bs-toggle="dropdown">
-                <img
-                  src={user.profile.profilePic}
-                  alt="user"
-                  width="30"
-                  height="30"
-                  className="rounded-circle"
-                />
+          {user ?
+            (<div className="dropdown">
+              <div className="dropdown-toggle d-flex align-items-center"
+                data-bs-toggle="dropdown" role="button" style={{ cursor: 'pointer' }}>
+                <img src={user.profile.profilePic}
+                  alt="user" width="30" height="30" className="rounded-circle border" />
+                <span className="d-none d-lg-inline ms-2 small">
+                  {user.name}</span>
               </div>
-              <ul className="dropdown-menu dropdown-menu-end">
+              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                 <li><Link className="dropdown-item" to="profile">Profile</Link></li>
                 <li><Link className="dropdown-item" to="/myorders">Orders</Link></li>
-                <li><hr /></li>
+                <li><hr className="dropdown-divider" /></li>
                 <li><button onClick={handleLogout} className="dropdown-item text-danger">Logout</button></li>
-              </ul>
-            </div>
-          ) : (
-            <Link to="/login" className="btn btn-warning btn-sm">Login</Link>
-          )}
+              </ul> </div>) :
+            (
+              <Link to="/login" className="btn btn-sm btn-warning fw-bold d-md-block">
+                Login
+              </Link>)}
 
         </div>
 

@@ -3,6 +3,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Landing from './page/User/landing'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/js/bootstrap.min.js';
 import Main from './page/User/main';
 import ProductDetail from './components/productDetail';
 import ErrorPage from './components/errorpage';
