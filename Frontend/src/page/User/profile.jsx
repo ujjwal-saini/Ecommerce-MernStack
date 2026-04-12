@@ -134,37 +134,26 @@ function Profile() {
               />
             </div>
 
-            {/* RIGHT CONTENT */}
             <div className="col-12 col-md-9">
-
-              {/* BUTTONS */}
-              <div className="d-flex flex-column flex-sm-row justify-content-end gap-2 mb-3">
-
+              <h2 className="fw-bold">{user.name}</h2>
+              <p className={mutedText}>{user.email}</p>
+              <div className="d-flex flex-column flex-sm-row justify-content-end gap-2 mt-5 mb-3">
                 <button
                   className={`btn ${theme === "dark"
                     ? "btn-outline-light"
                     : "btn-secondary"
                     }`}
-                  onClick={() => setEditMode(false)}
-                >
+                  onClick={() => setEditMode(false)}>
                   Cancel
                 </button>
-
                 <button
                   className="btn btn-success"
-                  onClick={handleSave}
-                >
+                  onClick={handleSave}>
                   Save Changes
                 </button>
-
               </div>
-
-              <h2 className="fw-bold">{user.name}</h2>
-              <p className={mutedText}>{user.email}</p>
-
             </div>
           </div>
-
           <hr />
 
           {/* 🔹 FORM */}
@@ -274,7 +263,7 @@ function Profile() {
               <button
                 className={`btn ${theme === "dark" ? "btn-outline-light" : "btn-primary"
                   } position-static position-md-absolute mt-2 mt-md-0 mb-3`}
-                style={{ top: "0", right: "0" , height:"30px" , fontSize:"14px" }}
+                style={{ top: "0", right: "0", height: "30px", fontSize: "14px" }}
                 onClick={() => setEditMode(true)}
               >
                 Edit Profile

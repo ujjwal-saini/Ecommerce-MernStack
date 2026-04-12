@@ -38,7 +38,6 @@ function ForgotPassword() {
             alert("Otp verify Succesfully")
             navigate(`/updatepass/reset/${email}`);
         }
-
     };
 
     return (
