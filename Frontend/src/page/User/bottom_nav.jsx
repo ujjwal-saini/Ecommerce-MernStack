@@ -19,7 +19,7 @@ function BottomNav({ toggleSidebar }) {
               ☰
             </button>
 
-            <span className="fw-bold bottom-nav-title">
+            <span className="fw-bold bottom-nav-title ">
               SHOP BY CATEGORIES
             </span>
 
@@ -27,12 +27,12 @@ function BottomNav({ toggleSidebar }) {
 
           {/* RIGHT TOGGLER */}
           <button
-            className="navbar-toggler ms-auto"
+            className="btn btn-outline-theme"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#bottomNav"
           >
-            <span className="navbar-toggler-icon"></span>
+            ☰
           </button>
 
         </div>
