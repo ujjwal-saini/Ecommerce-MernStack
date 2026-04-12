@@ -11,10 +11,11 @@ function Main() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const search = queryParams.get("search");
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState("0");
-console.log(products);
+
   const getData = async () => {
     try {
       let url = `${API}/products`;
@@ -32,57 +33,59 @@ console.log(products);
   };
 
   useEffect(() => {
+    setLoading(true); // ✅ important (search change pe loader show karega)
     getData();
   }, [search]);
+
+  // ✅ SINGLE loader
   if (loading) return <Loader />;
 
   return (
     <div className={`w-100 px-0 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
 
-      <CarouselSlider />
-      {loading ? <Loader /> : <>
+      <div className="px-2">
 
-        <div className="px-2">
-          {search ? (
-            <>
-              <h4 className="fw-bold mt-5 mb-3">Search Results {count}</h4>
-              <Card products={products} />
-            </>
-          ) : (
-            <>
+        {search ? (
+          <>
+            <h4 className="fw-bold mt-5 mb-3">Search Results {count}</h4>
+            <Card products={products} />
+          </>
+        ) : (
+          <>
+            <CarouselSlider />
 
-              {[
-                { title: "Men Fashion", cat: "men" },
-                { title: "Laptop", cat: "laptop" },
-                { title: "Phone Products", cat: "Mobile" },
-                { title: "Electronics", cat: "electronics" },
-                { title: "Kitchen", cat: "kitchen" }
-              ].map((section) => (
-                <div key={section.cat}>
-                  <div className="d-flex justify-content-between align-items-center mt-5 mb-3">
-                    <h4 className="fw-bold">{section.title}</h4>
-                    <Link
-                      to={`allproducts/${section.cat}`}
-                      className={`btn btn-sm ${theme === "dark" ? "btn-outline-light" : "btn-primary"}`}
-                    >
-                      View All →
-                    </Link>
-                  </div>
-                  <Card
-                    products={products
-                      .filter((item) => item.category === section.cat)
-                      .slice(0, 4)}
-                  />
+            {[
+              { title: "Men Fashion", cat: "men" },
+              { title: "Laptop", cat: "laptop" },
+              { title: "Phone Products", cat: "Mobile" },
+              { title: "Electronics", cat: "electronics" },
+              { title: "Kitchen", cat: "kitchen" }
+            ].map((section) => (
+              <div key={section.cat}>
+                <div className="d-flex justify-content-between align-items-center mt-5 mb-3">
+                  <h4 className="fw-bold">{section.title}</h4>
+                  <Link
+                    to={`allproducts/${section.cat}`}
+                    className={`btn btn-sm ${theme === "dark" ? "btn-outline-light" : "btn-primary"}`}
+                  >
+                    View All →
+                  </Link>
                 </div>
-              ))}
-            </>
-          )}
-        </div>
-      </>}
 
+                <Card
+                  products={products
+                    .filter((item) => item.category === section.cat)
+                    .slice(0, 4)}
+                />
+              </div>
+            ))}
+
+          </>
+        )}
+
+      </div>
     </div>
   );
-
 }
 
 export default Main;
