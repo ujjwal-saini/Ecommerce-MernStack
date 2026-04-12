@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../middleware/authContext";
 
 function ProductDetailDescription({ product }) {
+const { theme } = useContext(AuthContext);
+
   if (!product) return <p>Loading...</p>;
 
   return (
     <div className="container mt-3">
-      <div className="card p-4 bg-dark text-light border-secondary">
+     <div className={`card p-4 ${theme === "dark" ? "bg-dark text-white border-secondary" : ""}`}>
 
         <h5 className="mb-3">Product Description</h5>
         <p className="text-light">{product.description}</p>
@@ -22,7 +25,7 @@ function ProductDetailDescription({ product }) {
         )}
 
         <h6 className="mt-4">Specifications</h6>
-        <table className="table table-dark table-bordered mt-2">
+       <table className={`table table-bordered mt-2 ${theme === "dark" ? "table-dark" : "table-light"}`}>
           <tbody>
             <tr>
               <td>Brand</td>

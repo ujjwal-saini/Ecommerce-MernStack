@@ -37,7 +37,6 @@ function Main() {
     getData();
   }, [search]);
 
-  // ✅ SINGLE loader
   if (loading) return <Loader />;
 
   return (
