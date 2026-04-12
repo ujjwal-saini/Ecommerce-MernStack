@@ -8,6 +8,7 @@ function Login() {
 
   const navigate = useNavigate();
   const { isLoggedIn, fetchMe, role, API } = useContext(AuthContext);
+  const [loginSuccess, setLoginSuccess] = useState(false);
 
   const [form, setfrom] = useState({
     email: "",
@@ -38,16 +39,16 @@ function Login() {
           isLoading: false,
           autoClose: 2000
         });
-
         await fetchMe();
-
+        setLoginSuccess(true);
+        
         setTimeout(() => {
           if (res.data.user.role === "admin") {
             navigate("/admindashboard");
           } else {
             navigate("/");
           }
-        }, 4000);
+        }, 2000);
       }
 
     } catch (err) {
@@ -79,11 +80,15 @@ function Login() {
 
   useEffect(() => {
 
-    if (isLoggedIn === true && role === "user") {
-      navigate("/");
-    }
-    else if (isLoggedIn === true && role === "admin") {
-      navigate("/admindashboard");
+    if (!loginSuccess) {
+
+      if (isLoggedIn === true && role === "user") {
+        navigate("/");
+      }
+      else if (isLoggedIn === true && role === "admin") {
+        navigate("/admindashboard");
+      }
+
     }
 
   }, [isLoggedIn, role]);

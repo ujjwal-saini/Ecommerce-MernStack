@@ -7,7 +7,7 @@ function BottomNav({ toggleSidebar }) {
 
       <nav className="navbar navbar-expand-lg bottom-navbar px-3">
 
-        <div className="container-fluid">
+        <div className="container-fluid navbarcss">
 
           {/* LEFT SIDE */}
           <div className="d-flex align-items-center">

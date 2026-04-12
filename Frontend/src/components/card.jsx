@@ -93,18 +93,16 @@ function Card({ products }) {
   return (
     <div className="container-fluid mt-4">
       <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-5">
-
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
-
           return (
-            <div className="col d-flex justify-content-center" key={item._id}>
+            <div className="col d-flex justify-content-center resposivecard" key={item._id}>
               <div
                 className={`card h-100 border-0 shadow-sm product-card ${theme === "dark"
                     ? "bg-dark text-white border-secondary"
                     : ""
-                  }`}>
-                {/* IMAGE */}
+                  }`} style={{ width:"300px"}}>
+
                 <Link
                   to={`/productdetail/${item._id}`}
                   className="text-decoration-none"

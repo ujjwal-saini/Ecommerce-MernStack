@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import { AuthContext } from "../../middleware/authContext";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 function Signup() {
 
@@ -13,6 +13,7 @@ function Signup() {
     password: "",
     profilePic: ""
   });
+  const [btnActive, setBtnactive] = useState(false);
 
   const { API } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -25,8 +26,8 @@ function Signup() {
     data.append("password", formdata.password);
     data.append("profilePic", formdata.profilePic);
     const toastId = toast.loading("Registering user...");
+    setBtnactive(true); 
     try {
-
       const res = await axios.post(
         `${API}/register`,
         data,
@@ -53,15 +54,18 @@ function Signup() {
     } catch (err) {
 
       toast.dismiss(toastId);
-
+     setBtnactive(false);
       if (err.response) {
 
         const status = err.response.status;
 
         if (status === 409) {
           toast.error("User already registered");
+
+
         }
         else if (status === 402) {
+
           toast.error("Please fill email and password");
         }
         else if (status === 401) {
@@ -87,7 +91,7 @@ function Signup() {
       <div
         className="card shadow-lg p-4 border-0 rounded-4"
         style={{ width: "420px" }}>
-      
+
 
         <h3 className="text-center mb-4 fw-bold">
           Create Your Account
@@ -150,8 +154,9 @@ function Signup() {
           <button
             type="submit"
             className="btn btn-warning w-100 fw-bold mb-3"
+            disabled={btnActive}
           >
-            Sign Up
+            {btnActive ? "Registering..." : "Sign Up"}
           </button>
 
           <div className="w-100">
