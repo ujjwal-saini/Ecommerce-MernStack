@@ -20,7 +20,6 @@ export const addProducts = async (req, res) => {
     } = req.body;
     console.log(req.body);
 
-    // Basic validation
     if (!name || !price || !category) {
       return res.status(400).json({
         success: false,

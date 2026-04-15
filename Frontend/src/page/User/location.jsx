@@ -11,6 +11,7 @@ import "leaflet/dist/leaflet.css";
 import { AuthContext } from "../../middleware/authContext";
 import { useNavigate } from "react-router-dom";
 import L from "leaflet";
+import axios from "axios";
 
 // Fix leaflet marker icon
 delete L.Icon.Default.prototype._getIconUrl;
@@ -42,7 +43,7 @@ function Location() {
 
       setLoading(true);
 
-      const res = await fetch(
+      const res = await axios(
         `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
       );
 

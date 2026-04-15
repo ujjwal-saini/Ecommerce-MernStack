@@ -6,8 +6,8 @@ const ProductSchema = new mongoose.Schema(
     slug: String,
     description: String,
     brand: String,
-    category: String,
-    subCategory: String,
+    categoryegory: String,
+    subcategoryegory: String,
 
     stock: { type: Number, default: 0 },
 
@@ -47,7 +47,7 @@ const ProductSchema = new mongoose.Schema(
 
     images: [String],
 
-    specifications: {
+    specificategoryions: {
       type: Map,
       of: String
     },

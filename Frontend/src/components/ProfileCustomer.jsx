@@ -24,44 +24,31 @@ function ProfileCustomer({ customer, onClose }) {
       >
 
         {/* Header */}
-
         <div className="d-flex justify-content-between align-items-center border-bottom p-3">
-
           <h5 className="m-0">
             Customer Profile
           </h5>
-
           <button
             className="btn-close"
             onClick={onClose}
           ></button>
-
         </div>
-
-
         <div
           style={{
             maxHeight: "70vh",
             overflowY: "auto",
             padding: "20px"
-          }}
-        >
-
+           }}>
           <div className="text-center mb-4">
-
             <img
-              src={
-                customer?.profile?.profilePic ||
-                "https://cdn-icons-png.flaticon.com/512/149/149071.png"
-              }
+              src={customer?.profile?.profilePic ||"https://cdn-icons-png.flaticon.com/512/149/149071.png"}
               alt="customer"
               className="rounded-circle"
               style={{
                 width: "120px",
                 height: "120px",
                 objectFit: "cover"
-              }}
-            />
+              }}/>
 
             <h4 className="mt-3">
               {customer.name}
@@ -140,11 +127,9 @@ function ProfileCustomer({ customer, onClose }) {
 
 
         <div className="border-top p-3 text-end">
-
           <button
             className="btn btn-secondary"
-            onClick={onClose}
-          >
+            onClick={onClose}>
             Close
           </button>
 

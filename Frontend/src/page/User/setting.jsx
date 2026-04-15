@@ -5,7 +5,7 @@ import { useNavigate , Link } from "react-router-dom";
 
 function Setting() {
   const { user, toggleTheme, API } = useContext(AuthContext);
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState(true);
   const [twoFactor, setTwoFactor] = useState(false);
   const [theme, setTheme] = useState("dark");

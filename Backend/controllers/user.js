@@ -5,22 +5,18 @@ import Product from "../models/products.js";
 import User from "../models/user.js";
 import cloudinary from "../connection/cloudnary.js";
 import path from "path";
-// LOGIN
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const user = await Users.findOne({ email });
     if (email === "" || password === "") {
       return res.status(402).json({ message: "Email and password required" })
     }
-
     if (!user) {
       return res.status(404).json({ message: "User is not found" });
     }
-
     const isMatch = await bcrypt.compare(password, user.password);
-
     if (!isMatch) {
       return res.status(401).json({ message: "Invalid password" });
     }

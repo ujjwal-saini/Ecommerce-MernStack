@@ -19,11 +19,11 @@ function CarouselSlider() {
   return (
     <div
       id="carouselExample"
-      className="carousel slide"
+      className="carousel slide d-flex"
     >
 
-      {/* 🔹 Indicators */}
-      <div className="carousel-indicators">
+      {/* 🔹 Indicators */} 
+      <div className="carousel-indicators w-100 indicator">
         <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="0" className="active"></button>
         <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="1"></button>
         <button type="button" data-bs-target="#carouselExample" data-bs-slide-to="2"></button>

@@ -26,7 +26,7 @@ function Signup() {
     data.append("password", formdata.password);
     data.append("profilePic", formdata.profilePic);
     const toastId = toast.loading("Registering user...");
-    setBtnactive(true); 
+    setBtnactive(true);
     try {
       const res = await axios.post(
         `${API}/register`,
@@ -54,7 +54,7 @@ function Signup() {
     } catch (err) {
 
       toast.dismiss(toastId);
-     setBtnactive(false);
+      setBtnactive(false);
       if (err.response) {
 
         const status = err.response.status;

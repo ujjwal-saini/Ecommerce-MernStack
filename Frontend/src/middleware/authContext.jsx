@@ -32,7 +32,6 @@ const AuthProvider = ({ children }) => {
       const res = await axios.get(`${API}/me`, {
         withCredentials: true,
       });
-
       setIsLoggedIn(true);
       setUser(res.data.user);
 

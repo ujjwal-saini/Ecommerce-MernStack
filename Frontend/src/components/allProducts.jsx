@@ -31,47 +31,7 @@ function AllProducts() {
   return (
     <div className={theme === "dark" ? "text-white" : "text-dark"}>
 
-      <div className={`card shadow-sm p-3 mb-4 ${theme === "dark" ? "bg-dark border-secondary" : ""}`}>
-        <div className="w-100 d-flex align-items-center justify-content-between gap-2 flex-wrap">
-          <button className={`btn ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"}`}
-            onClick={() => navigate(-1)}>
-            ← Back
-          </button>
 
-          {/* SEARCH */}
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Search products..."
-            style={{ maxWidth: "360px" }}
-          />
-
-          {/* CATEGORY */}
-          <select className="form-select" style={{ maxWidth: "360px" }}>
-            <option>All Categories</option>
-            <option>Electronics</option>
-            <option>Fashion</option>
-            <option>Sports</option>
-            <option>Home</option>
-          </select>
-
-          {/* SORT */}
-          <select className="form-select"
-            style={{ maxWidth: "360px" }}>
-            <option>Sort By</option>
-            <option>Price: Low to High</option>
-            <option>Price: High to Low</option>
-            <option>Newest</option>
-          </select>
-
-          {/* APPLY */}
-          <button className="btn btn-warning px-5">
-            Apply
-          </button>
-        </div>
-      </div>
-
-      {/* PRODUCTS */}
       <Card products={products} />
     </div>
   );

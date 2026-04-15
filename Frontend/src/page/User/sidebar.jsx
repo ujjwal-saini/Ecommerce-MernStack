@@ -28,8 +28,7 @@ function Sidebar() {
                   width: "45px",
                   height: "45px",
                   fontSize: "18px"
-                }}
-              >
+                }}>
                 {user.name.charAt(0).toUpperCase()}
               </div>
 
@@ -42,7 +41,6 @@ function Sidebar() {
           </Link>
 
         ) : (
-
           <span className="text-secondary">
             Not logged in
           </span>
@@ -60,8 +58,7 @@ function Sidebar() {
             className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3"
             data-bs-toggle="collapse"
             data-bs-target="#home-collapse"
-            aria-expanded="true"
-          >
+            aria-expanded="true">
             Home
           </button>
 
@@ -98,8 +95,7 @@ function Sidebar() {
             className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3"
             data-bs-toggle="collapse"
             data-bs-target="#dashboard-collapse"
-            aria-expanded="true"
-          >
+            aria-expanded="true">
             Dashboard
           </button>
 

@@ -9,7 +9,7 @@ const start = async () => {
         await Product.deleteMany();
         await Product.create(productJson);
         console.log("Data inserted successfully");
-    } catch (error) {
+    } categorych (error) {
         console.log(error);
     }
 };

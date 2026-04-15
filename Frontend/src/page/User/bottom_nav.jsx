@@ -1,5 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import 'bootstrap/dist/js/bootstrap.min.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function BottomNav({ toggleSidebar }) {
   return (
@@ -7,37 +10,29 @@ function BottomNav({ toggleSidebar }) {
 
       <nav className="navbar navbar-expand-lg bottom-navbar px-3">
 
-        <div className="container-fluid navbarcss">
+        <div className="container-fluid">
 
-          {/* LEFT SIDE */}
           <div className="d-flex align-items-center">
-
             <button
               className="btn btn-outline-theme me-3"
-              onClick={toggleSidebar}
-            >
+              onClick={toggleSidebar}>
               ☰
             </button>
-
-            <span className="fw-bold bottom-nav-title ">
+            <span className="fw-bold bottom-nav-title">
               SHOP BY CATEGORIES
             </span>
-
           </div>
 
-          {/* RIGHT TOGGLER */}
           <button
-            className="btn btn-outline-theme"
+            className="navbar-toggler ms-auto"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#bottomNav"
-          >
-            ☰
+            data-bs-target="#bottomNav">
+            <span className="navbar-toggler-icon"></span>
           </button>
 
         </div>
 
-        {/* COLLAPSE MENU */}
         <div className="collapse navbar-collapse mt-2" id="bottomNav">
 
           <ul className="navbar-nav ms-auto gap-lg-4 w-100 justify-content-end">

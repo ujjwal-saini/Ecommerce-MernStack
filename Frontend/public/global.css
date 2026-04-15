@@ -571,6 +571,14 @@ body[data-theme="dark"] .btn-outline-theme {
   min-height: 40px;
 }
 
+.indicator{
+      padding: 0 !important;
+    margin-right: 0% !important;
+    margin-bottom: -3rem !important;
+    margin-left: 0% !important;
+}
+
+
 /* Mobile responsive */
 
 @media (max-width: 576px) {
@@ -596,7 +604,6 @@ body[data-theme="dark"] .btn-outline-theme {
   }
 
   .res-search{
-   
         min-width: 50px;
     max-width: 119px;
   }

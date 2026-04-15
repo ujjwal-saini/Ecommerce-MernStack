@@ -39,7 +39,7 @@ function AddressSection() {
           const res = await axios(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
           );
-
+console.log(res.json);
           const data = await res.json();
 
           setAddressData({

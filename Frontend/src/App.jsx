@@ -8,7 +8,6 @@ import Main from './page/User/main';
 import ProductDetail from './components/productDetail';
 import ErrorPage from './components/errorpage';
 import "../public/global.css"
-
 import Addtocart from './page/User/addtocart';
 import Adminpage from './page/Admin/landingpage';
 import Login from './page/auth/login';
@@ -34,9 +33,13 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Getproductsdata from './reduxFile/productLoader';
 import EditProduct from './page/Admin/editProduct';
+import ChatBot from "react-chatbotify";
+import ScrollToTop from './page/scrollToTop';
 function App() {
   return (
     <BrowserRouter>
+    <ScrollToTop/>
+    <ChatBot />
       <CartLoader />
       <Getproductsdata/>
       <ToastContainer position="top-left" autoClose={2000} />

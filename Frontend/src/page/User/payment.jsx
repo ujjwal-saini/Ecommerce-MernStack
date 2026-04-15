@@ -39,7 +39,7 @@ function Payment() {
 
       setLoading(false);
 
-    } catch (error) {
+    } categorych (error) {
 
       console.log(error);
 

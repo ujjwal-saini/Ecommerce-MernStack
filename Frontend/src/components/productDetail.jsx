@@ -183,8 +183,7 @@ function ProductDetail() {
                           selectedVariant === v
                             ? "white"
                             : "white",
-                      }}
-                    >
+                      }}>
                       {v.color && (
                         <div className="mb-1 fw-semibold" style={{color:"black"}}>
                           {v.color}

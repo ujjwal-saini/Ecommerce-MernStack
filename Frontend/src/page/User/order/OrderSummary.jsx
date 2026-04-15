@@ -53,7 +53,7 @@ function OrderSummary() {
       if (res.data) {
 
         toast.update(toastId, {
-          render: "Order placed successfully ✅",
+          render: "Order placed successfully ",
           type: "success",
           isLoading: false,
           autoClose: 2000
