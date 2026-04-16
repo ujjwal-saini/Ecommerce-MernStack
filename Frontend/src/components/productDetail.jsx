@@ -10,6 +10,8 @@ import Loader from "./loading";
 import { AuthContext } from "../middleware/authContext";
 import ProductDetailReview from "./productDetailReview";
 import ProductDetailDescription from "./productDetailDescription";
+import ProductChat from "./productChat";
+
 
 function ProductDetail() {
   const { id } = useParams();
@@ -25,17 +27,16 @@ function ProductDetail() {
   const [loading, setLoading] = useState(true);
   const [Review, setReview] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const [showChat, setShowChat] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const res = await axios.get(`${API}/product/${id}`);
         const data = res.data.data;
-
         let allImages = [];
         if (data.mainImage) allImages.push(data.mainImage);
         if (data.images?.length > 0) allImages.push(...data.images);
-
         setProduct({ ...data, images: allImages });
         setSelectedImage(allImages[0]);
         setLoading(false);
@@ -121,8 +122,7 @@ function ProductDetail() {
             </div>
             <div
               className="border rounded d-flex align-items-center justify-content-center"
-              style={{ width: "400px", height: "460px", overflow: "hidden" }}
-            >
+              style={{ width: "400px", height: "460px", overflow: "hidden" }}>
               <InnerImageZoom
                 src={selectedImage}
                 zoomSrc={selectedImage}
@@ -160,9 +160,7 @@ function ProductDetail() {
             {/* VARIANTS */}
             {product.variants?.length > 0 && (
               <div className="mt-2">
-
                 <h5 className="mb-3">Select Variant</h5>
-
                 <div className="d-flex flex-wrap gap-3">
                   {product.variants.map((v, i) => (
                     <div key={i}
@@ -177,7 +175,7 @@ function ProductDetail() {
                         borderRadius: "10px",
                         padding: "10px",
                         minWidth: "120px",
-                        height:"90px" ,
+                        height: "90px",
                         textAlign: "center",
                         background:
                           selectedVariant === v
@@ -185,23 +183,20 @@ function ProductDetail() {
                             : "white",
                       }}>
                       {v.color && (
-                        <div className="mb-1 fw-semibold" style={{color:"black"}}>
+                        <div className="mb-1 fw-semibold" style={{ color: "black" }}>
                           {v.color}
                         </div>
                       )}
-
                       {v.size && (
                         <div className="mb-1">
                           {v.size}
                         </div>
                       )}
-
                       {v.price && (
                         <div className="text-danger fw-bold" >
                           ₹{v.price}
                         </div>
                       )}
-
                       {v.stock && (
                         <small className="text-muted">
                           Stock: {v.stock}
@@ -228,15 +223,13 @@ function ProductDetail() {
                 <div className="d-flex gap-3">
                   <button
                     className="btn btn-secondary"
-                    onClick={() => dispatch(decreaseQty(product._id))}
-                  >
+                    onClick={() => dispatch(decreaseQty(product._id))}>
                     -
                   </button>
                   <span>{cartItem.qty}</span>
                   <button
                     className="btn btn-secondary"
-                    onClick={() => dispatch(increaseQty(product._id))}
-                  >
+                    onClick={() => dispatch(increaseQty(product._id))}>
                     +
                   </button>
                 </div>
@@ -245,8 +238,20 @@ function ProductDetail() {
           </div>
         </div>
 
-        {/* DESCRIPTION / REVIEW TOGGLE */}
+        <button
+          onClick={() => setShowChat(!showChat)}
+          className={`ask-ai-btn ${theme === "dark" ? "dark" : ""} rounded`}>
+          Ask AI about this product
+        </button>
 
+        {showChat && (
+          <div className="position-fixed top-0 end-0 h-100" style={{ width: "350px", zIndex: 1050 }}>
+            <ProductChat
+              isOpen={showChat}
+              onClose={() => setShowChat(false)}
+              product={product}/>
+          </div>
+        )}
 
 
         <div className="row mt-4">

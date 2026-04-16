@@ -6,6 +6,8 @@ import Loader from "../../components/loading";
 import { AuthContext } from "../../middleware/authContext";
 import { useSelector } from "react-redux";
 import useSearch from "../../components/useSearch";
+import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
 
 function Main() {
   const { theme, API } = useContext(AuthContext);
@@ -105,14 +107,14 @@ function Main() {
 
                   <Card products={getPaginatedData(section.cat)} />
                   <div className="text-center mt-3">
-                    <button onClick={() => handlePrev(section.cat)}>
-                      Prev
+                    <button className="btn btn-primary"  onClick={() => handlePrev(section.cat)}>
+                      <FaAngleLeft/>
                     </button>
                     <span className="mx-2">
                       {pages[section.cat]} / {maxPage || 1}
                     </span>
-                    <button onClick={() => handleNext(section.cat, maxPage)}>
-                      Next
+                    <button className="btn btn-primary"  onClick={() => handleNext(section.cat, maxPage)}>
+                     <FaAngleRight/>
                     </button>
                   </div>
                 </div>

@@ -39,7 +39,7 @@ function App() {
   return (
     <BrowserRouter>
     <ScrollToTop/>
-    <ChatBot />
+    {/* <ChatBot /> */}
       <CartLoader />
       <Getproductsdata/>
       <ToastContainer position="top-left" autoClose={2000} />

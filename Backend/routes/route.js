@@ -7,6 +7,7 @@ import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
 import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder } from "../controllers/productorder.js";
 import { adminDashboard ,getAllCustomers , deleteCustomer } from "../controllers/adminController.js"
+import { aiChatProduct } from "../controllers/aiHelper.js"
 
 const router = express.Router();
 
@@ -53,5 +54,9 @@ router.get("/getAdminData",adminDashboard);
 router.get("/customers", getAllCustomers);
 router.delete("/deletecustomer/:id", deleteCustomer);
 
+
+
+//ai chat
+router.post("/aiChatProduct", aiChatProduct);
 
 export default router;
