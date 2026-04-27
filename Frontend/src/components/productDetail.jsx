@@ -17,7 +17,7 @@ function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { API, isLoggedIn, theme } = useContext(AuthContext);
+  const { API, isLoggedIn,user, theme } = useContext(AuthContext);
 
   const cartItems = useSelector((state) => state.cart.items);
   const cartItem = cartItems.find((ci) => ci._id === id);
@@ -60,35 +60,102 @@ function ProductDetail() {
     });
   };
 
-  const handleAddToCart = () => {
-    if (!isLoggedIn) return showLoginPopup();
-    if (product.variants?.length > 0 && !selectedVariant) {
-      Swal.fire("Please select a variant");
-      return;
-    }
-    const itemToCart = {
-      ...product,
-      selectedVariant,
-      price: selectedVariant?.price || product.price,
-    };
-    dispatch(addToCart(itemToCart));
-  };
 
-  const handleBuyNow = () => {
-    if (!isLoggedIn) return showLoginPopup();
-    if (product.variants?.length > 0 && !selectedVariant) {
-      Swal.fire("Please select a variant");
-      return;
-    }
-    const itemToCart = {
-      ...product,
-      selectedVariant,
-      price: selectedVariant?.price || product.price,
-    };
-    dispatch(addToCart(itemToCart));
+ const handleAddToCart = async () => {
+  if (!isLoggedIn) return showLoginPopup();
+
+  if (product.variants?.length > 1 && !selectedVariant) {
+    Swal.fire("Please select a variant");
+    return;
+  }
+  const itemToCart = {
+    ...product,
+    selectedVariant,
+    price: selectedVariant?.price || product.price,
+  };
+  dispatch(addToCart(itemToCart));
+  try {
+    await axios.post(`${API}/addtocart`, {
+      userId: user._id,
+      productId: product._id,
+      variantId: selectedVariant?._id || null, 
+      quantity: 1,
+    });
+  } catch (error) {
+    console.log(error);
+    Swal.fire("Error saving to cart");
+  }
+};
+  const handleBuyNow = async () => {
+  if (!isLoggedIn) return showLoginPopup();
+  if (product.variants?.length > 1 && !selectedVariant) {
+    Swal.fire("Please select a variant");
+    return;
+  }
+  const itemToCart = {
+    ...product,
+    selectedVariant,
+    price: selectedVariant?.price || product.price,
+  };
+  dispatch(addToCart(itemToCart));
+  try {
+    await axios.post(`${API}/addtocart`, {
+      userId: user._id,
+      productId: product._id,
+      variantId: selectedVariant?._id || null,
+      quantity: 1,
+    });
     navigate("/addtocart");
-  };
+  } catch (error) {
+    console.log(error);
+  }
+};
 
+const handleIncreaseQty = async () => {
+  if (!cartItem) return;
+
+  if (cartItem.qty >= (selectedVariant?.stock || product.stock)) {
+    Swal.fire({
+      icon: "warning",
+      title: "Stock Limit Reached",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+    return;
+  }
+
+  dispatch(increaseQty(product._id));
+
+  await axios.post(`${API}/updatecart`, {
+    userId: user._id,
+    productId: product._id,
+    variantId: selectedVariant?._id || null,
+    quantity: 1,
+  });
+};
+
+const handleDecreaseQty = async () => {
+  if (!cartItem) return;
+
+  if (cartItem.qty === 1) {
+    dispatch(removeFromCart(product._id));
+
+    await axios.post(`${API}/removecart`, {
+      userId: user._id,
+      productId: product._id,
+      variantId: selectedVariant?._id || null,
+    });
+  } else {
+    dispatch(decreaseQty(product._id));
+
+    await axios.post(`${API}/updatecart`, {
+      userId: user._id,
+      productId: product._id,
+      variantId: selectedVariant?._id || null,
+      quantity: -1,
+    });
+  }
+};
 
   if (loading) return <Loader />;
   if (!product) return <h3>Product Not Found</h3>;
@@ -158,16 +225,18 @@ function ProductDetail() {
             </div>
 
             {/* VARIANTS */}
-            {product.variants?.length > 0 && (
+            {product.variants?.length > 1 && (
               <div className="mt-2">
                 <h5 className="mb-3">Select Variant</h5>
                 <div className="d-flex flex-wrap gap-3">
                   {product.variants.map((v, i) => (
-                    <div key={i}
-                      onClick={() => setSelectedVariant(v)}
+                    <div
+                      key={i}
+                      onClick={() => v.isAvailable !== false && v.stock > 0 && setSelectedVariant(v)}
                       className="variant-box"
                       style={{
-                        cursor: "pointer",
+                        cursor: v.stock === 0 ? "not-allowed" : "pointer",
+                        opacity: v.stock === 0 ? 0.5 : 1,
                         border:
                           selectedVariant === v
                             ? "3px solid #0d6efd"
@@ -177,10 +246,7 @@ function ProductDetail() {
                         minWidth: "120px",
                         height: "90px",
                         textAlign: "center",
-                        background:
-                          selectedVariant === v
-                            ? "white"
-                            : "white",
+                        background: "white",
                       }}>
                       {v.color && (
                         <div className="mb-1 fw-semibold" style={{ color: "black" }}>
@@ -197,10 +263,10 @@ function ProductDetail() {
                           ₹{v.price}
                         </div>
                       )}
-                      {v.stock && (
-                        <small className="text-muted">
-                          Stock: {v.stock}
-                        </small>
+                      {v.stock !== undefined && (
+                        <p className="text-muted">
+                          {v.stock === 0 ? "Out of Stock" : `Stock: ${v.stock}`}
+                        </p>
                       )}
                     </div>
                   ))}
@@ -223,13 +289,13 @@ function ProductDetail() {
                 <div className="d-flex gap-3">
                   <button
                     className="btn btn-secondary"
-                    onClick={() => dispatch(decreaseQty(product._id))}>
+                  onClick={handleDecreaseQty}>
                     -
                   </button>
                   <span>{cartItem.qty}</span>
                   <button
                     className="btn btn-secondary"
-                    onClick={() => dispatch(increaseQty(product._id))}>
+                   onClick={handleIncreaseQty}>
                     +
                   </button>
                 </div>
@@ -249,7 +315,7 @@ function ProductDetail() {
             <ProductChat
               isOpen={showChat}
               onClose={() => setShowChat(false)}
-              product={product}/>
+              product={product} />
           </div>
         )}
 
