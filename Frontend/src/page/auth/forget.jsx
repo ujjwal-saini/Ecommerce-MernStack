@@ -79,8 +79,10 @@ function ForgotPassword() {
                     {/* Button Change */}
                     <button
                         type="submit"
-                        className="btn btn-warning w-100 fw-bold">
+                        className="btn btn-warning w-100 fw-bold"
+                           >
                         {otpSent ? "Verify OTP" : "Send OTP"}
+                    
                     </button>
                     <hr />
                     <Link to="/login" className="text-center d-block">

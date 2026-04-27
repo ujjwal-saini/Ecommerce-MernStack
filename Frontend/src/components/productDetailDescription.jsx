@@ -8,10 +8,10 @@ const { theme } = useContext(AuthContext);
 
   return (
     <div className="container mt-3">
-     <div className={`card p-4 ${theme === "dark" ? "bg-dark text-white border-secondary" : ""}`}>
+     <div className={`card p-4 ${theme === "dark" ? "bg-dark text-white border-secondary" : "text-black"}`}>
 
         <h5 className="mb-3">Product Description</h5>
-        <p className="text-light">{product.description}</p>
+        <p className={`${theme === "dark" ? "text-light" : "text-dark"}`}>{product.description}</p>
 
         <h6 className="mt-4">Features</h6>
         {product.features && product.features.length > 0 ? (

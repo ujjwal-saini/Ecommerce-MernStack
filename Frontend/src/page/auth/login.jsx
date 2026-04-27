@@ -9,6 +9,7 @@ function Login() {
   const navigate = useNavigate();
   const { isLoggedIn, fetchMe, role, API } = useContext(AuthContext);
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [activeLogin, setActiveLogin] = useState(false);
 
   const [form, setfrom] = useState({
     email: "",
@@ -20,19 +21,12 @@ function Login() {
     e.preventDefault();
 
     const toastId = toast.loading("Logging in...");
-
+    setActiveLogin(true);
     try {
-
-      const res = await axios.post(
-        `${API}/login`,
-        form,
-        {
-          withCredentials: true
-        }
+      const res = await axios.post(`${API}/login`, form,
+        { withCredentials: true }
       );
-
       if (res.status === 200) {
-
         toast.update(toastId, {
           render: "Login Successful ",
           type: "success",
@@ -41,7 +35,6 @@ function Login() {
         });
         await fetchMe();
         setLoginSuccess(true);
-        
         setTimeout(() => {
           if (res.data.user.role === "admin") {
             navigate("/admindashboard");
@@ -50,15 +43,11 @@ function Login() {
           }
         }, 2000);
       }
-
     } catch (err) {
-
       toast.dismiss(toastId);
-
+      setActiveLogin(false);
       if (err.response) {
-
         const status = err.response.status;
-
         if (status === 409) {
           toast.error("User already registered");
         }
@@ -71,7 +60,6 @@ function Login() {
         else {
           toast.error(err.response.data.message);
         }
-
       } else {
         toast.error("Server not responding");
       }
@@ -79,102 +67,71 @@ function Login() {
   };
 
   useEffect(() => {
-
     if (!loginSuccess) {
-
       if (isLoggedIn === true && role === "user") {
         navigate("/");
       }
       else if (isLoggedIn === true && role === "admin") {
         navigate("/admindashboard");
       }
-
     }
-
   }, [isLoggedIn, role]);
 
   return (
     <div
       className="container-fluid d-flex justify-content-center align-items-center vh-100"
-      style={{
-        background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)"
-      }}
-    >
+      style={{ background: "linear-gradient(to right, #0f2027, #203a43, #2c5364)" }}>
 
-      <div className="card shadow p-4" style={{ width: "400px" }}>
+      <div className="card shadow  d-flex justify-content-center align-item-center p-4"
+        style={{ width: "400px", height: "500px" }}>
 
         <h3 className="text-center mb-4 fw-bold">
           Login to ShopPoint
         </h3>
 
         <form onSubmit={handlesubmit}>
-
           {/* Email */}
           <div className="mb-3">
             <label className="form-label">
               Email address
             </label>
 
-            <input
-              type="email"
-              className="form-control"
+            <input type="email" className="form-control"
               placeholder="Enter your email"
-              onChange={(e) =>
-                setfrom({ ...form, email: e.target.value })
-              }
-            />
+              onChange={(e) => setfrom({ ...form, email: e.target.value })} />
           </div>
 
           {/* Password */}
           <div className="mb-3">
-            <label className="form-label">
-              Password
-            </label>
+            <label className="form-label"> Password </label>
 
-            <input
-              type="password"
-              className="form-control"
+            <input type="password" className="form-control"
               placeholder="Enter your password"
-              onChange={(e) =>
-                setfrom({ ...form, password: e.target.value })
-              }
-            />
+              onChange={(e) => setfrom({ ...form, password: e.target.value })} />
           </div>
 
           <div className="d-flex justify-content-between mb-3">
             <div>
-              <input
-                type="checkbox"
-                className="form-check-input me-2"
-              />
+              <input type="checkbox" className="form-check-input me-2" />
               <label className="form-check-label">
                 Remember me
               </label>
             </div>
 
-            <Link
-              to="/forgot-password"
-              className="text-decoration-none"
-            >
+            <Link to="/forgot-password" className="text-decoration-none">
               Forgot Password?
             </Link>
           </div>
 
-          <button
-            type="submit"
-            className="btn btn-warning w-100 fw-bold"
-          >
-            Login
+          <button type="submit" className="btn btn-warning w-100 fw-bold"
+            disabled={activeLogin}  >
+            {activeLogin ? <>Logining...</> : <>Login</>}
           </button>
 
           <hr />
 
-          <p className="text-center">
-            Don’t have an account?
-            <Link
-              to="/signup"
-              className="text-decoration-none fw-bold ms-2"
-            >
+          <p className="text-center"> Don’t have an account?
+            <Link to="/signup" className="text-decoration-none fw-bold ms-2">
               Sign Up
             </Link>
           </p>

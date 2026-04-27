@@ -31,7 +31,8 @@ export const login = async (req, res) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 24 * 2 * 60 * 60 * 1000,
+      path: "/"
     });
 
     res.json({
@@ -47,20 +48,17 @@ export const login = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
-
     const alreadyExist = await Users.findOne({ email });
-
     if (alreadyExist) {
       return res.status(409).json({ message: "User already registered" });
     }
-
     if (!email || !password) {
       return res.status(402).json({ message: "Email and password required" });
     }
-
     if (!req.file) {
       return res.status(400).json({
         message: "Profile image required"
@@ -68,15 +66,10 @@ export const register = async (req, res) => {
     }
 
     const hashpassword = await bcrypt.hash(password, 10);
-
     const filePath = req.file.path;
-
     console.log("File Path:", filePath);
-
     const uploadedImage = await cloudinary.uploader.upload(filePath, { resource_type: "auto" });
-
     console.log("Cloudinary URL:", uploadedImage.url);
-
     await Users.create({
       name,
       email,
@@ -85,11 +78,9 @@ export const register = async (req, res) => {
         profilePic: uploadedImage.url,
       },
     });
-
     res.status(200).json({
       message: "User registered successfully"
     });
-
   } catch (error) {
     console.log("Register Error:", error);
     res.status(500).json({

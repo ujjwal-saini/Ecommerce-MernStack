@@ -3,7 +3,6 @@ import fetch from "node-fetch";
 export const aiChatProduct = async (req, res) => {
     try {
         const { message, product } = req.body;
-        console.log(message, product, "mess");
         if (!message || !product) {
             return res.status(400).json({ error: "Missing data" });
         }
@@ -47,9 +46,7 @@ Now reply like a real human assistant:
         });
 
         const data = await response.json();
-
-        console.log("FULL AI RESPONSE:", JSON.stringify(data, null, 2));
-
+        
         const reply =
             data?.choices?.[0]?.message?.content ||
             "AI not responding";

@@ -263,6 +263,7 @@ function EditProduct() {
                                 Select Category
                             </option>
                             <option value="Mobile">Mobile</option>
+                            <option value="Laptop">Laptop</option>
                             <option value="Grocery">Grocery</option>
                             <option value="Clothes">Clothes</option>
                             <option value="Shoes">Shoes</option>

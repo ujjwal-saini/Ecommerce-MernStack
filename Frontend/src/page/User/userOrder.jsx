@@ -10,7 +10,7 @@ function UserOrders() {
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(false);
 
-console.log(orders);
+    console.log(orders);
     const getOrders = async () => {
         try {
             setLoading(true);
@@ -36,51 +36,51 @@ console.log(orders);
 
     const cancelOrder = (id) => {
         toast(({ closeToast }) => (
-                <div>
-                    <p className="mb-2">
-                        Are you sure you want to cancel this order?
-                    </p>
-                    <div className="d-flex justify-content-end gap-2">
-                        <button
-                            className="btn btn-sm btn-secondary"
-                            onClick={closeToast}>
-                            No
-                        </button>
+            <div>
+                <p className="mb-2">
+                    Are you sure you want to cancel this order?
+                </p>
+                <div className="d-flex justify-content-end gap-2">
+                    <button
+                        className="btn btn-sm btn-secondary"
+                        onClick={closeToast}>
+                        No
+                    </button>
 
-                        <button
-                            className="btn btn-sm btn-danger"
-                            onClick={async () => {
-                                closeToast();
-                                const toastId = toast.loading("Cancelling order...");
-                                try {
-                                    const res = await axios.put(
-                                        `${API}/cancelorder/${id}`,
-                                        {},
-                                        {
-                                            withCredentials: true
-                                        }
-                                    );
+                    <button
+                        className="btn btn-sm btn-danger"
+                        onClick={async () => {
+                            closeToast();
+                            const toastId = toast.loading("Cancelling order...");
+                            try {
+                                const res = await axios.put(
+                                    `${API}/cancelorder/${id}`,
+                                    {},
+                                    {
+                                        withCredentials: true
+                                    }
+                                );
 
-                                    toast.update(toastId, {
-                                        render: res.data.message || "Order Cancelled Successfully",
-                                        type: "success",
-                                        isLoading: false,
-                                        autoClose: 2000
-                                    });
+                                toast.update(toastId, {
+                                    render: res.data.message || "Order Cancelled Successfully",
+                                    type: "success",
+                                    isLoading: false,
+                                    autoClose: 2000
+                                });
 
-                                    getOrders();
+                                getOrders();
 
-                                } catch (error) {
-                                    toast.dismiss(toastId);
-                                    toast.error("Failed to cancel order ❌");
-                                    console.log(error);
-                                }
-                            }}>
-                            Yes Cancel
-                        </button>
-                    </div>
+                            } catch (error) {
+                                toast.dismiss(toastId);
+                                toast.error("Failed to cancel order ❌");
+                                console.log(error);
+                            }
+                        }}>
+                        Yes Cancel
+                    </button>
                 </div>
-            ),
+            </div>
+        ),
             {
                 position: "top-center",
                 autoClose: false,
@@ -98,6 +98,8 @@ console.log(orders);
 
     }, [user]);
 
+        
+
     return (
         <div className="container-fluid container-md mt-3 mb-5 px-2 px-md-3">
 
@@ -107,7 +109,7 @@ console.log(orders);
 
             {loading ? (
                 <div className="text-center mt-5">
-                    <Loader/>
+                    <Loader />
                     <h5>Loading Orders...</h5>
                 </div>
 
@@ -177,7 +179,7 @@ console.log(orders);
                                                 height: "100px",
                                                 objectFit: "cover",
                                                 borderRadius: "10px"
-                                            }}/>
+                                            }} />
                                         <div className="ms-md-3 text-center text-md-start">
                                             <h6>{item.name}</h6>
                                             <p className="text-success mb-1">

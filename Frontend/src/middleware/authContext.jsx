@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
         user,
-        setUser,   // ✅ yaha add karo
+        setUser,  
         role: user?.role,
         loading,
         fetchMe,
@@ -72,8 +72,7 @@ const AuthProvider = ({ children }) => {
         theme,
         toggleTheme,
         API
-      }}
-    >
+      }}>
       {children}
     </AuthContext.Provider>
   );
