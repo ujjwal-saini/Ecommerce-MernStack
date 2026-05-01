@@ -1,5 +1,5 @@
 // controllers/wishlistController.js
-import User from "../models/User.js";
+import User from "../models/user.js";
 
 
 // ✅ ADD TO WISHLIST
@@ -28,7 +28,7 @@ export const addWishlist = async (req, res) => {
 };
 
 
-// ❌ REMOVE FROM WISHLIST
+//  REMOVE FROM WISHLIST
 export const removeWishlist = async (req, res) => {
   try {
     const { userId, productId } = req.body;
@@ -52,7 +52,7 @@ export const removeWishlist = async (req, res) => {
 };
 
 
-// 📦 GET WISHLIST (with product details)
+//  GET WISHLIST (with product details)
 export const getWishlist = async (req, res) => {
   try {
     const { userId } = req.params;
