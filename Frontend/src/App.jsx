@@ -35,6 +35,7 @@ import Getproductsdata from './reduxFile/productLoader';
 import EditProduct from './page/Admin/editProduct';
 import ChatBot from "react-chatbotify";
 import ScrollToTop from './page/scrollToTop';
+import Wishlist from './page/User/wishList';
 function App() {
   return (
     <BrowserRouter>
@@ -60,6 +61,7 @@ function App() {
           <Route path="location" element={<Location />} />
           <Route path="order" element={<Orders />} />
           <Route path="success" element={<OrderSuccess />} />
+             <Route path="wishlist" element={<Wishlist/>} />
           <Route path="myorders" element={<UserOrders />} />
           <Route path='*' element={<ErrorPage />} />
         </Route>

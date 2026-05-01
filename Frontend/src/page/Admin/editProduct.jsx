@@ -17,7 +17,7 @@ function EditProduct() {
         category: "",
         subCategory: "",
         price: "",
-        discountPrice: "",
+        discountPrice:"",
         stock: "",
         unit: "piece",
         weight: "",
@@ -69,11 +69,8 @@ function EditProduct() {
     }, [id, API]);
 
     // basic input
-
     const handleChange = (e) => {
-
         const { name, value, type, checked  } = e.target;
-
         setForm({
             ...form,
             [name]: type === "checkbox" ? checked : value
@@ -82,12 +79,9 @@ function EditProduct() {
     };
 
     // images
-
     const handleImageChange = (index, value) => {
-
         const newImages = [...form.images];
         newImages[index] = value;
-
         setForm({
             ...form,
             images: newImages
@@ -102,12 +96,9 @@ function EditProduct() {
     };
 
     // features
-
     const handleFeatureChange = (index, value) => {
-
         const newFeatures = [...form.features];
         newFeatures[index] = value;
-
         setForm({
             ...form,
             features: newFeatures
@@ -122,12 +113,9 @@ function EditProduct() {
     };
 
     // about
-
     const handleAboutChange = (index, value) => {
-
         const newAbout = [...form.aboutItem];
         newAbout[index] = value;
-
         setForm({
             ...form,
             aboutItem: newAbout
@@ -144,7 +132,6 @@ function EditProduct() {
     // specification
 
     const handleSpecificationChange = (key, value) => {
-
         setForm({
             ...form,
             specifications: {
@@ -157,10 +144,8 @@ function EditProduct() {
     // variant
 
     const handleVariantChange = (index, field, value) => {
-
         const newVariants = [...form.variants];
         newVariants[index][field] = value;
-
         setForm({
             ...form,
             variants: newVariants
@@ -186,7 +171,6 @@ function EditProduct() {
     // dimension
 
     const handleDimensionChange = (key, value) => {
-
         setForm({
             ...form,
             dimensions: {
@@ -292,12 +276,11 @@ function EditProduct() {
                             onChange={handleChange}
                         />
                     </div>
-
-                    <div className="col-md-4 mb-2">
+                     <div className="col-md-4 mb-2">
                         <input
                             name="discountPrice"
                             value={form.discountPrice}
-                            placeholder="Discount Price"
+                            placeholder="discount Price"
                             className="form-control"
                             onChange={handleChange}
                         />

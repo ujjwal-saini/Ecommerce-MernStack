@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import useSearch from "../../components/useSearch";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
+import Category from "./category";
 
 function Main() {
   const { theme, API } = useContext(AuthContext);
@@ -60,7 +61,6 @@ function Main() {
     const filtered = products.filter(
       (item) => item.category === category
     );
-
     const start = (page - 1) * limit;
     return filtered.slice(start, start + limit);
   };
@@ -89,6 +89,7 @@ function Main() {
         ) : (
           <>
             <CarouselSlider />
+            <Category/>
             {sections.map((section) => {
               const filtered = products.filter(
                 (item) => item.category === section.cat

@@ -16,6 +16,8 @@ function Navbar() {
   const cartCount = cartItems.reduce((total, item) => total + item.qty, 0);
   const [Suggestionfilter, setSuggestionfilter] = useState(0);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const wishlistItems = useSelector((state) => state.wishlist.items);
+  const wishlistCount = wishlistItems.length;
 
 
   const formSubmit = (e) => {
@@ -136,15 +138,15 @@ function Navbar() {
           className="order-2 order-lg-2 flex-grow-1 mx-lg-3 mt-2 mt-lg-0">
           <div className="input-group input-group-sm">
             <input
-              className="form-control"
+              className="form-control px-2"
               type="search"
-              placeholder="Search..."
+              placeholder="Search for shoes, mobiles, fashion..."
               value={productSearch}
               onChange={(e) => {
                 setproductSearch(e.target.value);
                 setActiveIndex(-1);
               }}
-              onKeyDown={(e) => handleKeyDown(e)}/>
+              onKeyDown={(e) => handleKeyDown(e)} />
 
             <button className="btn btn-dark" type="submit">
               <IoSearchOutline />
@@ -161,7 +163,7 @@ function Navbar() {
                   className={`d-flex align-items-center gap-2 p-2 text-dark text-decoration-none border-bottom 
                   ${activeIndex === index ? "bg-primary text-white" : ""}`}
                   style={{ cursor: "pointer" }}
-                  onClick={()=>{ setSuggestionfilter([]) , setproductSearch("")}}>
+                  onClick={() => { setSuggestionfilter([]), setproductSearch("") }}>
                   {item.mainImage && (
                     <img
                       src={item.mainImage}
@@ -220,10 +222,26 @@ function Navbar() {
                 </span>
               </div>
 
-              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2 dropdown-nav ">
                 <li>
                   <Link className="dropdown-item" to="profile">
                     Profile
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="wishlist"
+                    className="dropdown-item position-relative"
+                  >
+                    Wishlist
+
+                    {wishlistCount > 0 && (
+                      <span
+                        className="badge bg-danger position-absolute top-0 end-0"
+                      >
+                        {wishlistCount}
+                      </span>
+                    )}
                   </Link>
                 </li>
 

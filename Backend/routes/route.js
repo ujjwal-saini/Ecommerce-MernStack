@@ -8,7 +8,7 @@ import upload from "../middleware/upload.js";
 import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder } from "../controllers/productorder.js";
 import { adminDashboard ,getAllCustomers , deleteCustomer } from "../controllers/adminController.js"
 import { aiChatProduct } from "../controllers/aiHelper.js"
-
+import { addWishlist ,removeWishlist , getWishlist } from "../controllers/wishlist.js";
 const router = express.Router();
 
 // authentication check already login cookies
@@ -35,6 +35,11 @@ router.get("/productSearch", productSearch);
 router.get("/getcart/:userId", cartLoader);
 router.patch("/addcomment/:id", addCommentproduct);
 
+
+// wish list
+router.post("/addwishlist", addWishlist);
+router.post("/removewishlist", removeWishlist);
+router.get("/wishlist/:userId", getWishlist);
 
 //orders
 router.post("/orders",placeOrder);

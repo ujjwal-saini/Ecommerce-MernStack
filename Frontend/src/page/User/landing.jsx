@@ -53,8 +53,8 @@ function Landing() {
             transition: "0.3s",
           }}
         >
-          <div className="row">
-            <div className="col-12 p-3">
+          <div className="row pt-5">
+            <div className="col-12 p-3 pt-4">
               <Outlet />
             </div>
           </div>

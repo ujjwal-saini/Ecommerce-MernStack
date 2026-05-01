@@ -428,9 +428,17 @@ body[data-theme="dark"] .btn-outline-theme {
 
 }
 
+.navbar-collapse {
+  flex-grow: 0 !important;
+}
 
 
-
+.bottom-navbar-wrapper {
+  position: fixed;
+  top: 58px; 
+  width: 100%;
+  z-index: 1000;
+}
 
 
 .sidebar {
@@ -761,4 +769,10 @@ body[data-theme="dark"] .btn-outline-theme {
     padding: 2px;
   }
 
+}
+
+
+
+.custom-indicators {
+  bottom: -50px !important;
 }

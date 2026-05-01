@@ -13,9 +13,8 @@ const ProductSchema = new mongoose.Schema(
 
     price: { type: Number, required: true },
     discountPrice: Number,
-
     currency: { type: String, default: "INR" },
-
+    freeDelivery: {type:String , default:true},
     unit: {
       type: String,
       enum: ["piece", "kg", "gram", "litre", "ml", "meter", "pack"],
