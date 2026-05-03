@@ -32,6 +32,7 @@ export const login = async (req, res) => {
       secure: true,
       sameSite: "none",
       maxAge: 24 * 2 * 60 * 60 * 1000,
+      path: "/"
     });
 
     res.json({
