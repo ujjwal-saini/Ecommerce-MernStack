@@ -6,15 +6,15 @@ const ProductSchema = new mongoose.Schema(
     slug: String,
     description: String,
     brand: String,
-    categoryegory: String,
-    subcategoryegory: String,
+    category: String,
+    subcategory: String,
 
     stock: { type: Number, default: 0 },
 
     price: { type: Number, required: true },
     discountPrice: Number,
     currency: { type: String, default: "INR" },
-    freeDelivery: {type:String , default:true},
+    freeDelivery: { type: String, default: true },
     unit: {
       type: String,
       enum: ["piece", "kg", "gram", "litre", "ml", "meter", "pack"],

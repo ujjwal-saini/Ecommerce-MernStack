@@ -8,7 +8,7 @@ function AddProductModal({ show, onClose, onSubmit }) {
     description: "",
     brand: "",
     category: "",
-    subCategory: "",
+    subcategory: "",
     price: "",
     discountPrice: "",
     stock: "",
@@ -209,19 +209,29 @@ function AddProductModal({ show, onClose, onSubmit }) {
                     <option value="">
                       Select Category
                     </option>
-                    <option>Mobile</option>
-                    <option>Grocery</option>
-                    <option>Clothes</option>
-                    <option>Shoes</option>
+                    <option>Electronics</option>
+                    <option>Clothing</option>
+                    <option>Shoes & Footwear</option>
                     <option>Furniture</option>
-                    <option>Liquid</option>
-                    <option>General</option>
+                    <option>Beauty & Personal Care</option>
+                    <option>Sports & Fitness</option>
+                    <option>Toys & Games</option>
+                    <option>Books & Stationery</option>
+                    <option>Home & Kitchen</option>
+                    <option>Automotive</option>
+                    <option>Health & Wellness</option>
+                    <option>Jewelry & Accessories</option>
+                    <option>Pet Supplies</option>
+                    <option>Baby Products</option>
+                    <option>Office Supplies</option>
+                    <option>Garden & Outdoor</option>
+                    <option>Others</option>
                   </select>
                 </div>
 
                 <div className="col-md-6 mb-2">
                   <input
-                    name="subCategory"
+                    name="subcategory"
                     placeholder="Sub Category"
                     className="form-control"
                     onChange={handleChange}

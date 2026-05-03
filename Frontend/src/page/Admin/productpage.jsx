@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { addProduct, deleteProduct } from "../../redux/productSlice";
 import AddProductModal from "./editproductCompoent/AddProductModal";
 import { useNavigate } from "react-router-dom";
-import { toast ,ToastContainer} from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 function Productpage() {
   const { API } = useContext(AuthContext);
@@ -36,6 +36,7 @@ function Productpage() {
         `${API}/addproduct`,
         formData
       );
+      console.log(formData);
       dispatch(addProduct(res.data.data));
       toast.success("Product Added Successfully");
       setShowModal(false);
@@ -65,7 +66,7 @@ function Productpage() {
 
   return (
     <div className="container-fluid p-4">
-     <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" />
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold">Product Management</h2>
         <button className="btn btn-success" onClick={openModal}>
@@ -95,14 +96,14 @@ function Productpage() {
                 <tr key={p._id}>
                   <td>
                     <img
-                      src={p.mainImage ||"https://via.placeholder.com/60"}
+                      src={p.mainImage || "https://via.placeholder.com/60"}
                       alt=""
                       width="60"
                       height="60"
                       style={{
                         objectFit: "cover",
                         borderRadius: "6px"
-                      }}/>
+                      }} />
                   </td>
                   <td>{p.name}</td>
                   <td>{p.brand}</td>

@@ -9,7 +9,7 @@ function CategoryFields({
   addVariant,
   handleDimensionChange
 }) {
-
+  console.log(form);
   if (!category) return null;
 
   return (
@@ -18,8 +18,6 @@ function CategoryFields({
       <h5 className="fw-bold mb-3">
         {category} Specifications
       </h5>
-
-      {/* ---------------- MOBILE ---------------- */}
 
       {category === "Mobile" && (
         <div>
@@ -30,6 +28,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Operating System"
+                value={form.specifications.OS}
                 onChange={(e) =>
                   handleSpecificationChange("OS", e.target.value)
                 }
@@ -40,6 +39,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="RAM (8GB)"
+                value={form.specifications.RAM}
                 onChange={(e) =>
                   handleSpecificationChange("RAM", e.target.value)
                 }
@@ -50,6 +50,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Storage"
+                value={form.specifications.Storage}
                 onChange={(e) =>
                   handleSpecificationChange("Storage", e.target.value)
                 }
@@ -60,6 +61,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Processor"
+                value={form.specifications?.Processor || ""}
                 onChange={(e) =>
                   handleSpecificationChange("Processor", e.target.value)
                 }
@@ -70,6 +72,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Battery"
+                value={form.specifications?.Battery || ""}
                 onChange={(e) =>
                   handleSpecificationChange("Battery", e.target.value)
                 }
@@ -80,6 +83,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Display"
+                value={form.specifications?.Display || ""}
                 onChange={(e) =>
                   handleSpecificationChange("Display", e.target.value)
                 }
@@ -90,6 +94,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Camera"
+                value={form.specifications?.Camera || ""}
                 onChange={(e) =>
                   handleSpecificationChange("Camera", e.target.value)
                 }
@@ -111,6 +116,7 @@ function CategoryFields({
                   <input
                     className="form-control"
                     placeholder="Color (Black)"
+                    value={v.color}
                     onChange={(e) =>
                       handleVariantChange(i, "color", e.target.value)
                     }
@@ -121,6 +127,7 @@ function CategoryFields({
                   <input
                     className="form-control"
                     placeholder="Stock"
+                    value={v.stock}
                     onChange={(e) =>
                       handleVariantChange(i, "stock", e.target.value)
                     }
@@ -131,6 +138,7 @@ function CategoryFields({
                   <input
                     className="form-control"
                     placeholder="Price"
+                    value={v.price}
                     onChange={(e) =>
                       handleVariantChange(i, "price", e.target.value)
                     }

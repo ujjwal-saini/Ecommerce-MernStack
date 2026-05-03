@@ -17,7 +17,7 @@ function EditProduct() {
         category: "",
         subCategory: "",
         price: "",
-        discountPrice:"",
+        discountPrice: "",
         stock: "",
         unit: "piece",
         weight: "",
@@ -54,23 +54,18 @@ function EditProduct() {
 
         const fetchProduct = async () => {
             try {
-
                 const res = await axios.get(`${API}/product/${id}`);
-
                 setForm(res.data.data);
-
             } catch (err) {
                 console.log(err);
             }
         };
-
         fetchProduct();
-
     }, [id, API]);
 
     // basic input
     const handleChange = (e) => {
-        const { name, value, type, checked  } = e.target;
+        const { name, value, type, checked } = e.target;
         setForm({
             ...form,
             [name]: type === "checkbox" ? checked : value
@@ -130,7 +125,6 @@ function EditProduct() {
     };
 
     // specification
-
     const handleSpecificationChange = (key, value) => {
         setForm({
             ...form,
@@ -185,7 +179,7 @@ function EditProduct() {
     const handleSubmit = async (e) => {
 
         e.preventDefault();
-
+        console.log(form, "form");
         try {
 
             await axios.put(
@@ -246,14 +240,23 @@ function EditProduct() {
                             <option value="">
                                 Select Category
                             </option>
-                            <option value="Mobile">Mobile</option>
-                            <option value="Laptop">Laptop</option>
-                            <option value="Grocery">Grocery</option>
-                            <option value="Clothes">Clothes</option>
-                            <option value="Shoes">Shoes</option>
-                            <option value="Furniture">Furniture</option>
-                            <option value="Liquid">Liquid</option>
-                            <option value="General">General</option>
+                            <option>Electronics</option>
+                            <option>Clothing</option>
+                            <option>Shoes & Footwear</option>
+                            <option>Furniture</option>
+                            <option>Beauty & Personal Care</option>
+                            <option>Sports & Fitness</option>
+                            <option>Toys & Games</option>
+                            <option>Books & Stationery</option>
+                            <option>Home & Kitchen</option>
+                            <option>Automotive</option>
+                            <option>Health & Wellness</option>
+                            <option>Jewelry & Accessories</option>
+                            <option>Pet Supplies</option>
+                            <option>Baby Products</option>
+                            <option>Office Supplies</option>
+                            <option>Garden & Outdoor</option>
+                            <option>Others</option>
                         </select>
                     </div>
 
@@ -276,7 +279,7 @@ function EditProduct() {
                             onChange={handleChange}
                         />
                     </div>
-                     <div className="col-md-4 mb-2">
+                    <div className="col-md-4 mb-2">
                         <input
                             name="discountPrice"
                             value={form.discountPrice}

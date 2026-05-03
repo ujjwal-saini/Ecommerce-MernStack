@@ -39,10 +39,10 @@ import Wishlist from './page/User/wishList';
 function App() {
   return (
     <BrowserRouter>
-    <ScrollToTop/>
-    {/* <ChatBot /> */}
+      <ScrollToTop />
+      {/* <ChatBot /> */}
       <CartLoader />
-      <Getproductsdata/>
+      <Getproductsdata />
       <ToastContainer position="top-left" autoClose={2000} />
       <Routes>
         <Route path='login' element={<Login />} />
@@ -61,7 +61,7 @@ function App() {
           <Route path="location" element={<Location />} />
           <Route path="order" element={<Orders />} />
           <Route path="success" element={<OrderSuccess />} />
-             <Route path="wishlist" element={<Wishlist/>} />
+          <Route path="wishlist" element={<Wishlist />} />
           <Route path="myorders" element={<UserOrders />} />
           <Route path='*' element={<ErrorPage />} />
         </Route>
@@ -74,7 +74,7 @@ function App() {
           <Route path='products' element={<Productpage />} />
           <Route path='analytic' element={<Analytic />} />
           <Route path='profile' element={<Profile />} />
-          <Route path='products/editproduct/:id' element={<EditProduct/>} />
+          <Route path='products/editproduct/:id' element={<EditProduct />} />
           <Route path='setting' element={<Setting />} />
         </Route>
         <Route path='*' element={<ErrorPage />} />

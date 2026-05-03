@@ -67,8 +67,7 @@ export const adminDashboard = async (req, res) => {
                 dob.getDate() === todayDate &&
                 dob.getMonth() + 1 === todayMonth
             );
-        })
-            .map(user => {
+        }).map(user => {
                 const dob = new Date(user.profile.dateOfBirth);
                 console.log("dob",dob.getFullYear());
                 let age = today.getFullYear() - dob.getFullYear();
@@ -128,7 +127,7 @@ export const getAllCustomers = async (req, res) => {
             { password: 0, cartItems: 0 }
         )
         .sort({ createdAt: -1 })
-        .lean();   // 👈 important
+        .lean();   //  important
 
         customers.forEach(user => {
             if (user.profile?.dateOfBirth) {
@@ -139,7 +138,6 @@ export const getAllCustomers = async (req, res) => {
             }
         });
 
-        console.log(customers);
 
         res.status(200).json({
             success: true,

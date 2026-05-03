@@ -13,19 +13,31 @@ function AllProducts() {
   const [loading, setLoading] = useState(true);
   const getproducts = useSelector((state) => state.product.products);
 
-
   useEffect(() => {
     if (!getproducts.length) return;
+
     if (category === "all") {
       setProducts(getproducts);
     } else {
-      const filtered = getproducts.filter(
-        (item) => item.category === category
-      );
+      const searchWords = decodeURIComponent(category)
+        .toLowerCase()
+        .split(" ")
+        .filter(word => word !== "&" && word !== "and");
+
+      const filtered = getproducts.filter((item) => {
+        const itemCategory = item.category?.toLowerCase() || "";
+
+        return searchWords.some((word) =>
+          itemCategory.includes(word)
+        );
+      });
+
       setProducts(filtered);
-    }    
+    }
+
     setLoading(false);
   }, [category, getproducts]);
+
   if (loading) return <Loader />;
 
   return (

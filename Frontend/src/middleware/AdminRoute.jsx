@@ -5,6 +5,7 @@ import Loader from "../components/loading";
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
+  console.log(user ,loading);
   if (loading)
      return <h3> <Loader/> </h3>;
   

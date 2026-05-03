@@ -67,9 +67,9 @@ export const register = async (req, res) => {
 
     const hashpassword = await bcrypt.hash(password, 10);
     const filePath = req.file.path;
-    console.log("File Path:", filePath);
+
     const uploadedImage = await cloudinary.uploader.upload(filePath, { resource_type: "auto" });
-    console.log("Cloudinary URL:", uploadedImage.url);
+
     await Users.create({
       name,
       email,
@@ -103,7 +103,6 @@ export const updateUserProfile = async (req, res) => {
     } = req.body;
 
     let formattedDOB = null;
-console.log(dateOfBirth);
     // if (dateOfBirth) {
     //   formattedDOB = new Date(dateOfBirth).toISOString().split("T")[0];
     // }
@@ -253,7 +252,6 @@ export const deleteAccount = async (req, res) => {
         message: "User not found"
       });
     }
-    console.log(user);
     res.status(200).json({
       message: "Account deleted successfully"
     });

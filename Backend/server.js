@@ -8,22 +8,22 @@ import Routes from "./routes/route.js";
 
 dotenv.config();
 
- 
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use(cookieParser());
+
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin:process.env.FrontendUrl, 
+    origin: process.env.FrontendUrl,
     credentials: true
   })
 );
 
 app.use("/uploads", express.static("uploads"));
-
+app.use(cookieParser());
 
 connectDB();
 
