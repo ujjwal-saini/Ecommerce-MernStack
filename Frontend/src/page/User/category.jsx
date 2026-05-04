@@ -12,14 +12,10 @@ const categories = [
   { name: "Sports & Fitness", img: "https://images.unsplash.com/photo-1517649763962-0c623066013b" },
   { name: "Toys & Games", img: "https://images.unsplash.com/photo-1587654780291-39c9404d746b" },
   { name: "Books & Stationery", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794" },
-  { name: "Home & Kitchen", img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511" },
-  { name: "Automotive", img: "https://images.unsplash.com/photo-1503376780353-7e6692767b70" },
-  { name: "Health & Wellness", img: "https://images.unsplash.com/photo-1580281657527-47f249e8f9f0" },
+  { name: "Home & Kitchen", img: "https://images.unsplash.com/photo-1505691938895-1758d7feb511" }, ,
   { name: "Jewelry & Accessories", img: "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338" },
   { name: "Pet Supplies", img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e" },
   { name: "Baby Products", img: "https://images.unsplash.com/photo-1519689680058-324335c77eba" },
-  { name: "Office Supplies", img: "https://images.unsplash.com/photo-1519681393784-d120267933ba" },
-  { name: "Garden & Outdoor", img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6" }
 ];
 
 function Category() {

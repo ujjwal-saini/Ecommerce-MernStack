@@ -110,7 +110,7 @@ function Card({ products = [] }) {
     navigate("/addtocart");
   };
 
-  // ❤️ WISHLIST FUNCTION
+  // WISHLIST FUNCTION
   const handleWishlist = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
 
@@ -182,7 +182,7 @@ function Card({ products = [] }) {
                 style={{ width: "300px" }}
               >
                 {/* IMAGE */}
-                <div style={{ position: "relative" }} className="d-flex justify-content-center mb-3">
+                <div style={{ position: "relative" }} className="d-flex overflow-hidden rounded-t-lg justify-content-center mb-3">
                   <Link to={`/productdetail/${item._id}`}>
 
                     {/* MAIN IMAGE */}
@@ -215,7 +215,7 @@ function Card({ products = [] }) {
                           borderRadius: "6px",
                         }}
                       >
-                        +{item.images.length } More
+                        +{item.images.length} More
                       </div>
                     )}
                   </Link>

@@ -14,7 +14,7 @@ function ErrorPage() {
         had its name changed, or is temporarily unavailable.
       </p>
 
-      <Link to="/dashboard" className="btn btn-primary px-4">
+      <Link to="/" className="btn btn-primary px-4">
         Go Back Home
       </Link>
 

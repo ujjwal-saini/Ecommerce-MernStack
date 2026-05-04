@@ -11,23 +11,38 @@ import { AuthContext } from "../middleware/authContext";
 import ProductDetailReview from "./productDetailReview";
 import ProductDetailDescription from "./productDetailDescription";
 import ProductChat from "./productChat";
+import Card from "./card";
 
 
 function ProductDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { API, isLoggedIn,user, theme } = useContext(AuthContext);
+  const { API, isLoggedIn, user, theme } = useContext(AuthContext);
 
   const cartItems = useSelector((state) => state.cart.items);
   const cartItem = cartItems.find((ci) => ci._id === id);
-
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState("");
   const [loading, setLoading] = useState(true);
   const [Review, setReview] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showChat, setShowChat] = useState(false);
+  const [suggestionProduct, setsuggestionProduct] = useState([]);
+  const products = useSelector(
+    (state) => state.product.products
+  );
+
+  const fetchSuggestionProduct = (currentProduct) => {
+    if (!products || !currentProduct) return;
+    console.log(currentProduct, "currentProduct");
+    const filtered = products.filter(
+      (p) => p.category === currentProduct.category &&
+        p._id !== currentProduct._id
+    );
+
+    setsuggestionProduct(filtered);
+  };
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,17 +52,22 @@ function ProductDetail() {
         let allImages = [];
         if (data.mainImage) allImages.push(data.mainImage);
         if (data.images?.length > 0) allImages.push(...data.images);
-        setProduct({ ...data, images: allImages });
+        const finalProduct = { ...data, images: allImages };
+        setProduct(finalProduct);
         setSelectedImage(allImages[0]);
         setLoading(false);
+        fetchSuggestionProduct(finalProduct);
       } catch (error) {
         console.log(error);
         setLoading(false);
       }
     };
 
+    fetchSuggestionProduct();
+
     fetchProduct();
   }, [id]);
+
 
   const showLoginPopup = () => {
     Swal.fire({
@@ -61,101 +81,98 @@ function ProductDetail() {
   };
 
 
- const handleAddToCart = async () => {
-  if (!isLoggedIn) return showLoginPopup();
-
-  if (product.variants?.length > 1 && !selectedVariant) {
-    Swal.fire("Please select a variant");
-    return;
-  }
-  const itemToCart = {
-    ...product,
-    selectedVariant,
-    price: selectedVariant?.price || product.price,
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) return showLoginPopup();
+    if (product.variants?.length > 1 && !selectedVariant) {
+      Swal.fire("Please select a variant");
+      return;
+    }
+    const itemToCart = {
+      ...product,
+      selectedVariant,
+      price: selectedVariant?.price || product.price,
+    };
+    dispatch(addToCart(itemToCart));
+    try {
+      await axios.post(`${API}/addtocart`, {
+        userId: user._id,
+        productId: product._id,
+        variantId: selectedVariant?._id || null,
+        quantity: 1,
+      });
+    } catch (error) {
+      console.log(error);
+      Swal.fire("Error saving to cart");
+    }
   };
-  dispatch(addToCart(itemToCart));
-  try {
-    await axios.post(`${API}/addtocart`, {
-      userId: user._id,
-      productId: product._id,
-      variantId: selectedVariant?._id || null, 
-      quantity: 1,
-    });
-  } catch (error) {
-    console.log(error);
-    Swal.fire("Error saving to cart");
-  }
-};
+
+
   const handleBuyNow = async () => {
-  if (!isLoggedIn) return showLoginPopup();
-  if (product.variants?.length > 1 && !selectedVariant) {
-    Swal.fire("Please select a variant");
-    return;
-  }
-  const itemToCart = {
-    ...product,
-    selectedVariant,
-    price: selectedVariant?.price || product.price,
+    if (!isLoggedIn) return showLoginPopup();
+    if (product.variants?.length > 1 && !selectedVariant) {
+      Swal.fire("Please select a variant");
+      return;
+    }
+    const itemToCart = {
+      ...product,
+      selectedVariant,
+      price: selectedVariant?.price || product.price,
+    };
+    dispatch(addToCart(itemToCart));
+    try {
+      await axios.post(`${API}/addtocart`, {
+        userId: user._id,
+        productId: product._id,
+        variantId: selectedVariant?._id || null,
+        quantity: 1,
+      });
+      navigate("/addtocart");
+    } catch (error) {
+      console.log(error);
+    }
   };
-  dispatch(addToCart(itemToCart));
-  try {
-    await axios.post(`${API}/addtocart`, {
-      userId: user._id,
-      productId: product._id,
-      variantId: selectedVariant?._id || null,
-      quantity: 1,
-    });
-    navigate("/addtocart");
-  } catch (error) {
-    console.log(error);
-  }
-};
 
-const handleIncreaseQty = async () => {
-  if (!cartItem) return;
-
-  if (cartItem.qty >= (selectedVariant?.stock || product.stock)) {
-    Swal.fire({
-      icon: "warning",
-      title: "Stock Limit Reached",
-      timer: 1500,
-      showConfirmButton: false,
-    });
-    return;
-  }
-
-  dispatch(increaseQty(product._id));
-
-  await axios.post(`${API}/updatecart`, {
-    userId: user._id,
-    productId: product._id,
-    variantId: selectedVariant?._id || null,
-    quantity: 1,
-  });
-};
-
-const handleDecreaseQty = async () => {
-  if (!cartItem) return;
-
-  if (cartItem.qty === 1) {
-    dispatch(removeFromCart(product._id));
-
-    await axios.post(`${API}/removecart`, {
-      userId: user._id,
-      productId: product._id,
-      variantId: selectedVariant?._id || null,
-    });
-  } else {
-    dispatch(decreaseQty(product._id));
-
+  const handleIncreaseQty = async () => {
+    if (!cartItem) return;
+    if (cartItem.qty >= (selectedVariant?.stock || product.stock)) {
+      Swal.fire({
+        icon: "warning",
+        title: "Stock Limit Reached",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+      return;
+    }
+    dispatch(increaseQty(product._id));
     await axios.post(`${API}/updatecart`, {
       userId: user._id,
       productId: product._id,
       variantId: selectedVariant?._id || null,
-      quantity: -1,
+      quantity: 1,
     });
-  }
-};
+  };
+
+
+  const handleDecreaseQty = async () => {
+    if (!cartItem) return;
+    if (cartItem.qty === 1) {
+      dispatch(removeFromCart(product._id));
+      await axios.post(`${API}/removecart`, {
+        userId: user._id,
+        productId: product._id,
+        variantId: selectedVariant?._id || null,
+      });
+    } else {
+      dispatch(decreaseQty(product._id));
+      await axios.post(`${API}/updatecart`, {
+        userId: user._id,
+        productId: product._id,
+        variantId: selectedVariant?._id || null,
+        quantity: -1,
+      });
+    }
+  };
+
 
   if (loading) return <Loader />;
   if (!product) return <h3>Product Not Found</h3>;
@@ -289,13 +306,13 @@ const handleDecreaseQty = async () => {
                 <div className="d-flex gap-3">
                   <button
                     className="btn btn-secondary"
-                  onClick={handleDecreaseQty}>
+                    onClick={handleDecreaseQty}>
                     -
                   </button>
                   <span>{cartItem.qty}</span>
                   <button
                     className="btn btn-secondary"
-                   onClick={handleIncreaseQty}>
+                    onClick={handleIncreaseQty}>
                     +
                   </button>
                 </div>
@@ -361,6 +378,15 @@ const handleDecreaseQty = async () => {
             <ProductDetailDescription product={product} />
           )}
         </div>
+
+        <div className="mt-5">
+          <h4>Related Products</h4>
+
+          <div className="row">
+            <Card products={suggestionProduct} />
+          </div>
+        </div>
+
       </div>
     </Fragment>
   );
