@@ -4,9 +4,11 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../middleware/authContext";
 import CategoryFields from "./editproductCompoent/CategoryFields";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updateProduct } from "../../redux/productSlice";
 
 function EditProduct() {
-
+    const dispatch = useDispatch();
     const { id } = useParams();
     const navigate = useNavigate();
     const { API } = useContext(AuthContext);
@@ -15,7 +17,7 @@ function EditProduct() {
         description: "",
         brand: "",
         category: "",
-        subCategory: "",
+        subcategory: "",
         price: "",
         discountPrice: "",
         stock: "",
@@ -51,11 +53,11 @@ function EditProduct() {
     // load product
 
     useEffect(() => {
-
         const fetchProduct = async () => {
             try {
                 const res = await axios.get(`${API}/product/${id}`);
                 setForm(res.data.data);
+                dispatch(updateProduct(res.data.data));
             } catch (err) {
                 console.log(err);
             }
@@ -138,8 +140,15 @@ function EditProduct() {
     // variant
 
     const handleVariantChange = (index, field, value) => {
-        const newVariants = [...form.variants];
-        newVariants[index][field] = value;
+        const newVariants = form.variants.map((variant, i) => {
+            if (i === index) {
+                return {
+                    ...variant,   // ✅ new object create
+                    [field]: value
+                };
+            }
+            return variant;
+        });
         setForm({
             ...form,
             variants: newVariants
@@ -175,20 +184,17 @@ function EditProduct() {
     };
 
     // update
-
     const handleSubmit = async (e) => {
-
         e.preventDefault();
-        console.log(form, "form");
-        try {
 
-            await axios.put(
+        try {
+            const res = await axios.put(
                 `${API}/updateproduct/${id}`,
                 form
             );
 
+            dispatch(updateProduct(res.data.data));
             toast.success("Product Updated Successfully");
-
             navigate("/admindashboard/products");
 
         } catch (err) {
@@ -196,7 +202,6 @@ function EditProduct() {
             alert("Update failed");
         }
     };
-
     return (
 
         <div className="container-fluid p-4">
@@ -262,8 +267,8 @@ function EditProduct() {
 
                     <div className="col-md-6 mb-2">
                         <input
-                            name="subCategory"
-                            value={form.subCategory}
+                            name="subcategory"
+                            value={form.subcategory}
                             placeholder="Sub Category"
                             className="form-control"
                             onChange={handleChange}
@@ -340,6 +345,7 @@ function EditProduct() {
                 {/* Category Fields */}
 
                 <CategoryFields
+                    subcategory={form.subcategory}
                     category={form.category}
                     form={form}
                     handleChange={handleChange}

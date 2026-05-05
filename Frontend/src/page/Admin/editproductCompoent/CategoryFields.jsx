@@ -1,6 +1,7 @@
 import React from "react";
 
 function CategoryFields({
+  subcategory,
   category,
   form,
   handleChange,
@@ -19,7 +20,7 @@ function CategoryFields({
         {category} Specifications
       </h5>
 
-      {category === "Mobile" && (
+      {["phone", "laptop", "mobile"].includes(subcategory) && category === "Electronics" && (
         <div>
 
           <div className="row">
@@ -27,19 +28,8 @@ function CategoryFields({
             <div className="col-md-4 mb-2">
               <input
                 className="form-control"
-                placeholder="Operating System"
-                value={form.specifications.OS}
-                onChange={(e) =>
-                  handleSpecificationChange("OS", e.target.value)
-                }
-              />
-            </div>
-
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
                 placeholder="RAM (8GB)"
-                value={form.specifications.RAM}
+                value={form.specifications?.RAM}
                 onChange={(e) =>
                   handleSpecificationChange("RAM", e.target.value)
                 }
@@ -50,7 +40,7 @@ function CategoryFields({
               <input
                 className="form-control"
                 placeholder="Storage"
-                value={form.specifications.Storage}
+                value={form.specifications?.Storage}
                 onChange={(e) =>
                   handleSpecificationChange("Storage", e.target.value)
                 }
@@ -60,10 +50,10 @@ function CategoryFields({
             <div className="col-md-4 mb-2">
               <input
                 className="form-control"
-                placeholder="Processor"
-                value={form.specifications?.Processor || ""}
+                placeholder="OS"
+                value={form.specifications?.OS || ""}
                 onChange={(e) =>
-                  handleSpecificationChange("Processor", e.target.value)
+                  handleSpecificationChange("OS", e.target.value)
                 }
               />
             </div>
@@ -161,68 +151,13 @@ function CategoryFields({
         </div>
       )}
 
-      {/* ---------------- GROCERY ---------------- */}
-
-      {category === "Grocery" && (
-        <div className="row">
-
-          <div className="col-md-4 mb-2">
-            <select
-              name="unit"
-              className="form-control"
-              onChange={handleChange}
-            >
-              <option value="">Select Unit</option>
-              <option value="kg">Kilogram</option>
-              <option value="gram">Gram</option>
-              <option value="litre">Litre</option>
-              <option value="ml">ML</option>
-              <option value="pack">Pack</option>
-            </select>
-          </div>
-
-          <div className="col-md-4 mb-2">
-            <input
-              name="weight"
-              className="form-control"
-              placeholder="Weight"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-4 mb-2">
-            <input
-              type="date"
-              name="manufacturingDate"
-              className="form-control"
-              onChange={handleChange}
-            />
-          </div>
-
-          <div className="col-md-4 mb-2">
-            <input
-              type="date"
-              name="expiryDate"
-              className="form-control"
-              onChange={handleChange}
-            />
-          </div>
-
-        </div>
-      )}
-
       {/* ---------------- CLOTHES & SHOES ---------------- */}
-
-      {(category === "Clothes" || category === "Shoes") && (
+      {(subcategory === "clothes" || subcategory === "Shoes" || category === "clothes" || category === "Shoes") && (
         <div>
-
           <h6>Variants (Size / Color)</h6>
-
           {form.variants.map((v, i) => (
             <div key={i} className="border p-3 mb-2 rounded">
-
               <div className="row">
-
                 <div className="col-md-3">
                   <input
                     className="form-control"
@@ -232,7 +167,6 @@ function CategoryFields({
                     }
                   />
                 </div>
-
                 <div className="col-md-3">
                   <input
                     className="form-control"
@@ -242,7 +176,6 @@ function CategoryFields({
                     }
                   />
                 </div>
-
                 <div className="col-md-3">
                   <input
                     className="form-control"
@@ -283,7 +216,6 @@ function CategoryFields({
 
       {category === "Furniture" && (
         <div className="row">
-
           <div className="col-md-3">
             <input
               className="form-control"
@@ -336,6 +268,7 @@ function CategoryFields({
           <input
             type="checkbox"
             name="isFeatured"
+            checked={form.isFeatured}
             className="form-check-input"
             onChange={handleChange}
           />
@@ -348,6 +281,7 @@ function CategoryFields({
           <input
             type="checkbox"
             name="isNewArrival"
+            checked={form.isNewArrival}
             className="form-check-input"
             onChange={handleChange}
           />
@@ -360,6 +294,7 @@ function CategoryFields({
           <input
             type="checkbox"
             name="isOnSale"
+            checked={form.isOnSale}
             className="form-check-input"
             onChange={handleChange}
           />
@@ -371,6 +306,7 @@ function CategoryFields({
         <div className="form-check">
           <input
             type="checkbox"
+            checked={form.isTrending}
             name="isTrending"
             className="form-check-input"
             onChange={handleChange}

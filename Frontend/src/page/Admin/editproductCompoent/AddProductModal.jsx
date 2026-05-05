@@ -112,6 +112,8 @@ function AddProductModal({ show, onClose, onSubmit }) {
   const handleVariantChange = (index, field, value) => {
     const newVariants = [...form.variants];
     newVariants[index][field] = value;
+
+    console.log(newVariants);
     setForm({
       ...form,
       variants: newVariants
@@ -284,6 +286,7 @@ function AddProductModal({ show, onClose, onSubmit }) {
 
               {/* Category Fields */}
               <CategoryFields
+                subcategory={form.subcategory}
                 category={form.category}
                 form={form}
                 handleChange={handleChange}

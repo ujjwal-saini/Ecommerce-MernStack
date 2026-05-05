@@ -1,4 +1,4 @@
-import React ,{useState , useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useContext } from 'react'
 import { AuthContext } from '../../middleware/authContext'
 import { Link } from 'react-router-dom';
@@ -10,16 +10,17 @@ function Nav() {
   const { user, logout } = useContext(AuthContext);
   const [productSearch, setproductSearch] = useState("");
   const products = useSelector((state) => state.product.products);
-  const [Suggestionfilter, setSuggestionfilter] = useState(0);
+  const [Suggestionfilter, setSuggestionfilter] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const formSubmit = (e) => {
     e.preventDefault();
     setSuggestionfilter([]);
-    navigate(`products/?search=${productSearch.trim()}`);
+    console.log(productSearch, "p");
+    navigate(`/admindashboard/products?search=${productSearch.trim()}`);
   };
 
-const handleKeyDown = (e) => {
+  const handleKeyDown = (e) => {
     if (!Suggestionfilter.length) return;
     if (e.key === "ArrowDown") {
       e.preventDefault();
@@ -34,13 +35,17 @@ const handleKeyDown = (e) => {
       if (activeIndex >= 0) {
         e.preventDefault();
         const selectedItem = Suggestionfilter[activeIndex];
-        navigate(`/productdetail/${selectedItem._id}`);
+        navigate(`/admindashboard/productpreview/${selectedItem._id}`);
         setSuggestionfilter([]);
       }
+
+      setproductSearch("");
     }
+
   };
 
   const suggestionFunc = () => {
+
     if (!productSearch.trim()) {
       setSuggestionfilter([]);
       return;
@@ -67,14 +72,14 @@ const handleKeyDown = (e) => {
   return (
     <div className="d-flex w-full items-center justify-content-between px-3 py-2 border-b bg-white border">
       <h2 className="text-xl font-semibold">Welcome Admin</h2>
-      <div className="d-flex items-center gap-6">
+      <div className="d-flex items-center gap-1">
         {/* SEARCH BAR */}
         <form
           onSubmit={formSubmit}
-          className="order-2 order-lg-2 flex-grow-1 mx-lg-3 mt-2 mt-lg-0">
-          <div className="input-group input-group-sm">
+          className="d-flex justify-content-center align-items-center flex-column flex-grow-1 mx-lg-3 mt-2 mt-lg-0 position-relative">
+          <div className="flex w-full">
             <input
-              className="form-control px-2 "
+              className="w-full px-3 py-1 border rounded-start"
               type="search"
               placeholder="Search for shoes, mobiles, fashion..."
               value={productSearch}
@@ -82,24 +87,30 @@ const handleKeyDown = (e) => {
                 setproductSearch(e.target.value);
                 setActiveIndex(-1);
               }}
-              onKeyDown={(e) => handleKeyDown(e)} />
 
-            <button className="btn btn-dark" type="submit">
+              onKeyDown={handleKeyDown}
+              style={{ width: "400px" }} />
+
+            <button className="bg-dark text-white px-3 rounded-end">
               <IoSearchOutline />
             </button>
           </div>
+
           {Suggestionfilter.length > 0 && (
-            <div
-              className="position-absolute bg-white shadow w-100 mt-1 rounded"
-              style={{ zIndex: 999 }}>
+            <div className="position-absolute top-100 start-0 w-100 bg-white shadow mt-1 rounded z-3">
               {Suggestionfilter.slice(0, 6).map((item, index) => (
                 <Link
                   key={index}
-                  to={`/productdetail/${item._id}`}
+                  to={`/admindashboard/productpreview/${item._id}`}
+                  onMouseDown={(e) => e.preventDefault()}
+                  onMouseEnter={() => setActiveIndex(index)}
                   className={`d-flex align-items-center gap-2 p-2 text-dark text-decoration-none border-bottom 
-                         ${activeIndex === index ? "bg-primary text-white" : ""}`}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => { setSuggestionfilter([]), setproductSearch("") }}>
+  ${activeIndex === index ? "bg-primary text-white" : ""}`}
+                  onClick={() => {
+                    setSuggestionfilter([]);
+                    setproductSearch("");
+                  }}
+                >
                   {item.mainImage && (
                     <img
                       src={item.mainImage}

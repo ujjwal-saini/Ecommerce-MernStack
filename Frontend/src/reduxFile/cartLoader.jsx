@@ -7,7 +7,7 @@ import { AuthContext } from "../middleware/authContext";
 function CartLoader() {
 
   const dispatch = useDispatch();
-  const { user , API } = useContext(AuthContext);
+  const { user, API } = useContext(AuthContext);
 
   useEffect(() => {
     const loadCart = async () => {
@@ -16,14 +16,14 @@ function CartLoader() {
         const res = await axios.get(
           `${API}/getcart/${user._id}`
         );
-
+        console.log(res.data);
         const formattedCart = res.data.map((item) => ({
           _id: item._id,
           name: item.name,
           price: item.price,
           mainImage: item.mainImage,
           qty: item.qty,
-          stock:item.stock
+          stock: item.stock
         }));
 
         dispatch(setCart(formattedCart));

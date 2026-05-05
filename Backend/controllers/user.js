@@ -171,11 +171,12 @@ export const cartLoader = async (req, res) => {
     let cartData = [];
     for (let item of cartItems) {
       const product = await Product.findById(item.productId);
+      console.log(product);
       if (product) {
         cartData.push({
           _id: product._id,
           name: product.name,
-          price: product.price,
+          price: product.discountPrice,
           mainImage: product.mainImage,
           qty: item.quantity,
           stock: product.stock

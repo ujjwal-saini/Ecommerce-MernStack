@@ -16,9 +16,9 @@ function Addtocart() {
   const cartItems = useSelector((state) => state.cart.items);
   const dispatch = useDispatch();
   const { isLoggedIn, user, API } = useContext(AuthContext);
-
+  console.log(cartItems);
   const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.qty,
+    (sum, item) => sum + (item.discountPrice || item.price) * item.qty,
     0
   );
   const handleIncreaseQty = async (item) => {
@@ -101,7 +101,7 @@ function Addtocart() {
 
                   <div className="col-md-4">
                     <h6>{item.name}</h6>
-                    <p className="text-success">₹{item.price}</p>
+                    <p className="text-success">₹{item.discountPrice || item.price}</p>
                   </div>
 
                   <div className="col-md-3 d-flex align-items-center gap-2">

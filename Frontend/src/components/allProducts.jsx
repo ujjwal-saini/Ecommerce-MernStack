@@ -23,10 +23,10 @@ function AllProducts() {
         .toLowerCase()
         .split(" ")
         .filter(word => word !== "&" && word !== "and");
-
+      console.log(searchWords);
       const filtered = getproducts.filter((item) => {
-        const itemCategory = item.category?.toLowerCase() || "";
-
+        const itemCategory = item.subcategory?.toLowerCase() || item.category?.toLowerCase() || "";
+        console.log(itemCategory)
         return searchWords.some((word) =>
           itemCategory.includes(word)
         );

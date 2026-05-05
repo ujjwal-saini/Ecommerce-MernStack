@@ -32,6 +32,7 @@ export const addProducts = async (req, res) => {
       price,
       description,
       category,
+      subcategory,
       brand,
       stock,
       mainImage,
@@ -115,7 +116,7 @@ export const updateProduct = async (req, res) => {
       req.body,
       { new: true, runValidators: true }
     );
-
+    console.log(updateProduct);
     if (!updatedProduct) {
       return res.status(404).json({
         success: false,

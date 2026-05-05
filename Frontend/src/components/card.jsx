@@ -39,7 +39,7 @@ function Card({ products = [] }) {
   // 🛒 CART FUNCTIONS
   const handleAddToCart = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
-
+    console.log(item);
     dispatch(addToCart(item));
 
     try {
@@ -150,7 +150,7 @@ function Card({ products = [] }) {
       console.error(err);
     }
   };
-  console.log(products);
+
 
   return (
     <div className="container-fluid mt-4">

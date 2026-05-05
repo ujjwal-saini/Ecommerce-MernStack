@@ -46,7 +46,7 @@ const ProductSchema = new mongoose.Schema(
 
     images: [String],
 
-    specificategoryions: {
+    specifications: {
       type: Map,
       of: String
     },

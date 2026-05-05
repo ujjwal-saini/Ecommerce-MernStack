@@ -36,6 +36,7 @@ import EditProduct from './page/Admin/editProduct';
 import ChatBot from "react-chatbotify";
 import ScrollToTop from './page/scrollToTop';
 import Wishlist from './page/User/wishList';
+import ProductPreview from './page/Admin/productPreview';
 function App() {
   return (
     <BrowserRouter>
@@ -72,6 +73,7 @@ function App() {
           <Route path="allorders" element={<AdminOrders />} />
           <Route path='customer' element={<Customer />} />
           <Route path='products' element={<Productpage />} />
+          <Route path='productpreview/:id' element={<ProductPreview />} />
           <Route path='analytic' element={<Analytic />} />
           <Route path='profile' element={<Profile />} />
           <Route path='products/editproduct/:id' element={<EditProduct />} />

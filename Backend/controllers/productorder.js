@@ -5,6 +5,7 @@ export const placeOrder = async (req, res) => {
     console.log("trigger");
     try {
         const order = new Order(req.body);
+        console.log(order);
         await order.save();
         console.log(req.body.user);
         await Users.findByIdAndUpdate(
@@ -45,7 +46,7 @@ export const getAllOrders = async (req, res) => {
 export const getUserOrders = async (req, res) => {
     console.log(req.params.userId);
     try {
-        const orders = await Order.find({user: req.params.userId }).sort({ createdAt: -1 });
+        const orders = await Order.find({ user: req.params.userId }).sort({ createdAt: -1 });
         res.json(orders);
     } catch (error) {
         res.status(500).json({
@@ -78,26 +79,26 @@ export const updateOrderStatus = async (req, res) => {
     }
 };
 export const cancelorder = async (req, res) => {
-  try {
+    try {
 
-    const id = req.params.id;
-    console.log("Cancel ID:", id);
-    const order = await Order.findByIdAndDelete(id);
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found"
-      });
+        const id = req.params.id;
+        console.log("Cancel ID:", id);
+        const order = await Order.findByIdAndDelete(id);
+        if (!order) {
+            return res.status(404).json({
+                success: false,
+                message: "Order not found"
+            });
+        }
+        res.json({
+            success: true,
+            message: "Order cancelled successfully"
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            success: false,
+            message: "Error cancelling order"
+        });
     }
-    res.json({
-      success: true,
-      message: "Order cancelled successfully"
-    });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      success: false,
-      message: "Error cancelling order"
-    });
-  }
 };

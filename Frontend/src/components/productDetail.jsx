@@ -90,7 +90,7 @@ function ProductDetail() {
     const itemToCart = {
       ...product,
       selectedVariant,
-      price: selectedVariant?.price || product.price,
+      price: selectedVariant?.price || product.discountPrice,
     };
     dispatch(addToCart(itemToCart));
     try {
@@ -226,8 +226,38 @@ function ProductDetail() {
           {/* RIGHT SIDE */}
           <div className="col-md-7">
             <h3>{product.name}</h3>
+            {(() => {
+              const finalPrice =
+                selectedVariant?.price ||
+                product.discountPrice ||
+                product.price;
+
+              return (
+                <div className="d-flex align-items-center gap-3 mt-2">
+                  <span className="text-danger fw-bold fs-4">
+                    ₹{finalPrice}
+                  </span>
+
+                  {product.discountPrice && (
+                    <>
+                      <span className="text-muted text-decoration-line-through fs-6">
+                        ₹{product.price}
+                      </span>
+
+                      <span className="text-success fw-bold fs-6">
+                        {Math.round(
+                          ((product.price - product.discountPrice) /
+                            product.price) *
+                          100
+                        )}
+                        % OFF
+                      </span>
+                    </>
+                  )}
+                </div>
+              );
+            })()}
             <p className="text-muted">{product.brand}</p>
-            <h4 className="text-danger">₹{product.price}</h4>
             <p>Stock: {product.stock}</p>
             <p>Category: {product.category}</p>
             <hr />
@@ -328,7 +358,7 @@ function ProductDetail() {
         </button>
 
         {showChat && (
-          <div className="position-fixed top-0 end-0 h-100" style={{ width: "350px", zIndex: 1050 }}>
+          <div className="position-fixed  end-0 h-100" style={{ top: "200px", width: "350px", zIndex: 1050 }}>
             <ProductChat
               isOpen={showChat}
               onClose={() => setShowChat(false)}
@@ -383,7 +413,7 @@ function ProductDetail() {
           <h4>Related Products</h4>
 
           <div className="row">
-            <Card products={suggestionProduct} />
+            <Card products={suggestionProduct.slice(0, 4)} />
           </div>
         </div>
 

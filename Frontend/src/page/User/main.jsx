@@ -6,8 +6,7 @@ import Loader from "../../components/loading";
 import { AuthContext } from "../../middleware/authContext";
 import { useSelector } from "react-redux";
 import useSearch from "../../components/useSearch";
-import { FaAngleLeft } from "react-icons/fa";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import Category from "./category";
 
 function Main() {
@@ -16,108 +15,153 @@ function Main() {
   const queryParams = new URLSearchParams(location.search);
   const search = queryParams.get("search");
 
-  const [products, setProducts] = useState([]);
   const getproducts = useSelector((state) => state.product.products);
+
+  const [products, setProducts] = useState([]);
 
   const { results, count, loading, searchProducts } = useSearch(API);
 
   const limit = 4;
 
-  // pagination
   const [pages, setPages] = useState({
     men: 1,
     laptop: 1,
-    Mobile: 1,
+    phone: 1,
     electronics: 1,
+    headphone: 1,
     kitchen: 1,
   });
+
 
   useEffect(() => {
     if (search) {
       searchProducts(search);
     } else {
       if (getproducts?.length > 0) {
-        setProducts(getproducts);
+        const normalized = getproducts.map((p) => ({
+          ...p,
+          category: p.category?.toLowerCase(),
+          subcategory: p.subcategory?.toLowerCase(),
+        }));
+        setProducts(normalized);
       }
     }
   }, [search, getproducts]);
 
-  const handleNext = (cat, maxPage) => {
+  const handleNext = (key, maxPage) => {
     setPages((prev) => ({
       ...prev,
-      [cat]: prev[cat] < maxPage ? prev[cat] + 1 : prev[cat],
+      [key]: prev[key] < maxPage ? prev[key] + 1 : prev[key],
     }));
   };
 
-  const handlePrev = (cat) => {
+  const handlePrev = (key) => {
     setPages((prev) => ({
       ...prev,
-      [cat]: prev[cat] > 1 ? prev[cat] - 1 : 1,
+      [key]: prev[key] > 1 ? prev[key] - 1 : 1,
     }));
   };
 
-  const getPaginatedData = (category) => {
-    const page = pages[category];
-    const filtered = products.filter(
-      (item) => item.category === category
-    );
+  const getPaginatedData = (categories, key) => {
+    const page = pages[key];
+    const filtered = products.filter((item) => {
+      const cat = item.category || "";
+      const sub = item.subcategory || "";
+      return categories.some((c) =>
+        sub.includes(c) ||
+        cat.includes(c)
+      );
+    });
     const start = (page - 1) * limit;
-    return filtered.slice(start, start + limit);
+    return {
+      data: filtered.slice(start, start + limit),
+      total: filtered.length,
+    };
   };
 
   const sections = [
-    { title: "Men Fashion", cat: "men" },
-    { title: "Laptop", cat: "laptop" },
-    { title: "Phone Products", cat: "Mobile" },
-    { title: "Electronics", cat: "electronics" },
-    { title: "Kitchen", cat: "kitchen" },
+    { title: "Men Fashion", cat: ["men", "clothing"], key: "men" },
+    { title: "Laptop", cat: ["laptop"], key: "laptop" },
+    { title: "Phone Products", cat: ["phone", "mobile"], key: "phone" },
+    { title: "Headphone", cat: ["headphone", "headphones", "earphone", "speaker", "earbuds"], key: "headphone" },
+    { title: "Kitchen", cat: ["kitchen", "home"], key: "kitchen" },
   ];
-
   if (loading && search) return <Loader />;
 
   return (
-    <div className={`w-100 px-0 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
+    <div
+      className={`w-100 px-0 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"
+        }`}
+    >
       <div className="px-2">
 
+        {/*  SEARCH RESULT */}
         {search ? (
           <>
             <h4 className="fw-bold mt-5 mb-3">
-              Search Results {count}
+              Search Results ({count})
             </h4>
-            <Card products={results} />
+
+            {results.length > 0 ? (
+              <Card products={results} />
+            ) : (
+              <p>No products found</p>
+            )}
           </>
         ) : (
           <>
             <CarouselSlider />
-            <Category/>
+            <Category />
+
+            {/*  CATEGORY SECTIONS */}
             {sections.map((section) => {
-              const filtered = products.filter(
-                (item) => item.category === section.cat
+              const { data, total } = getPaginatedData(
+                section.cat,
+                section.key
               );
 
-              const maxPage = Math.ceil(filtered.length / limit);
+              const maxPage = Math.ceil(total / limit);
 
               return (
-                <div key={section.cat}>
+                <div key={section.key}>
                   <div className="d-flex justify-content-between mt-5 mb-3">
                     <h4>{section.title}</h4>
-                    <Link to={`allproducts/${section.cat}`}>
+
+                    <Link to={`allproducts/${section.key}`}>
                       View All →
                     </Link>
                   </div>
 
-                  <Card products={getPaginatedData(section.cat)} />
-                  <div className="text-center mt-3">
-                    <button className="btn btn-primary"  onClick={() => handlePrev(section.cat)}>
-                      <FaAngleLeft/>
-                    </button>
-                    <span className="mx-2">
-                      {pages[section.cat]} / {maxPage || 1}
-                    </span>
-                    <button className="btn btn-primary"  onClick={() => handleNext(section.cat, maxPage)}>
-                     <FaAngleRight/>
-                    </button>
-                  </div>
+                  {data.length > 0 ? (
+                    <Card products={data} />
+                  ) : (
+                    <p className="text-muted">No products</p>
+                  )}
+
+                  {/*  PAGINATION */}
+                  {total > limit && (
+                    <div className="text-center mt-3">
+                      <button
+                        className="btn btn-primary me-2"
+                        onClick={() => handlePrev(section.key)}
+                      >
+                        <FaAngleLeft />
+                      </button>
+
+                      <span>
+                        {pages[section.key]} / {maxPage || 1}
+                      </span>
+
+                      <button
+                        className="btn btn-primary ms-2"
+                        onClick={() =>
+                          handleNext(section.key, maxPage)
+                        }
+                      >
+                        <FaAngleRight />
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}

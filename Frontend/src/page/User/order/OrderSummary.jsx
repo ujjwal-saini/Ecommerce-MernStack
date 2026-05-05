@@ -14,7 +14,7 @@ function OrderSummary() {
   const dispatch = useDispatch();
 
   const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.qty,
+    (sum, item) => sum + (item.discountPrice || item.price) * item.qty,
     0
   );
 
@@ -35,7 +35,7 @@ function OrderSummary() {
       address: user.profile.address.fullAddress,
       items: cartItems.map(item => ({
         name: item.name,
-        price: item.price,
+        price: item.discountPrice || item.price,
         image: item.mainImage,
         quantity: item.qty
       })),
@@ -89,7 +89,7 @@ function OrderSummary() {
       {cartItems.map((item) => (
         <div key={item._id} className="d-flex justify-content-between">
           <p>{item.name}</p>
-          <p>₹{item.price * item.qty}</p>
+          <p>₹{item.discountPrice || item.price * item.qty}</p>
         </div>
       ))}
 

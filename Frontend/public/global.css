@@ -595,7 +595,7 @@ body[data-theme="dark"] .btn-outline-theme {
 /* SIDEBAR */
 .chat-sidebar {
   position: fixed;
-  top: 0;
+  top: 70px;
   right: 0;
   width: 350px;
   height: 80vh;

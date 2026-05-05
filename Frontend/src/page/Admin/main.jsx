@@ -3,11 +3,11 @@ import axios from "axios";
 import { AuthContext } from "../../middleware/authContext";
 import { FaUsers, FaBox, FaShoppingCart, FaRupeeSign } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import {Chart as ChartJS, BarElement,CategoryScale,LinearScale,Tooltip,Legend,} from "chart.js";
+import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import Loader from "../../components/loading";
 
-ChartJS.register( BarElement,CategoryScale,LinearScale,Tooltip,Legend );
+ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
 
 function Adminmain() {
   const { API } = useContext(AuthContext);
@@ -61,7 +61,6 @@ function Adminmain() {
       },
     ],
   };
-  console.log(birthday,"birthdy");
 
   return (
     <div className="container-fluid p-4 bg-light min-vh-100">
@@ -69,7 +68,7 @@ function Adminmain() {
       <h2 className="fw-bold mb-4">Admin Dashboard</h2>
       {loading ? (
         <div className="text-center mt-5">
-          <Loader/>
+          <Loader />
         </div>
       ) : (
         <>
@@ -133,7 +132,7 @@ function Adminmain() {
               <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
                 <div
                   className="p-4 text-white"
-                  style={{ background:"linear-gradient(135deg,#ff4b2b,#ff416c,#ff9a44)" }}>
+                  style={{ background: "linear-gradient(135deg,#ff4b2b,#ff416c,#ff9a44)" }}>
                   <div className="d-flex justify-content-between">
                     <div>
                       <h5 className="fw-bold">🎂 Birthday Celebration</h5>
@@ -166,7 +165,7 @@ function Adminmain() {
                                 background:
                                   "linear-gradient(45deg,#ff416c,#ff4b2b)"
                               }}
-                              src={u.profilePic}/>
+                              src={u.profilePic} />
                             <div className="ms-3">
                               <h6 className="fw-bold mb-0">
                                 {u.name}

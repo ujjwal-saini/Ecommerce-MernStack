@@ -91,14 +91,12 @@ function UserOrders() {
     };
 
     useEffect(() => {
-
         if (user) {
             getOrders();
         }
-
     }, [user]);
 
-        
+
 
     return (
         <div className="container-fluid container-md mt-3 mb-5 px-2 px-md-3">
@@ -183,7 +181,7 @@ function UserOrders() {
                                         <div className="ms-md-3 text-center text-md-start">
                                             <h6>{item.name}</h6>
                                             <p className="text-success mb-1">
-                                                ₹{item.price}
+                                                ₹{item.discountPrice || item.price}
                                             </p>
                                             <p className="mb-0">
                                                 Quantity: {item.quantity || 1}
