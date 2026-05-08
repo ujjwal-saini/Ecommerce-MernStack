@@ -1,45 +1,53 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   addToCart,
   increaseQty,
   decreaseQty,
   removeFromCart,
 } from "../redux/cartSlice";
-import {
-  addToWishlist,
-  removeFromWishlist,
-} from "../redux/wishlistSlice";
+
+import { addToWishlist, removeFromWishlist } from "../redux/wishlistSlice";
+
 import Swal from "sweetalert2";
 import { AuthContext } from "../middleware/authContext";
 import axios from "axios";
+
 import { FaShoppingCart, FaBolt, FaHeart, FaRegHeart } from "react-icons/fa";
 
 function Card({ products = [] }) {
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cart.items);
+
   const wishlistItems = useSelector((state) => state.wishlist?.items || []);
 
   const { isLoggedIn, user, theme, API } = useContext(AuthContext);
 
+  // LOGIN POPUP
   const showLoginPopup = () => {
     Swal.fire({
       title: "Login Required",
       text: "Please login to continue",
       icon: "warning",
       confirmButtonText: "Login",
+      background: theme === "dark" ? "#0f0f0f" : "#fff",
+      color: theme === "dark" ? "#fff" : "#000",
     }).then((result) => {
-      if (result.isConfirmed) navigate("/login");
+      if (result.isConfirmed) {
+        navigate("/login");
+      }
     });
   };
 
-  // 🛒 CART FUNCTIONS
+  // ADD TO CART
   const handleAddToCart = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
-    console.log(item);
+
     dispatch(addToCart(item));
 
     try {
@@ -53,6 +61,7 @@ function Card({ products = [] }) {
     }
   };
 
+  // INCREASE QTY
   const handleIncreaseQty = async (item) => {
     const cartItem = cartItems.find((ci) => ci._id === item._id);
 
@@ -62,7 +71,10 @@ function Card({ products = [] }) {
         title: "Stock Limit Reached",
         timer: 1500,
         showConfirmButton: false,
+        background: theme === "dark" ? "#0f0f0f" : "#fff",
+        color: theme === "dark" ? "#fff" : "#000",
       });
+
       return;
     }
 
@@ -79,6 +91,7 @@ function Card({ products = [] }) {
     }
   };
 
+  // DECREASE QTY
   const handleDecreaseQty = async (item) => {
     const cartItem = cartItems.find((ci) => ci._id === item._id);
 
@@ -104,13 +117,16 @@ function Card({ products = [] }) {
     }
   };
 
+  // BUY NOW
   const handleBuyNow = (item) => {
     if (!isLoggedIn) return showLoginPopup();
+
     handleAddToCart(item);
+
     navigate("/addtocart");
   };
 
-  // WISHLIST FUNCTION
+  // WISHLIST
   const handleWishlist = async (item) => {
     if (!isLoggedIn) return showLoginPopup();
 
@@ -130,6 +146,8 @@ function Card({ products = [] }) {
           title: "Removed from Wishlist",
           timer: 1200,
           showConfirmButton: false,
+          background: theme === "dark" ? "#0f0f0f" : "#fff",
+          color: theme === "dark" ? "#fff" : "#000",
         });
       } else {
         dispatch(addToWishlist(item));
@@ -144,6 +162,8 @@ function Card({ products = [] }) {
           title: "Added to Wishlist",
           timer: 1200,
           showConfirmButton: false,
+          background: theme === "dark" ? "#0f0f0f" : "#fff",
+          color: theme === "dark" ? "#fff" : "#000",
         });
       }
     } catch (err) {
@@ -151,14 +171,13 @@ function Card({ products = [] }) {
     }
   };
 
-
   return (
-    <div className="container-fluid mt-4">
-      <div className="row row-cols-2 row-cols-sm-2 row-cols-md-4 g-4">
+    <div className="container-fluid ">
+      <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
 
-          //  Average Rating
+          // AVG RATING
           const avgRating =
             item.reviews && item.reviews.length > 0
               ? (
@@ -167,130 +186,183 @@ function Card({ products = [] }) {
               ).toFixed(1)
               : 4.2;
 
-          const isWishlisted = wishlistItems.find(
-            (w) => w._id === item._id
-          );
+          // WISHLIST CHECK
+          const isWishlisted = wishlistItems.find((w) => w._id === item._id);
 
           return (
-            <div
-              className="col d-flex justify-content-center"
-              key={item._id}
-            >
+            <div className="col" key={item._id}>
               <div
-                className={`card h-100 shadow border-0 ${theme === "dark" ? "bg-dark text-white" : ""
+                className={`card border-0 h-100 overflow-hidden ${theme === "dark"
+                  ? "bg-black text-light"
+                  : "bg-white text-dark"
                   }`}
-                style={{ width: "300px" }}
+                style={{
+                  borderRadius: "22px",
+                  transition: "0.3s ease",
+                  boxShadow:
+                    theme === "dark"
+                      ? "0 5px 20px rgba(255,255,255,0.05)"
+                      : "0 5px 20px rgba(0,0,0,0.08)",
+                  border:
+                    theme === "dark"
+                      ? "1px solid #1f1f1f"
+                      : "1px solid #f1f1f1",
+                }}
               >
                 {/* IMAGE */}
-                <div style={{ position: "relative" }} className="d-flex overflow-hidden rounded-t-lg justify-content-center mb-3">
-                  <Link to={`/productdetail/${item._id}`}>
-
-                    {/* MAIN IMAGE */}
+                <div
+                  className="position-relative overflow-hidden d-flex justify-content-center align-items-center"
+                  style={{
+                    height: "250px",
+                    background: theme === "dark" ? "#0a0a0a" : "#f8f9fa",
+                  }}
+                >
+                  <Link
+                    to={`/productdetail/${item._id}`}
+                    className="w-100 h-100 d-flex justify-content-center align-items-center"
+                  >
                     <img
                       src={item.mainImage}
                       alt={item.name}
-                      className="w-auto"
                       style={{
+                        width: "100%",
                         height: "220px",
-                        objectFit: "cover",
-                        borderTopLeftRadius: "8px",
-                        borderTopRightRadius: "8px",
+                        objectFit: "contain",
+                        transition: "0.3s",
+                        padding: "15px",
                       }}
                     />
-                    {/* +MORE BADGE */}
-                    {item.images?.length > 2 && (
-                      <div
-                        style={{
-                          position: "absolute",
-                          bottom: "-30px",
-                          right: "5px",
-                          width: "60px",
-                          height: "28px",
-                          background: "rgba(0,0,0,0.6)",
-                          color: "white",
-                          fontSize: "12px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          borderRadius: "6px",
-                        }}
-                      >
-                        +{item.images.length} More
-                      </div>
-                    )}
                   </Link>
 
-                  {/*  WISHLIST */}
+                  {/* MORE BADGE */}
+                  {item.images?.length > 2 && (
+                    <div
+                      className="position-absolute"
+                      style={{
+                        bottom: "12px",
+                        left: "12px",
+                        background: "rgba(0,0,0,0.7)",
+                        color: "#fff",
+                        padding: "5px 10px",
+                        borderRadius: "20px",
+                        fontSize: "11px",
+                        backdropFilter: "blur(5px)",
+                      }}
+                    >
+                      +{item.images.length} More
+                    </div>
+                  )}
+
+                  {/* WISHLIST */}
                   <button
                     onClick={() => handleWishlist(item)}
+                    className="btn position-absolute"
                     style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      border: "none",
-                      background: "white",
+                      top: "12px",
+                      right: "12px",
+                      width: "42px",
+                      height: "42px",
                       borderRadius: "50%",
-                      padding: "6px 8px",
-                      cursor: "pointer",
-                      boxShadow: "0 2px 6px rgba(0,0,0,0.2)",
+                      background: theme === "dark" ? "#111" : "#fff",
+                      border:
+                        theme === "dark" ? "1px solid #222" : "1px solid #eee",
+                      boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
                     }}
                   >
-                    {isWishlisted ? (
-                      <FaHeart color="red" />
-                    ) : (
-                      <FaRegHeart />
-                    )}
+                    {isWishlisted ? <FaHeart color="red" /> : <FaRegHeart />}
                   </button>
                 </div>
 
                 {/* BODY */}
-                <div className="card-body d-flex flex-column  px-3 py-4">
-
-                  <h6 className="fw-semibold">{item.name}</h6>
+                <div className="card-body d-flex flex-column p-3">
+                  {/* PRODUCT NAME */}
+                  <h6
+                    className="fw-semibold mb-2"
+                    style={{
+                      minHeight: "42px",
+                      fontSize: "14px",
+                      lineHeight: "1.5",
+                    }}
+                  >
+                    {item.name}
+                  </h6>
 
                   {/* PRICE */}
-                  <div className="d-flex justify-content-between gap-2">
-                    <span className="text-success fw-bold">
+                  <div className="d-flex align-items-center gap-2 flex-wrap">
+                    <span
+                      className="fw-bold"
+                      style={{
+                        fontSize: "18px",
+                        color: "#16a34a",
+                      }}
+                    >
                       ₹{item.discountPrice || item.price}
                     </span>
 
                     {item.discountPrice && (
                       <>
-                        <span className="text-muted text-decoration-line-through small">
+                        <span
+                          className={`small text-decoration-line-through ${theme === "dark" ? "text-secondary" : "text-muted"
+                            }`}
+                        >
                           ₹{item.price}
                         </span>
 
-                        <span className="text-success small fw-bold">
+                        <span
+                          className="small fw-bold"
+                          style={{
+                            color: "#16a34a",
+                          }}
+                        >
                           {Math.round(
-                            ((item.price - item.discountPrice) /
-                              item.price) *
-                            100
+                            ((item.price - item.discountPrice) / item.price) *
+                            100,
                           )}
-                          % off
+                          % OFF
                         </span>
                       </>
                     )}
                   </div>
 
                   {/* DELIVERY */}
-                  <p className="small mt-1 mb-1">
+                  <div className="mt-2">
                     {item.freeDelivery ? (
-                      <span className="text-success fw-semibold">
+                      <span
+                        className="badge"
+                        style={{
+                          background: "#198754",
+                          fontWeight: "500",
+                        }}
+                      >
                         Free Delivery
                       </span>
                     ) : (
-                      <span className="text-muted">
+                      <span
+                        className={`small ${theme === "dark" ? "text-secondary" : "text-muted"
+                          }`}
+                      >
                         Paid Delivery
                       </span>
                     )}
-                  </p>
+                  </div>
 
                   {/* REVIEWS */}
-                  <div className="d-flex justify-content-start gap-2 mb-2">
-                    <span className="badge bg-success">
+                  <div className="d-flex align-items-center gap-2 mt-3 mb-3">
+                    <span
+                      className="badge"
+                      style={{
+                        background: "#16a34a",
+                        fontSize: "12px",
+                        padding: "6px 8px",
+                      }}
+                    >
                       {avgRating} ⭐
                     </span>
-                    <span className="text-muted small">
+
+                    <span
+                      className={`small ${theme === "dark" ? "text-secondary" : "text-muted"
+                        }`}
+                    >
                       ({item.reviews?.length || 0} Reviews)
                     </span>
                   </div>
@@ -298,31 +370,76 @@ function Card({ products = [] }) {
                   {/* BUTTONS */}
                   {!cartItem ? (
                     <div className="d-flex gap-2 mt-auto">
+                      {/* ADD */}
                       <button
-                        className="btn btn-primary flex-fill btn-sm"
-                        onClick={() => handleAddToCart(item)}>
-                        <FaShoppingCart /> Add
+                        className="btn flex-fill fw-semibold"
+                        onClick={() => handleAddToCart(item)}
+                        style={{
+                          height: "42px",
+                          borderRadius: "12px",
+                          background: theme === "dark" ? "#111" : "#f1f1f1",
+                          color: theme === "dark" ? "#fff" : "#000",
+                          border:
+                            theme === "dark"
+                              ? "1px solid #222"
+                              : "1px solid #ddd",
+                        }}
+                      >
+                        <FaShoppingCart className="me-2" />
+                        Add
                       </button>
 
+                      {/* BUY */}
                       <button
-                        className="btn btn-warning flex-fill btn-sm"
-                        onClick={() => handleBuyNow(item)}>
-                        <FaBolt /> Buy
+                        className="btn flex-fill fw-semibold text-white"
+                        onClick={() => handleBuyNow(item)}
+                        style={{
+                          height: "42px",
+                          borderRadius: "12px",
+                          border: "none",
+                          background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
+                        }}
+                      >
+                        <FaBolt className="me-2" />
+                        Buy
                       </button>
                     </div>
                   ) : (
-                    <div className="d-flex justify-content-center gap-3 mt-auto">
+                    <div className="d-flex justify-content-between align-items-center mt-auto">
                       <button
-                        className="btn btn-outline-secondary btn-sm"
-                        onClick={() => handleDecreaseQty(item)}>
+                        className="btn btn-sm"
+                        onClick={() => handleDecreaseQty(item)}
+                        style={{
+                          width: "42px",
+                          height: "42px",
+                          borderRadius: "12px",
+                          background: theme === "dark" ? "#111" : "#f1f1f1",
+                          color: theme === "dark" ? "#fff" : "#000",
+                        }}
+                      >
                         −
                       </button>
 
-                      <span className="fw-bold">{cartItem.qty}</span>
+                      <span
+                        className="fw-bold"
+                        style={{
+                          fontSize: "16px",
+                        }}
+                      >
+                        {cartItem.qty}
+                      </span>
 
                       <button
-                        className="btn btn-outline-secondary btn-sm"
-                        onClick={() => handleIncreaseQty(item)}>
+                        className="btn btn-sm"
+                        onClick={() => handleIncreaseQty(item)}
+                        style={{
+                          width: "42px",
+                          height: "42px",
+                          borderRadius: "12px",
+                          background: theme === "dark" ? "#111" : "#f1f1f1",
+                          color: theme === "dark" ? "#fff" : "#000",
+                        }}
+                      >
                         +
                       </button>
                     </div>

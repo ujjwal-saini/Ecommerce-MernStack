@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Routes, Route, BrowserRouter } from 'react-router-dom'
 import Landing from './page/User/landing'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -37,14 +37,34 @@ import ChatBot from "react-chatbotify";
 import ScrollToTop from './page/scrollToTop';
 import Wishlist from './page/User/wishList';
 import ProductPreview from './page/Admin/productPreview';
+import { AuthContext } from './middleware/authContext';
 function App() {
+  const { theme } = useContext(AuthContext);
   return (
     <BrowserRouter>
       <ScrollToTop />
       {/* <ChatBot /> */}
       <CartLoader />
       <Getproductsdata />
-      <ToastContainer position="top-left" autoClose={2000} />
+      <ToastContainer
+        position="top-center"
+        hideProgressBar
+        newestOnTop
+        pauseOnHover
+        theme={theme === "dark" ? "dark" : "light"}
+        toastStyle={{
+          borderRadius: "18px",
+          minHeight: "48px",
+          padding: "10px 16px",
+          background: theme === "dark" ? "#212529" : "#ffffff",
+          color: theme === "dark" ? "#f8f9fa" : "#212529",
+          border:
+            theme === "dark"
+              ? "1px solid rgba(255,255,255,0.08)"
+              : "1px solid #e9ecef",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+        }}
+      />
       <Routes>
         <Route path='login' element={<Login />} />
         <Route path='signup' element={<Signup />} />

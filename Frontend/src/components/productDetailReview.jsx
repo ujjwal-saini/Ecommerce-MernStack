@@ -50,7 +50,7 @@ function ProductDetailReview({ product }) {
     <div className="container mt-3">
 
       {/*  Reviews List */}
-      <div className={`card p-3 mb-4 ${theme === "dark" ? "bg-dark text-light border-secondary" : ""}`}>
+      <div className={`card p-3 mb-4 ${theme === "dark" ? "bg-black text-light border-secondary" : ""}`}>
         <h5>Customer Reviews ({reviews.length})</h5>
 
         {reviews.length === 0 && <p>No reviews yet</p>}
@@ -92,7 +92,7 @@ function ProductDetailReview({ product }) {
       </div>
 
       {/* 🔹 Write Review */}
-      <div className={`card p-3 ${theme === "dark" ? "bg-dark text-light border-secondary" : ""}`}>
+      <div className={`card p-3 ${theme === "dark" ? "bg-black text-light border-secondary" : ""}`}>
         <h5>Write a Review</h5>
 
         {/* Rating  traverse usning loop */}
@@ -115,10 +115,10 @@ function ProductDetailReview({ product }) {
         {/* comemnt input submit btn */}
         <form onSubmit={handleSubmit}>
           <textarea
-            className={`form-control mb-2 ${theme === "dark" ? "bg-dark text-light border-secondary" : ""}`}
+            className={`form-control mb-2 ${theme === "dark" ? "bg-black text-light border-secondary" : ""}`}
             placeholder="Write comment..."
             value={comment}
-            onChange={(e) => setComment(e.target.value)}/>
+            onChange={(e) => setComment(e.target.value)} />
 
           <button className={`btn ${theme === "dark" ? "btn-outline-light" : "btn-primary"}`}>
             Submit Review

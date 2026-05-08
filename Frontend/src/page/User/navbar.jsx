@@ -1,181 +1,136 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../middleware/authContext";
 import { useSelector } from "react-redux";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearchOutline } from "react-icons/io5";
-import { FaShopify } from "react-icons/fa";
-import SearchPage from "../../components/searchPage";
+import { FaShopify, FaMoon, FaSun, FaBars, FaTimes, } from "react-icons/fa";
+import { toast } from "react-toastify";
+import MobileBottomNav from "./mobileBotomnav";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [productSearch, setproductSearch] = useState("");
+
   const { logout, user, theme, toggleTheme } = useContext(AuthContext);
+
+  const [productSearch, setproductSearch] = useState("");
+  const [Suggestionfilter, setSuggestionfilter] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const [mobileMenu, setMobileMenu] = useState(false);
+
   const cartItems = useSelector((state) => state.cart.items);
   const products = useSelector((state) => state.product.products);
-  const cartCount = cartItems.reduce((total, item) => total + item.qty, 0);
-  const [Suggestionfilter, setSuggestionfilter] = useState(0);
-  const [activeIndex, setActiveIndex] = useState(-1);
   const wishlistItems = useSelector((state) => state.wishlist.items);
+
+  const cartCount = cartItems.reduce((total, item) => total + item.qty, 0);
+
   const wishlistCount = wishlistItems.length;
 
-
-  const formSubmit = (e) => {
-    e.preventDefault();
-    setSuggestionfilter([]);
-    navigate(`/?search=${productSearch.trim()}`);
-  };
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/login");
-  };
-
-  const handleKeyDown = (e) => {
-    if (!Suggestionfilter.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((prev) => prev < Suggestionfilter.length - 1 ? prev + 1 : prev);
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((prev) => prev > 0 ? prev - 1 : 0
-      );
-    }
-    if (e.key === "Enter") {
-      if (activeIndex >= 0) {
-        e.preventDefault();
-        const selectedItem = Suggestionfilter[activeIndex];
-        navigate(`/productdetail/${selectedItem._id}`);
-        setSuggestionfilter([]);
-      }
-    }
-  };
-
-  const suggestionFunc = () => {
+  // SEARCH FILTER
+  useEffect(() => {
     if (!productSearch.trim()) {
       setSuggestionfilter([]);
       return;
     }
 
     const result = products.filter((item) =>
-      item.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.description.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.category.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.brand.toLowerCase().includes(productSearch.toLowerCase())
+      item.name.toLowerCase().includes(productSearch.toLowerCase()),
     );
-    setSuggestionfilter(result);
-  }
 
-  useEffect(() => {
-    suggestionFunc();
+    setSuggestionfilter(result);
   }, [productSearch, products]);
+  const handleLogout = async () => { try { await logout(); toast.success("Logged out successfully", { autoClose: 1500, }); setTimeout(() => { navigate("/login"); }, 1600); } catch (error) { toast.error("Something went wrong!"); } };
+
+  const formSubmit = (e) => {
+    e.preventDefault();
+    navigate(`/?search=${productSearch}`);
+    setSuggestionfilter([]);
+  };
 
   return (
-    <nav
-      className={`navbar navbar-expand-lg px-2 px-md-3 sticky-top ${theme === "dark"
-        ? "navbar-dark bg-dark"
-        : "navbar-light bg-white shadow-sm"
-        }`}>
-      <div className="container-fluid d-flex flex-wrap align-items-center">
-        {/* LEFT: Logo */}
+    <nav className={`navbar navbar-expand-lg sticky-top shadow-sm ${theme === "dark" ? "bg-black navbar-dark" : "bg-white navbar-light"
+      }`}>
+      <div className="container-fluid d-flex flex-wrap flex-lg-nowrap align-items-center py-1">
+        {/* LOGO + TOGGLER */}
         <div className="d-flex align-items-center">
           <button
-            className="navbar-toggler border-0"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarContent"
+            className={`btn d-lg-none ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+            onClick={() =>
+              setMobileMenu(!mobileMenu)
+            }
           >
-            <span className="navbar-toggler-icon"></span>
+            {mobileMenu ? (
+              <FaTimes size={20} />
+            ) : (
+              <FaBars size={20} />
+            )}
           </button>
 
-          <Link className="navbar-brand d-flex fw-bold m-0" to="/">
-            <FaShopify style={{ fontSize: "28px" }} />
-            <span className="ps-1" style={{ fontSize: "22px" }}>
-              shopra
-            </span>
+          <Link
+            className="navbar-brand fw-bold d-flex align-items-center"
+            to="/">
+            <FaShopify
+              className="me-2"
+              style={{ color: "#ff7b00", fontSize: 28 }}
+            />
+            Shopra
           </Link>
         </div>
-        {/* NAV LINKS */}
-        <div
-          className="collapse navbar-collapse order-3 order-lg-1 ms-4"
-          id="navbarContent"
-        >
-          <ul className="navbar-nav me-auto mt-2 mt-lg-0">
 
-            <li className="nav-item">
-              <Link className="nav-link" to="/">Home</Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" to="allproducts/men">Men</Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" to="allproducts/women">Women</Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" to="allproducts/sports">Sports</Link>
-            </li>
-
-            <li className="nav-item">
-              <Link
-                to="/location"
-                className="nav-link text-danger d-flex align-items-center gap-1"
-              >
-                <CiLocationOn />
-                {user?.profile?.address?.city || "Location"}
-              </Link>
-            </li>
-
-          </ul>
-        </div>
-
-        {/* SEARCH BAR */}
+        {/* SEARCH (RESPONSIVE FIX) */}
         <form
           onSubmit={formSubmit}
-          className="order-2 order-lg-2 flex-grow-1 mx-lg-3 mt-2 mt-lg-0">
-          <div className="input-group input-group-sm">
+          className="order-3 order-lg-2 col-12 col-lg mx-lg-4 mt-2 mt-lg-0 position-relative"
+          style={{ maxWidth: "650px" }}
+        >
+          <div className="input-group">
             <input
-              className="form-control px-2"
               type="search"
-              placeholder="Search for shoes, mobiles, fashion..."
+              className={`form-control ${theme === "dark" ? "bg-dark text-light" : ""
+                }`}
+              placeholder="Search products..."
               value={productSearch}
-              onChange={(e) => {
-                setproductSearch(e.target.value);
-                setActiveIndex(-1);
-              }}
-              onKeyDown={(e) => handleKeyDown(e)} />
+              onChange={(e) => setproductSearch(e.target.value)}
+              style={{ height: 35 }}
+            />
 
-            <button className="btn btn-dark" type="submit">
+            <button
+              className="btn text-white d-flex align-items-center justify-content-center"
+              style={{
+                height: 35,
+                background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
+              }}
+            >
               <IoSearchOutline />
             </button>
           </div>
+
+          {/* suggestions */}
           {Suggestionfilter.length > 0 && (
             <div
-              className="position-absolute bg-white shadow w-100 mt-1 rounded"
-              style={{ zIndex: 999 }}>
-              {Suggestionfilter.slice(0, 6).map((item, index) => (
+              className={`position-absolute w-100 mt-2 rounded shadow ${theme === "dark" ? "bg-black text-light" : "bg-white"
+                }`}
+              style={{ zIndex: 999 }}
+            >
+              {Suggestionfilter.slice(0, 6).map((item) => (
                 <Link
-                  key={index}
+                  key={item._id}
                   to={`/productdetail/${item._id}`}
-                  className={`d-flex align-items-center gap-2 p-2 text-dark text-decoration-none border-bottom 
-                  ${activeIndex === index ? "bg-primary text-white" : ""}`}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => { setSuggestionfilter([]), setproductSearch("") }}>
-                  {item.mainImage && (
-                    <img
-                      src={item.mainImage}
-                      alt=""
-                      width="40"
-                      height="40"
-                      className="rounded"
-                    />
-                  )}
+                  className="d-flex gap-2 p-2 text-decoration-none"
+                  onClick={() => setSuggestionfilter([])}
+                >
+                  <img
+                    src={item.mainImage}
+                    width="40"
+                    height="40"
+                    style={{ objectFit: "cover" }}
+                  />
                   <div>
-                    <div style={{ fontSize: "14px" }}>{item.name}</div>
-                    <small className="text-muted">₹ {item.price}</small>
+                    <div>{item.name}</div>
+                    <small>₹{item.price}</small>
                   </div>
                 </Link>
               ))}
@@ -183,11 +138,23 @@ function Navbar() {
           )}
         </form>
 
-        {/* RIGHT SIDE */}
-        <div className="d-flex align-items-center gap-2 order-1 order-lg-3 ms-auto">
+        {/* RIGHT ICONS */}
 
-          {/* Cart */}
-          <Link to="addtocart" className="btn btn-sm position-relative">
+        <div className="d-flex align-items-center gap-2 ms-auto order-2">
+
+          {/* THEME */}
+          <button
+            onClick={toggleTheme}
+            className="btn btn-outline-secondary"
+          >
+            {theme === "dark" ? <FaSun /> : <FaMoon />}
+          </button>
+
+          {/* CART */}
+          <Link
+            to="addtocart"
+            className="btn btn-outline-dark position-relative d-none d-lg-block "
+          >
             🛒
             {cartCount > 0 && (
               <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">
@@ -195,13 +162,21 @@ function Navbar() {
               </span>
             )}
           </Link>
+          {/* WISHLIST */}
+          <Link
+            to="/wishlist"
+            className={`text-decoration-none d-flex flex-column align-items-center d-none d-lg-block ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+          >
+            ❤️
+            <small>Wishlist</small>
+          </Link>
 
-          {/* Theme */}
-          <button onClick={toggleTheme} className="btn btn-sm">
-            {theme === "dark" ? "🌙" : "☀️"}
-          </button>
 
-          {/* User */}
+
+          {/* USER DROPDOWN */}
           {user ? (
             <div className="dropdown">
               <div
@@ -213,32 +188,52 @@ function Navbar() {
                 <img
                   src={user.profile.profilePic}
                   alt="user"
-                  width="30"
-                  height="30"
+                  width="38"
+                  height="38"
                   className="rounded-circle border"
+                  style={{ objectFit: "cover" }}
                 />
-                <span className="d-none d-lg-inline ms-2 small">
+
+                <span className="d-none d-lg-inline ms-2 fw-semibold">
                   {user.name}
                 </span>
               </div>
 
-              <ul className="dropdown-menu dropdown-menu-end shadow border-0 mt-2 dropdown-nav ">
+              <ul
+                className={`dropdown-menu dropdown-menu-end border-0 shadow-lg mt-3 ${theme === "dark"
+                  ? "bg-black text-light dropdown-dark"
+                  : "bg-white dropdown-light"
+                  }`}
+                style={{
+                  minWidth: "220px",
+                  borderRadius: "18px",
+                  overflow: "hidden",
+                }}
+              >
                 <li>
-                  <Link className="dropdown-item" to="profile">
+                  <Link
+                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark"
+                      ? "text-light"
+                      : "text-dark"
+                      }`}
+                    to="profile"
+                  >
                     Profile
                   </Link>
                 </li>
+
                 <li>
                   <Link
                     to="wishlist"
-                    className="dropdown-item position-relative"
+                    className={`dropdown-item custom-dropdown-item py-2 position-relative ${theme === "dark"
+                      ? "text-light"
+                      : "text-dark"
+                      }`}
                   >
                     Wishlist
 
                     {wishlistCount > 0 && (
-                      <span
-                        className="badge bg-danger position-absolute top-0 end-0"
-                      >
+                      <span className="badge bg-danger position-absolute top-50 end-0 translate-middle-y me-2">
                         {wishlistCount}
                       </span>
                     )}
@@ -246,7 +241,13 @@ function Navbar() {
                 </li>
 
                 <li>
-                  <Link className="dropdown-item" to="/myorders">
+                  <Link
+                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark"
+                      ? "text-light"
+                      : "text-dark"
+                      }`}
+                    to="/myorders"
+                  >
                     Orders
                   </Link>
                 </li>
@@ -258,7 +259,7 @@ function Navbar() {
                 <li>
                   <button
                     onClick={handleLogout}
-                    className="dropdown-item text-danger"
+                    className="dropdown-item custom-dropdown-item text-danger py-2"
                   >
                     Logout
                   </button>
@@ -268,15 +269,234 @@ function Navbar() {
           ) : (
             <Link
               to="/login"
-              className="btn btn-sm btn-warning fw-bold d-md-block"
+              className="btn text-white"
+              style={{
+                background:
+                  "linear-gradient(90deg,#ff7b00,#ff9d42)",
+                borderRadius: "12px",
+                padding: "8px 18px",
+              }}
             >
               Login
             </Link>
           )}
 
         </div>
+        {/* MENU */}
+        <div
+          className="collapse navbar-collapse align-items-center"
+          id="navbarContent"
+        >
+          <ul className="navbar-nav gap-2">
+
+            <li>
+              <Link className="nav-link custom-nav-link" to="/">
+                Home
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                className="nav-link custom-nav-link"
+                to="allproducts/men"
+              >
+                Men
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                className="nav-link custom-nav-link"
+                to="allproducts/women"
+              >
+                Women
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                className="nav-link custom-nav-link"
+                to="allproducts/sports"
+              >
+                Sports
+              </Link>
+            </li>
+
+            <li className="nav-link text-danger d-flex align-items-center gap-1">
+              <Link className="text-decoration-none d-flex justify-content-center align-items-center" to={"/location"}>
+                <CiLocationOn />
+                {user?.profile?.address?.city || "Location"}
+              </Link>
+            </li>
+
+          </ul>
+
+          {/* MOBILE MENU */}
+          {mobileMenu && (
+            <div
+              className={`d-lg-none mt-3 px-2 pb-3 ${theme === "dark"
+                ? "bg-black"
+                : "bg-white"
+                }`}
+            >
+              <div className="d-flex flex-column gap-2">
+
+                <Link
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                    }`}
+                  to="/"
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                >
+                  Home
+                </Link>
+
+                <Link
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                    }`}
+                  to="/allproducts/men"
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                >
+                  Men
+                </Link>
+
+                <Link
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                    }`}
+                  to="/allproducts/women"
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                >
+                  Women
+                </Link>
+
+                <Link
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                    }`}
+                  to="/allproducts/sports"
+                  onClick={() =>
+                    setMobileMenu(false)
+                  }
+                >
+                  Sports
+                </Link>
+
+                <Link
+                  to="/location"
+                  className="text-decoration-none text-danger py-2 px-3"
+                >
+                  <CiLocationOn />
+
+                  {" "}
+                  {user?.profile?.address?.city ||
+                    "Location"}
+                </Link>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
+
+
+      {/* MOBILE MENU */}
+      {mobileMenu && (
+
+        <div
+          className={`d-lg-none w-100 mt-2 px-3 pb-3 ${theme === "dark"
+            ? "bg-black"
+            : "bg-white"
+            }`}
+        >
+
+          <div className="d-flex flex-column gap-2">
+
+            <Link
+              to="/"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                ? "text-light"
+                : "text-dark"
+                }`}
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            >
+              Home
+            </Link>
+
+            <Link
+              to="/allproducts/men"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                ? "text-light"
+                : "text-dark"
+                }`}
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            >
+              Men
+            </Link>
+
+            <Link
+              to="/allproducts/women"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                ? "text-light"
+                : "text-dark"
+                }`}
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            >
+              Women
+            </Link>
+
+            <Link
+              to="/allproducts/sports"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
+                ? "text-light"
+                : "text-dark"
+                }`}
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            >
+              Sports
+            </Link>
+
+            <Link
+              to="/location"
+              className="text-decoration-none text-danger py-2 px-3"
+              onClick={() =>
+                setMobileMenu(false)
+              }
+            >
+              <CiLocationOn />
+
+              {" "}
+
+              {user?.profile?.address?.city ||
+                "Location"}
+            </Link>
+
+          </div>
+
+        </div>
+
+      )}
+      <MobileBottomNav />
     </nav>
+
   );
 }
 

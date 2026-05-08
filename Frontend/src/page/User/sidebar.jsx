@@ -1,226 +1,392 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../middleware/authContext";
 
-function Sidebar() {
+import {
+  FaHome,
+  FaUser,
+  FaChevronDown,
+  FaHeart,
+  FaShoppingCart,
+  FaBoxOpen,
+  FaMapMarkerAlt,
+  FaCog,
+  FaHeadset,
+  FaQuestionCircle,
+  FaPhoneAlt,
+  FaSignOutAlt,
+  FaTags,
+} from "react-icons/fa";
 
-  const { user } = useContext(AuthContext);
+import "bootstrap/dist/css/bootstrap.min.css";
+
+function Sidebar() {
+  const { user, theme } = useContext(AuthContext);
+
+  // DROPDOWN STATES
+  const [shopOpen, setShopOpen] = useState(true);
+  const [accountOpen, setAccountOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
+
+  // MENU STYLE
+  const menuBtnStyle = {
+    background: theme === "dark" ? "#111" : "#f8f9fa",
+    borderRadius: "14px",
+    padding: "12px 15px",
+    border: theme === "dark" ? "1px solid #222" : "1px solid #eee",
+  };
+
+  const linkClass = `d-block py-2 px-3 rounded text-decoration-none ${theme === "dark" ? "text-light" : "text-dark"
+    }`;
 
   return (
     <div
-      className="bg-dark text-white d-flex flex-column"
+      className={`d-flex flex-column ${theme === "dark"
+        ? "bg-black text-light"
+        : "bg-white text-dark"
+        }`}
       style={{
+        width: "280px",
         height: "100vh",
-        position: "fixed"
-      }}>
-
-      <div className="p-3 border-bottom">
-
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 1050,
+        overflowY: "auto",
+        borderRight:
+          theme === "dark"
+            ? "1px solid #1f1f1f"
+            : "1px solid #e9ecef",
+        transition: "0.3s ease",
+      }}
+    >
+      {/* USER */}
+      <div
+        className="p-4"
+        style={{
+          borderBottom:
+            theme === "dark"
+              ? "1px solid #1f1f1f"
+              : "1px solid #e9ecef",
+        }}
+      >
         {user ? (
-
-          <Link to="profile" className="text-decoration-none text-white">
-
+          <Link
+            to="/profile"
+            className="text-decoration-none"
+          >
             <div className="d-flex align-items-center gap-3">
-
+              {/* PROFILE */}
               <div
-                className="rounded-circle bg-warning d-flex justify-content-center align-items-center fw-bold text-dark"
+                className="rounded-circle overflow-hidden"
                 style={{
-                  width: "45px",
-                  height: "45px",
-                  fontSize: "18px"
-                }}>
-                {user.name.charAt(0).toUpperCase()}
+                  width: "55px",
+                  height: "55px",
+                  border: "2px solid #ff7b00",
+                }}
+              >
+                <img
+                  src={user?.profile?.profilePic}
+                  alt="profile"
+                  width="100%"
+                  height="100%"
+                  style={{
+                    objectFit: "cover",
+                  }}
+                />
               </div>
 
-              <div className="fw-semibold">
-                Welcome, {user.name}
-              </div>
+              {/* INFO */}
+              <div>
+                <div
+                  className={`small ${theme === "dark"
+                    ? "text-secondary"
+                    : "text-muted"
+                    }`}
+                >
+                  Welcome Back
+                </div>
 
+                <div
+                  className={`fw-bold ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                    }`}
+                >
+                  {user?.name}
+                </div>
+              </div>
             </div>
-
           </Link>
-
         ) : (
-          <span className="text-secondary">
-            Not logged in
-          </span>
-
+          <div
+            className={`${theme === "dark"
+              ? "text-secondary"
+              : "text-muted"
+              }`}
+          >
+            Not Logged In
+          </div>
         )}
-
       </div>
 
-      <ul className="list-unstyled ps-3 pt-2">
+      {/* MENU */}
+      <div className="p-3">
 
-        {/* Home */}
-        <li className="mb-1">
-
+        {/* SHOP */}
+        <div className="mb-3">
           <button
-            className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3"
-            data-bs-toggle="collapse"
-            data-bs-target="#home-collapse"
-            aria-expanded="true">
-            Home
-          </button>
-
-          <div className="collapse show" id="home-collapse">
-
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-
-              <li>
-                <Link to="/" className="text-white text-decoration-none d-block py-1 ps-4">
-                  Overview
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/updates" className="text-white text-decoration-none d-block py-1 ps-4">
-                  Updates
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/reports" className="text-white text-decoration-none d-block py-1 ps-4">
-                  Reports
-                </Link>
-              </li>
-
-            </ul>
-          </div>
-        </li>
-
-        {/* Dashboard */}
-        <li className="mb-1">
-
-          <button
-            className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3"
-            data-bs-toggle="collapse"
-            data-bs-target="#dashboard-collapse"
-            aria-expanded="true">
-            Dashboard
-          </button>
-
-          <div className="collapse show" id="dashboard-collapse">
-
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-
-              <li>
-                <Link to="/dashboard" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Overview
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/dashboard/weekly" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Weekly
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/dashboard/monthly" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Monthly
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/dashboard/yearly" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Annually
-                </Link>
-              </li>
-
-            </ul>
-          </div>
-        </li>
-
-        {/* Orders */}
-        <li className="mb-1">
-
-          <button
-            className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3 collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#orders-collapse"
-            aria-expanded="false"
+            onClick={() => setShopOpen(!shopOpen)}
+            className={`btn w-100 d-flex justify-content-between align-items-center ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+            style={menuBtnStyle}
           >
-            Orders
+            <span className="d-flex align-items-center gap-2">
+              <FaHome />
+              Shop
+            </span>
+
+            <FaChevronDown
+              size={12}
+              style={{
+                transition: "0.3s",
+                transform: shopOpen
+                  ? "rotate(180deg)"
+                  : "rotate(0deg)",
+              }}
+            />
           </button>
 
-          <div className="collapse" id="orders-collapse">
-
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          {shopOpen && (
+            <ul className="list-unstyled mt-2 ps-2">
 
               <li>
-                <Link to="/orders/new" className="text-white d-block py-1 text-decoration-none ps-4">
-                  New
+                <Link to="/" className={linkClass}>
+                  Home
                 </Link>
               </li>
 
               <li>
-                <Link to="/orders/processed" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Processed
+                <Link
+                  to="/allproducts/all"
+                  className={linkClass}
+                >
+                  All Products
                 </Link>
               </li>
 
               <li>
-                <Link to="/orders/shipped" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Shipped
+                <Link
+                  to="/allproducts/men"
+                  className={linkClass}
+                >
+                  Men Fashion
                 </Link>
               </li>
 
               <li>
-                <Link to="/orders/returned" className="text-white d-block py-1 text-decoration-none ps-4">
-                  Returned
+                <Link
+                  to="/allproducts/women"
+                  className={linkClass}
+                >
+                  Women Fashion
                 </Link>
               </li>
 
+              <li>
+                <Link
+                  to="/allproducts/sports"
+                  className={linkClass}
+                >
+                  Sports
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/offers"
+                  className={linkClass}
+                >
+                  <FaTags className="me-2" />
+                  Offers
+                </Link>
+              </li>
             </ul>
-          </div>
-        </li>
+          )}
+        </div>
 
-        {/* Account */}
-        <li className="mb-1">
-
+        {/* ACCOUNT */}
+        <div className="mb-3">
           <button
-            className="btn btn-toggle align-items-center rounded text-white w-100 text-start ps-3 collapsed"
-            data-bs-toggle="collapse"
-            data-bs-target="#account-collapse"
-            aria-expanded="false"
+            onClick={() =>
+              setAccountOpen(!accountOpen)
+            }
+            className={`btn w-100 d-flex justify-content-between align-items-center ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+            style={menuBtnStyle}
           >
-            Account
+            <span className="d-flex align-items-center gap-2">
+              <FaUser />
+              My Account
+            </span>
+
+            <FaChevronDown
+              size={12}
+              style={{
+                transition: "0.3s",
+                transform: accountOpen
+                  ? "rotate(180deg)"
+                  : "rotate(0deg)",
+              }}
+            />
           </button>
 
-          <div className="collapse" id="account-collapse">
-
-            <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-
-              <li>
-                <Link to="/new" className="text-white d-block py-1 text-decoration-none ps-4">
-                  New
-                </Link>
-              </li>
+          {accountOpen && (
+            <ul className="list-unstyled mt-2 ps-2">
 
               <li>
-                <Link to="/profile" className="text-white d-block py-1 text-decoration-none ps-4">
+                <Link
+                  to="/profile"
+                  className={linkClass}
+                >
+                  <FaUser className="me-2" />
                   Profile
                 </Link>
               </li>
 
               <li>
-                <Link to="/settings" className="text-white d-block py-1 text-decoration-none ps-4">
+                <Link
+                  to="/myorders"
+                  className={linkClass}
+                >
+                  <FaBoxOpen className="me-2" />
+                  My Orders
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/wishlist"
+                  className={linkClass}
+                >
+                  <FaHeart className="me-2" />
+                  Wishlist
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/addtocart"
+                  className={linkClass}
+                >
+                  <FaShoppingCart className="me-2" />
+                  Cart
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/location"
+                  className={linkClass}
+                >
+                  <FaMapMarkerAlt className="me-2" />
+                  Address
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/settings"
+                  className={linkClass}
+                >
+                  <FaCog className="me-2" />
                   Settings
                 </Link>
               </li>
 
               <li>
-                <Link to="/logout" className="text-danger d-block py-1 text-decoration-none ps-4">
-                  Sign out
+                <Link
+                  to="/logout"
+                  className="d-block py-2 px-3 rounded text-decoration-none text-danger"
+                >
+                  <FaSignOutAlt className="me-2" />
+                  Logout
                 </Link>
               </li>
 
             </ul>
-          </div>
-        </li>
+          )}
+        </div>
 
-      </ul>
+        {/* SUPPORT */}
+        <div className="mb-3">
+          <button
+            onClick={() =>
+              setSupportOpen(!supportOpen)
+            }
+            className={`btn w-100 d-flex justify-content-between align-items-center ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+            style={menuBtnStyle}
+          >
+            <span className="d-flex align-items-center gap-2">
+              <FaHeadset />
+              Support
+            </span>
 
+            <FaChevronDown
+              size={12}
+              style={{
+                transition: "0.3s",
+                transform: supportOpen
+                  ? "rotate(180deg)"
+                  : "rotate(0deg)",
+              }}
+            />
+          </button>
+
+          {supportOpen && (
+            <ul className="list-unstyled mt-2 ps-2">
+
+              <li>
+                <Link
+                  to="/help"
+                  className={linkClass}
+                >
+                  <FaQuestionCircle className="me-2" />
+                  Help Center
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/contact"
+                  className={linkClass}
+                >
+                  <FaPhoneAlt className="me-2" />
+                  Contact Us
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/faq"
+                  className={linkClass}
+                >
+                  FAQs
+                </Link>
+              </li>
+
+            </ul>
+          )}
+        </div>
+
+      </div>
     </div>
   );
 }

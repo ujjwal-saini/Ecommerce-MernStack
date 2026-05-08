@@ -90,7 +90,7 @@ function Main() {
 
   return (
     <div
-      className={`w-100 px-0 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"
+      className={`w-100 px-0 ${theme === "dark" ? "theme-black text-light" : "bg-light text-dark"
         }`}
     >
       <div className="px-2">
@@ -98,7 +98,7 @@ function Main() {
         {/*  SEARCH RESULT */}
         {search ? (
           <>
-            <h4 className="fw-bold mt-5 mb-3">
+            <h4 className="fw-bold  mb-3">
               Search Results ({count})
             </h4>
 
@@ -124,7 +124,7 @@ function Main() {
 
               return (
                 <div key={section.key}>
-                  <div className="d-flex justify-content-between mt-5 mb-3">
+                  <div className="d-flex justify-content-between  mb-3">
                     <h4>{section.title}</h4>
 
                     <Link to={`allproducts/${section.key}`}>
@@ -135,7 +135,7 @@ function Main() {
                   {data.length > 0 ? (
                     <Card products={data} />
                   ) : (
-                    <p className="text-muted">No products</p>
+                    <Loader />
                   )}
 
                   {/*  PAGINATION */}

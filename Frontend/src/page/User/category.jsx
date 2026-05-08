@@ -22,7 +22,7 @@ function Category() {
   const { theme } = useContext(AuthContext);
 
   return (
-    <div className={`container-fluid py-3 ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"}`}>
+    <div className={`container-fluid py-3 ${theme === "dark" ? "theme-black text-light" : "bg-light text-dark"}`}>
       {/*  Categories */}
       <div className="d-flex overflow-auto px-2" style={{ gap: "18px" }}>
         {categories.map((cat, index) => (
@@ -30,7 +30,7 @@ function Category() {
 
             {/* Image Box */}
             <div
-              className={`${theme === "dark" ? "bg-dark border border-secondary" : "bg-white"} mx-2 `}
+              className={`${theme === "dark" ? "theme-black border border-secondary" : "bg-white"} mx-2 `}
               style={{
                 width: "95px", height: "100px", borderRadius: "40px 40px 12px 12px",
                 overflow: "hidden", margin: "auto"
@@ -42,7 +42,7 @@ function Category() {
             </div>
 
             {/*  Label */}
-            <p className={`mt-2 mb-0 text-decoration-none ${theme === "dark" ? "bg-dark text-light" : "bg-light text-dark"} `} style={{
+            <p className={`mt-2 mb-0 text-decoration-none ${theme === "dark" ? "theme-black text-light" : "bg-light text-dark"} `} style={{
               fontSize: "14px", textDecorationLine: "none"
             }}>
               {cat.name}

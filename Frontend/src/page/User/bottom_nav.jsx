@@ -6,83 +6,55 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function BottomNav({ toggleSidebar }) {
   return (
-    <div className="container-fluid bottom-navbar-wrapper px-0">
-
+    <div className="container-fluid bottom-navbar-wrapper px-0   d-none d-lg-block">
       <nav className="navbar navbar-expand-lg bottom-navbar px-3">
-
         <div className="container-fluid">
-
           <div className="d-flex align-items-center">
-            <button
-              className="btn btn-outline-theme me-3"
-              onClick={toggleSidebar}>
+            <button className="btn btn-outline-theme me-3" onClick={toggleSidebar}>
               ☰
             </button>
             <span className="fw-bold bottom-nav-title">
               SHOP BY CATEGORIES
             </span>
           </div>
-
-          <button
-            className="navbar-toggler ms-auto"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#bottomNav">
+          <button className="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#bottomNav">
             <span className="navbar-toggler-icon"></span>
           </button>
 
         </div>
 
         <div className="collapse navbar-collapse mt-2" id="bottomNav">
-
           <ul className="navbar-nav ms-auto gap-lg-4 w-100 justify-content-end">
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/all">All</Link>
             </li>
-
             <li className="nav-item">
-              <Link className="nav-link" to="allproducts/fashion">Fashion</Link>
+              <Link className="nav-link" to="allproducts/clothes">Fashion</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/electronics">Electronics</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/phone">Phones</Link>
             </li>
-
             <li className="nav-item">
-              <Link className="nav-link" to="allproducts/bags">Bags</Link>
+              <Link className="nav-link" to="allproducts/bag">Bags</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/footwear">Footwear</Link>
             </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" to="allproducts/groceries">Groceries</Link>
-            </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/beauty">Beauty</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/wellness">Wellness</Link>
             </li>
-
             <li className="nav-item">
               <Link className="nav-link" to="allproducts/jewellery">Jewellery</Link>
             </li>
-
           </ul>
-
         </div>
-
       </nav>
-
     </div>
   );
 }
