@@ -58,7 +58,7 @@ function Login() {
       if (res.status === 200) {
 
         toast.update(toastId, {
-          render: "Login Successful 🚀",
+          render: "Login Successful",
           type: "success",
           isLoading: false,
           autoClose: 2000,
