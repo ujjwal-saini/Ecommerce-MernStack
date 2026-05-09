@@ -1,16 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../../middleware/authContext";
 import { useSelector } from "react-redux";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearchOutline } from "react-icons/io5";
-import { FaShopify, FaMoon, FaSun, FaBars, FaTimes, } from "react-icons/fa";
+import { FaShopify, FaMoon, FaSun, FaBars, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 import MobileBottomNav from "./mobileBotomnav";
 
 function Navbar() {
   const navigate = useNavigate();
-
+  const location = useLocation();
   const { logout, user, theme, toggleTheme } = useContext(AuthContext);
 
   const [productSearch, setproductSearch] = useState("");
@@ -39,7 +39,17 @@ function Navbar() {
 
     setSuggestionfilter(result);
   }, [productSearch, products]);
-  const handleLogout = async () => { try { await logout(); toast.success("Logged out successfully", { autoClose: 1500, }); setTimeout(() => { navigate("/login"); }, 1600); } catch (error) { toast.error("Something went wrong!"); } };
+  const handleLogout = async () => {
+    try {
+      await logout();
+      toast.success("Logged out successfully", { autoClose: 1500 });
+      setTimeout(() => {
+        navigate("/login");
+      }, 1600);
+    } catch (error) {
+      toast.error("Something went wrong!");
+    }
+  };
 
   const formSubmit = (e) => {
     e.preventDefault();
@@ -48,30 +58,25 @@ function Navbar() {
   };
 
   return (
-    <nav className={`navbar navbar-expand-lg sticky-top shadow-sm ${theme === "dark" ? "bg-black navbar-dark" : "bg-white navbar-light"
-      }`}>
+    <nav
+      className={`navbar navbar-expand-lg sticky-top shadow-sm ${theme === "dark" ? "bg-black navbar-dark" : "bg-white navbar-light"
+        }`}
+    >
       <div className="container-fluid d-flex flex-wrap flex-lg-nowrap align-items-center py-1">
         {/* LOGO + TOGGLER */}
         <div className="d-flex align-items-center">
           <button
-            className={`btn d-lg-none ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            className={`btn d-lg-none ${theme === "dark" ? "text-light" : "text-dark"
               }`}
-            onClick={() =>
-              setMobileMenu(!mobileMenu)
-            }
+            onClick={() => setMobileMenu(!mobileMenu)}
           >
-            {mobileMenu ? (
-              <FaTimes size={20} />
-            ) : (
-              <FaBars size={20} />
-            )}
+            {mobileMenu ? <FaTimes size={20} /> : <FaBars size={20} />}
           </button>
 
           <Link
             className="navbar-brand fw-bold d-flex align-items-center"
-            to="/">
+            to="/"
+          >
             <FaShopify
               className="me-2"
               style={{ color: "#ff7b00", fontSize: 28 }}
@@ -119,8 +124,10 @@ function Navbar() {
                 <Link
                   key={item._id}
                   to={`/productdetail/${item._id}`}
-                  className="d-flex gap-2 p-2 text-decoration-none"
+                  className={`d-flex gap-2 p-2 text-decoration-none ${theme === "dark" ? " text-light" : "bg-white text-dark"
+                    }`}
                   onClick={() => setSuggestionfilter([])}
+
                 >
                   <img
                     src={item.mainImage}
@@ -141,12 +148,8 @@ function Navbar() {
         {/* RIGHT ICONS */}
 
         <div className="d-flex align-items-center gap-2 ms-auto order-2">
-
           {/* THEME */}
-          <button
-            onClick={toggleTheme}
-            className="btn btn-outline-secondary"
-          >
+          <button onClick={toggleTheme} className="btn btn-outline-secondary">
             {theme === "dark" ? <FaSun /> : <FaMoon />}
           </button>
 
@@ -165,16 +168,16 @@ function Navbar() {
           {/* WISHLIST */}
           <Link
             to="/wishlist"
-            className={`text-decoration-none d-flex flex-column align-items-center d-none d-lg-block ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            className={`btn position-relative ${theme === "dark" ? "btn-outline-light" : "btn-outline-dark"
               }`}
           >
             ❤️
-            <small>Wishlist</small>
+            {wishlistCount > 0 && (
+              <span className="badge bg-danger position-absolute top-0 start-100 translate-middle">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
-
-
 
           {/* USER DROPDOWN */}
           {user ? (
@@ -212,9 +215,7 @@ function Navbar() {
               >
                 <li>
                   <Link
-                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark"
-                      ? "text-light"
-                      : "text-dark"
+                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark" ? "text-light" : "text-dark"
                       }`}
                     to="profile"
                   >
@@ -225,13 +226,10 @@ function Navbar() {
                 <li>
                   <Link
                     to="wishlist"
-                    className={`dropdown-item custom-dropdown-item py-2 position-relative ${theme === "dark"
-                      ? "text-light"
-                      : "text-dark"
+                    className={`dropdown-item custom-dropdown-item py-2 position-relative ${theme === "dark" ? "text-light" : "text-dark"
                       }`}
                   >
                     Wishlist
-
                     {wishlistCount > 0 && (
                       <span className="badge bg-danger position-absolute top-50 end-0 translate-middle-y me-2">
                         {wishlistCount}
@@ -242,9 +240,7 @@ function Navbar() {
 
                 <li>
                   <Link
-                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark"
-                      ? "text-light"
-                      : "text-dark"
+                    className={`dropdown-item custom-dropdown-item py-2 ${theme === "dark" ? "text-light" : "text-dark"
                       }`}
                     to="/myorders"
                   >
@@ -271,8 +267,7 @@ function Navbar() {
               to="/login"
               className="btn text-white"
               style={{
-                background:
-                  "linear-gradient(90deg,#ff7b00,#ff9d42)",
+                background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
                 borderRadius: "12px",
                 padding: "8px 18px",
               }}
@@ -280,25 +275,28 @@ function Navbar() {
               Login
             </Link>
           )}
-
         </div>
         {/* MENU */}
         <div
-          className="collapse navbar-collapse align-items-center"
+          className="collapse navbar-collapse align-items-center res-btn"
           id="navbarContent"
         >
           <ul className="navbar-nav gap-2">
-
             <li>
-              <Link className="nav-link custom-nav-link" to="/">
+              <Link
+                to="/"
+                className={`nav-link custom-nav-link ${location.pathname === "/" ? "active-nav" : ""
+                  }`}
+              >
                 Home
               </Link>
             </li>
 
             <li>
               <Link
-                className="nav-link custom-nav-link"
-                to="allproducts/men"
+                to="/allproducts/men"
+                className={`nav-link custom-nav-link ${location.pathname === "/allproducts/men" ? "active-nav" : ""
+                  }`}
               >
                 Men
               </Link>
@@ -306,8 +304,9 @@ function Navbar() {
 
             <li>
               <Link
-                className="nav-link custom-nav-link"
-                to="allproducts/women"
+                to="/allproducts/women"
+                className={`nav-link custom-nav-link ${location.pathname === "/allproducts/women" ? "active-nav" : ""
+                  }`}
               >
                 Women
               </Link>
@@ -315,80 +314,66 @@ function Navbar() {
 
             <li>
               <Link
-                className="nav-link custom-nav-link"
-                to="allproducts/sports"
+                to="/allproducts/sports"
+                className={`nav-link custom-nav-link ${location.pathname === "/allproducts/sports"
+                  ? "active-nav"
+                  : ""
+                  }`}
               >
                 Sports
               </Link>
             </li>
 
             <li className="nav-link text-danger d-flex align-items-center gap-1">
-              <Link className="text-decoration-none d-flex justify-content-center align-items-center" to={"/location"}>
+              <Link
+                className="text-decoration-none d-flex justify-content-center align-items-center"
+                to={"/location"}
+              >
                 <CiLocationOn />
                 {user?.profile?.address?.city || "Location"}
               </Link>
             </li>
-
           </ul>
 
           {/* MOBILE MENU */}
           {mobileMenu && (
             <div
-              className={`d-lg-none mt-3 px-2 pb-3 ${theme === "dark"
-                ? "bg-black"
-                : "bg-white"
+              className={`d-lg-none mt-3 px-2 pb-3 ${theme === "dark" ? "bg-black" : "bg-white"
                 }`}
             >
               <div className="d-flex flex-column gap-2">
-
                 <Link
-                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                    ? "text-light"
-                    : "text-dark"
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                     }`}
                   to="/"
-                  onClick={() =>
-                    setMobileMenu(false)
-                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   Home
                 </Link>
 
                 <Link
-                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                    ? "text-light"
-                    : "text-dark"
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                     }`}
                   to="/allproducts/men"
-                  onClick={() =>
-                    setMobileMenu(false)
-                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   Men
                 </Link>
 
                 <Link
-                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                    ? "text-light"
-                    : "text-dark"
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                     }`}
                   to="/allproducts/women"
-                  onClick={() =>
-                    setMobileMenu(false)
-                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   Women
                 </Link>
 
                 <Link
-                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                    ? "text-light"
-                    : "text-dark"
+                  className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                     }`}
                   to="/allproducts/sports"
-                  onClick={() =>
-                    setMobileMenu(false)
-                  }
+                  onClick={() => setMobileMenu(false)}
                 >
                   Sports
                 </Link>
@@ -397,11 +382,7 @@ function Navbar() {
                   to="/location"
                   className="text-decoration-none text-danger py-2 px-3"
                 >
-                  <CiLocationOn />
-
-                  {" "}
-                  {user?.profile?.address?.city ||
-                    "Location"}
+                  <CiLocationOn /> {user?.profile?.address?.city || "Location"}
                 </Link>
               </div>
             </div>
@@ -409,67 +390,45 @@ function Navbar() {
         </div>
       </div>
 
-
       {/* MOBILE MENU */}
       {mobileMenu && (
-
         <div
-          className={`d-lg-none w-100 mt-2 px-3 pb-3 ${theme === "dark"
-            ? "bg-black"
-            : "bg-white"
+          className={`d-lg-none w-100 mt-2 px-3 pb-3 ${theme === "dark" ? "bg-black" : "bg-white"
             }`}
         >
-
           <div className="d-flex flex-column gap-2">
-
             <Link
               to="/"
-              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                ? "text-light"
-                : "text-dark"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                 }`}
-              onClick={() =>
-                setMobileMenu(false)
-              }
+              onClick={() => setMobileMenu(false)}
             >
               Home
             </Link>
 
             <Link
               to="/allproducts/men"
-              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                ? "text-light"
-                : "text-dark"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                 }`}
-              onClick={() =>
-                setMobileMenu(false)
-              }
+              onClick={() => setMobileMenu(false)}
             >
               Men
             </Link>
 
             <Link
               to="/allproducts/women"
-              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                ? "text-light"
-                : "text-dark"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                 }`}
-              onClick={() =>
-                setMobileMenu(false)
-              }
+              onClick={() => setMobileMenu(false)}
             >
               Women
             </Link>
 
             <Link
               to="/allproducts/sports"
-              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark"
-                ? "text-light"
-                : "text-dark"
+              className={`text-decoration-none py-2 px-3 rounded ${theme === "dark" ? "text-light" : "text-dark"
                 }`}
-              onClick={() =>
-                setMobileMenu(false)
-              }
+              onClick={() => setMobileMenu(false)}
             >
               Sports
             </Link>
@@ -477,26 +436,15 @@ function Navbar() {
             <Link
               to="/location"
               className="text-decoration-none text-danger py-2 px-3"
-              onClick={() =>
-                setMobileMenu(false)
-              }
+              onClick={() => setMobileMenu(false)}
             >
-              <CiLocationOn />
-
-              {" "}
-
-              {user?.profile?.address?.city ||
-                "Location"}
+              <CiLocationOn /> {user?.profile?.address?.city || "Location"}
             </Link>
-
           </div>
-
         </div>
-
       )}
       <MobileBottomNav />
     </nav>
-
   );
 }
 

@@ -172,7 +172,7 @@ function Card({ products = [] }) {
   };
 
   return (
-    <div className="container-fluid ">
+    <div className="container-fluid res-con ">
       <div className="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
         {products.map((item) => {
           const cartItem = cartItems.find((ci) => ci._id === item._id);
@@ -190,7 +190,7 @@ function Card({ products = [] }) {
           const isWishlisted = wishlistItems.find((w) => w._id === item._id);
 
           return (
-            <div className="col" key={item._id}>
+            <div className="col res-card" key={item._id}>
               <div
                 className={`card border-0 h-100 overflow-hidden ${theme === "dark"
                   ? "bg-black text-light"
@@ -385,7 +385,7 @@ function Card({ products = [] }) {
                               : "1px solid #ddd",
                         }}
                       >
-                        <FaShoppingCart className="me-2" />
+                        <FaShoppingCart className="me-2  d-none d-lg-inline" />
                         Add
                       </button>
 
@@ -400,7 +400,8 @@ function Card({ products = [] }) {
                           background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
                         }}
                       >
-                        <FaBolt className="me-2" />
+                        <FaBolt className="me-2 d-none d-lg-inline" />
+
                         Buy
                       </button>
                     </div>

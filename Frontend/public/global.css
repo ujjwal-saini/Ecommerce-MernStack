@@ -165,6 +165,11 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   background: linear-gradient(90deg,#ff7b00,#ff9d42);
   color: #fff !important;
 }
+.active-nav {
+  background: linear-gradient(90deg,#ff7b00,#ff9d42);
+  color: white !important;
+  font-weight: 600;
+}
 
 @media (max-width: 991px) {
   .custom-nav-link {
@@ -172,7 +177,14 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   }
 }
 
+/* nav res-btn */
 
+    .res-btn{
+          width: 0px !important;
+          margin-right: 0 !important;
+    }
+
+    
 /* =========================================================
    PRODUCT TABLE
 ========================================================= */
@@ -587,6 +599,15 @@ body[data-theme="dark"] .btn-outline-theme:hover {
 }
 
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
 /* =========================================================
    RESPONSIVE
 ========================================================= */
@@ -601,11 +622,43 @@ body[data-theme="dark"] .btn-outline-theme:hover {
     top: 0;
     z-index: 1000;
   }
-
+.res-card{
+  padding: 4px !important;
+}
+.res-con{
+  margin: 2px !important;
+  padding: 0 !important;
+  gap: 2px !important;
+  }
+.responsive-fullmain{
+  padding: 0 !important;
+}
   .sidebar.show {
     left: 0;
   }
+  /* inicvisible scroll bar */
+ .category-wrapper {
+    gap: 12px !important;
+  }
 
+  .category-link {
+    min-width: 72px !important;
+  }
+
+  .category-card {
+    width: 72px !important;
+    height: 72px !important;
+    border-radius: 22px !important;
+  }
+
+  .category-img {
+    border-radius: 20px !important;
+  }
+
+  .category-text {
+    font-size: 12px !important;
+  }
+}
   /* Toggle Button */
   .mobile-toggle-btn {
     display: flex;

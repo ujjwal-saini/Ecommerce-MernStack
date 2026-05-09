@@ -713,12 +713,12 @@ function ProductDetail() {
             onClick={() => setShowChat(true)}
             className="btn position-fixed shadow-lg"
             style={{
-              bottom: "20px",
+              bottom: "70px",
               right: "20px",
               background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
               border: "none",
               borderRadius: "50px",
-              padding: "12px 18px",
+              padding: "8px 18px",
               fontWeight: "600",
               color: "#fff",
               zIndex: 1100,

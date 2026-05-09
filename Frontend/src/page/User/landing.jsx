@@ -61,7 +61,7 @@ function Landing() {
         {/* MAIN CONTENT */}
         <div className="container-fluid">
           <div className="row ">
-            <div className="col-12 p-3 pt-4">
+            <div className="col-12 p-3 pt-4 responsive-fullmain">
               <Outlet />
             </div>
           </div>
