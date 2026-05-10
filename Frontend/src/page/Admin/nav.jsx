@@ -7,7 +7,9 @@ import { FaMoon, FaSun, FaBars } from "react-icons/fa";
 import MobileBar from "./mobileBar";
 
 function Nav() {
+
   const navigate = useNavigate();
+
   const {
     user,
     logout,
@@ -37,13 +39,13 @@ function Nav() {
 
     const result = products.filter((item) =>
 
-      item.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+      item.name?.toLowerCase().includes(productSearch.toLowerCase()) ||
 
-      item.description.toLowerCase().includes(productSearch.toLowerCase()) ||
+      item.description?.toLowerCase().includes(productSearch.toLowerCase()) ||
 
-      item.category.toLowerCase().includes(productSearch.toLowerCase()) ||
+      item.category?.toLowerCase().includes(productSearch.toLowerCase()) ||
 
-      item.brand.toLowerCase().includes(productSearch.toLowerCase())
+      item.brand?.toLowerCase().includes(productSearch.toLowerCase())
 
     );
 
@@ -75,261 +77,163 @@ function Nav() {
 
   return (
 
-    <div
-      className={`border-bottom px-2 px-md-3 py-2 ${theme === "dark"
-        ? "bg-black text-light"
-        : "bg-white text-dark"
-        }`}
-    >
+    <>
+      {/* FIXED NAVBAR */}
 
-      {/* DESKTOP NAVBAR */}
-
-      <div className="d-none d-md-flex align-items-center gap-3">
-
-        {/* LEFT */}
-
-        <Link to={"/admindashboard"} className={`text-decoration-none m-0 fw-bold flex-shrink-0 fs-4 ${theme === "dark"
+      <div
+        className={`border-bottom px-2 px-md-3 py-2 ${theme === "dark"
           ? "bg-black text-light"
-          : "bg-white text-dark"} `} >
-          Welcome Admin
-        </Link>
+          : "bg-white text-dark"
+          }`}
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 999,
+          width: "100%"
+        }}
+      >
 
-        {/* SEARCH */}
+        {/* ======================
+            DESKTOP NAVBAR
+        ====================== */}
 
-        <form
-          onSubmit={formSubmit}
-          className="position-relative flex-grow-1"
-        >
+        <div className="d-none d-md-flex align-items-center h-100 gap-3">
 
-          <div className="d-flex">
+          {/* LOGO */}
 
-            <input
-              className={`form-control border-end-0 ${theme === "dark"
-                ? "bg-dark text-light border-secondary"
-                : ""
-                }`}
-              type="search"
-              placeholder="Search products..."
-              value={productSearch}
-              onChange={(e) => {
+          <Link
+            to={"/admindashboard"}
+            className={`text-decoration-none fw-bold fs-4 flex-shrink-0 ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+          >
+            Welcome Admin
+          </Link>
 
-                setproductSearch(e.target.value);
+          {/* SEARCH */}
 
-                setActiveIndex(-1);
+          <form
+            onSubmit={formSubmit}
+            className="position-relative flex-grow-1"
+          >
 
-              }}
-            />
+            <div className="d-flex">
 
-            <button className="btn btn-dark">
-              <IoSearchOutline />
-            </button>
+              <input
+                className={`form-control border-end-0 ${theme === "dark"
+                  ? "bg-dark text-light border-secondary"
+                  : ""
+                  }`}
+                type="search"
+                placeholder="Search products..."
+                value={productSearch}
+                onChange={(e) => {
 
-          </div>
+                  setproductSearch(e.target.value);
 
-          {/* SEARCH SUGGESTIONS */}
+                  setActiveIndex(-1);
 
-          {Suggestionfilter.length > 0 && (
+                }}
+              />
 
-            <div
-              className={`position-absolute top-100 start-0 w-100 shadow mt-1 rounded overflow-hidden ${theme === "dark"
-                ? "bg-dark text-light"
-                : "bg-white"
-                }`}
-              style={{
-                zIndex: 9999
-              }}
-            >
-
-              {Suggestionfilter
-                .slice(0, 6)
-                .map((item, index) => (
-
-                  <Link
-                    key={index}
-                    to={`/admindashboard/productpreview/${item._id}`}
-                    className={`d-flex align-items-center gap-2 p-2 text-decoration-none ${activeIndex === index
-                      ? "bg-primary text-white"
-                      : ""
-                      } ${theme === "dark"
-                        ? "text-light"
-                        : "text-dark"
-                      }`}
-                    onMouseEnter={() =>
-                      setActiveIndex(index)
-                    }
-                    onClick={() => {
-
-                      setSuggestionfilter([]);
-
-                      setproductSearch("");
-
-                    }}
-                  >
-
-                    {item.mainImage && (
-
-                      <img
-                        src={item.mainImage}
-                        width="40"
-                        height="40"
-                        className="rounded"
-                        alt=""
-                      />
-
-                    )}
-
-                    <div>
-
-                      <div style={{ fontSize: "14px" }}>
-                        {item.name}
-                      </div>
-
-                      <small>
-                        ₹ {item.price}
-                      </small>
-
-                    </div>
-
-                  </Link>
-
-                ))}
+              <button className="btn btn-dark px-3">
+                <IoSearchOutline />
+              </button>
 
             </div>
 
-          )}
+            {/* SEARCH SUGGESTIONS */}
 
-        </form>
+            {Suggestionfilter.length > 0 && (
 
-        {/* RIGHT */}
+              <div
+                className={`position-absolute top-100 start-0 w-100 shadow rounded mt-1 overflow-hidden ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white"
+                  }`}
+                style={{
+                  zIndex: 9999,
+                  maxHeight: "350px",
+                  overflowY: "auto"
+                }}
+              >
 
-        <div className="d-flex align-items-center gap-2 flex-shrink-0">
+                {Suggestionfilter
+                  .slice(0, 6)
+                  .map((item, index) => (
 
-          {/* THEME BUTTON */}
+                    <Link
+                      key={index}
+                      to={`/admindashboard/productpreview/${item._id}`}
+                      className={`d-flex align-items-center gap-2 p-2 text-decoration-none ${activeIndex === index
+                        ? "bg-primary text-white"
+                        : ""
+                        } ${theme === "dark"
+                          ? "text-light"
+                          : "text-dark"
+                        }`}
+                      onMouseEnter={() =>
+                        setActiveIndex(index)
+                      }
+                      onClick={() => {
 
-          <button
-            onClick={toggleTheme}
-            className={`btn ${theme === "dark"
-              ? "btn-outline-light"
-              : "btn-outline-dark"
-              }`}
-          >
+                        setSuggestionfilter([]);
 
-            {theme === "dark"
-              ? <FaSun />
-              : <FaMoon />
-            }
+                        setproductSearch("");
 
-          </button>
+                      }}
+                    >
 
-          {/* PROFILE */}
+                      {item.mainImage && (
 
-          <div className="dropdown">
+                        <img
+                          src={item.mainImage}
+                          width="45"
+                          height="45"
+                          className="rounded object-fit-cover"
+                          alt=""
+                        />
 
-            <button
-              className={`btn dropdown-toggle d-flex align-items-center ${theme === "dark"
-                ? "bg-dark text-light border-secondary"
-                : "bg-white"
-                }`}
-              data-bs-toggle="dropdown"
-            >
+                      )}
 
-              <img
-                src={user?.profile?.profilePic}
-                width="32"
-                height="32"
-                className="rounded-circle me-2"
-                alt=""
-              />
+                      <div className="overflow-hidden">
 
-              {user?.name}
+                        <div
+                          className="fw-semibold text-truncate"
+                          style={{
+                            maxWidth: "250px",
+                            fontSize: "14px"
+                          }}
+                        >
+                          {item.name}
+                        </div>
 
-            </button>
+                        <small>
+                          ₹ {item.price}
+                        </small>
 
-            <ul className="dropdown-menu dropdown-menu-end">
+                      </div>
 
-              <li>
+                    </Link>
 
-                <Link
-                  className="dropdown-item"
-                  to="/admindashboard/profile"
-                >
-                  Profile
-                </Link>
+                  ))}
 
-              </li>
+              </div>
 
-              <li>
+            )}
 
-                <Link
-                  className="dropdown-item"
-                  to="/admindashboard/setting"
-                >
-                  Settings
-                </Link>
+          </form>
 
-              </li>
+          {/* RIGHT SIDE */}
 
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-
-              <li>
-
-                <button
-                  className="dropdown-item text-danger"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-
-              </li>
-
-            </ul>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* =========================
-          MOBILE NAVBAR
-      ========================= */}
-
-      <div className="d-md-none">
-
-        {/* TOP ROW */}
-
-        <div className="d-flex justify-content-between align-items-center mb-2">
-
-          {/* LEFT */}
-
-          <div className="d-flex align-items-center gap-2">
-
-            <button
-              className="btn btn-dark"
-              onClick={() => setMobileSidebar(true)}
-            >
-              <FaBars />
-            </button>
-
-            <Link to={"/admindashboard"} className={`text-decoration-none m-0 fw-bold ${theme === "dark"
-              ? "bg-black text-light"
-              : "bg-white text-dark"} `}>
-              Welcome Admin
-            </Link>
-
-          </div>
-
-          {/* RIGHT */}
-
-          <div className="d-flex align-items-center gap-2">
+          <div className="d-flex align-items-center gap-2 flex-shrink-0">
 
             {/* THEME */}
 
             <button
               onClick={toggleTheme}
-              className={`btn btn-sm ${theme === "dark"
+              className={`btn ${theme === "dark"
                 ? "btn-outline-light"
                 : "btn-outline-dark"
                 }`}
@@ -347,24 +251,28 @@ function Nav() {
             <div className="dropdown">
 
               <button
-                className={`btn btn-sm dropdown-toggle ${theme === "dark"
-                  ? "btn-dark"
-                  : "btn-light"
+                className={`btn dropdown-toggle d-flex align-items-center ${theme === "dark"
+                  ? "bg-dark text-light border-secondary"
+                  : "bg-white"
                   }`}
                 data-bs-toggle="dropdown"
               >
 
                 <img
                   src={user?.profile?.profilePic}
-                  width="28"
-                  height="28"
-                  className="rounded-circle"
+                  width="35"
+                  height="35"
+                  className="rounded-circle me-2 object-fit-cover"
                   alt=""
                 />
 
+                <span className="fw-semibold">
+                  {user?.name}
+                </span>
+
               </button>
 
-              <ul className="dropdown-menu dropdown-menu-end">
+              <ul className="dropdown-menu dropdown-menu-end shadow">
 
                 <li>
 
@@ -411,119 +319,145 @@ function Nav() {
 
         </div>
 
-        {/* MOBILE SEARCH */}
+        {/* ======================
+            MOBILE NAVBAR
+        ====================== */}
 
-        <form
-          onSubmit={formSubmit}
-          className="position-relative w-100"
-        >
+        <div className="d-md-none">
 
-          <div className="d-flex w-100">
+          {/* TOP */}
 
-            <input
-              className={`form-control ${theme === "dark"
-                ? "bg-dark text-light border-secondary"
-                : ""
-                }`}
-              type="search"
-              placeholder="Search products..."
-              value={productSearch}
-              onChange={(e) => {
+          <div className="d-flex justify-content-between align-items-center">
 
-                setproductSearch(e.target.value);
+            {/* LEFT */}
 
-                setActiveIndex(-1);
+            <div className="d-flex align-items-center gap-2">
 
-              }}
-            />
+              <button
+                className="btn btn-dark"
+                onClick={() => setMobileSidebar(true)}
+              >
+                <FaBars />
+              </button>
 
-            <button className="btn btn-dark">
-              <IoSearchOutline />
-            </button>
-
-          </div>
-
-          {/* MOBILE SEARCH SUGGESTIONS */}
-
-          {Suggestionfilter.length > 0 && (
-
-            <div
-              className={`position-absolute top-100 start-0 w-100 shadow mt-1 rounded overflow-hidden ${theme === "dark"
-                ? "bg-dark text-light"
-                : "bg-white"
-                }`}
-              style={{
-                zIndex: 9999
-              }}
-            >
-
-              {Suggestionfilter
-                .slice(0, 6)
-                .map((item, index) => (
-
-                  <Link
-                    key={index}
-                    to={`/admindashboard/productpreview/${item._id}`}
-                    className={`d-flex align-items-center gap-2 p-2 text-decoration-none ${activeIndex === index
-                      ? "bg-primary text-white"
-                      : ""
-                      } ${theme === "dark"
-                        ? "text-light"
-                        : "text-dark"
-                      }`}
-                    onMouseEnter={() =>
-                      setActiveIndex(index)
-                    }
-                    onClick={() => {
-
-                      setSuggestionfilter([]);
-
-                      setproductSearch("");
-
-                    }}
-                  >
-
-                    {item.mainImage && (
-
-                      <img
-                        src={item.mainImage}
-                        width="40"
-                        height="40"
-                        className="rounded"
-                        alt=""
-                      />
-
-                    )}
-
-                    <div>
-
-                      <div style={{ fontSize: "14px" }}>
-                        {item.name}
-                      </div>
-
-                      <small>
-                        ₹ {item.price}
-                      </small>
-
-                    </div>
-
-                  </Link>
-
-                ))}
+              <Link
+                to={"/admindashboard"}
+                className={`text-decoration-none fw-bold ${theme === "dark"
+                  ? "text-light"
+                  : "text-dark"
+                  }`}
+              >
+                Admin
+              </Link>
 
             </div>
 
-          )}
+            {/* RIGHT */}
 
-        </form>
+            <div className="d-flex align-items-center gap-2">
+
+              {/* THEME */}
+
+              <button
+                onClick={toggleTheme}
+                className={`btn btn-sm ${theme === "dark"
+                  ? "btn-outline-light"
+                  : "btn-outline-dark"
+                  }`}
+              >
+
+                {theme === "dark"
+                  ? <FaSun />
+                  : <FaMoon />
+                }
+
+              </button>
+
+              {/* PROFILE */}
+
+              <div className="dropdown">
+
+                <button
+                  className={`btn btn-sm ${theme === "dark"
+                    ? "btn-dark"
+                    : "btn-light"
+                    }`}
+                  data-bs-toggle="dropdown"
+                >
+
+                  <img
+                    src={user?.profile?.profilePic}
+                    width="30"
+                    height="30"
+                    className="rounded-circle object-fit-cover"
+                    alt=""
+                  />
+
+                </button>
+
+                <ul className="dropdown-menu dropdown-menu-end">
+
+                  <li>
+
+                    <Link
+                      className="dropdown-item"
+                      to="/admindashboard/profile"
+                    >
+                      Profile
+                    </Link>
+
+                  </li>
+
+                  <li>
+
+                    <Link
+                      className="dropdown-item"
+                      to="/admindashboard/setting"
+                    >
+                      Settings
+                    </Link>
+
+                  </li>
+
+                  <li>
+                    <hr className="dropdown-divider" />
+                  </li>
+
+                  <li>
+
+                    <button
+                      className="dropdown-item text-danger"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+
+                  </li>
+
+                </ul>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
+
+      {/* NAVBAR SPACE FIX */}
+
+      <div style={{ height: "75px" }}></div>
+
+      {/* MOBILE SIDEBAR */}
+
       <MobileBar
         mobileSidebar={mobileSidebar}
         setMobileSidebar={setMobileSidebar}
         theme={theme}
       />
-    </div>
+    </>
   );
 }
 
