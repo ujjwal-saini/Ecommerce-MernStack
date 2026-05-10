@@ -1,17 +1,33 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, {
+    useState,
+    useContext,
+    useEffect,
+} from "react";
+
 import axios from "axios";
+
 import { useParams, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../middleware/authContext";
+
 import CategoryFields from "./editproductCompoent/CategoryFields";
+
 import { toast } from "react-toastify";
+
 import { useDispatch } from "react-redux";
+
 import { updateProduct } from "../../redux/productSlice";
 
 function EditProduct() {
+
     const dispatch = useDispatch();
+
     const { id } = useParams();
+
     const navigate = useNavigate();
-    const { API } = useContext(AuthContext);
+
+    const { API, theme } = useContext(AuthContext);
+
     const [form, setForm] = useState({
         name: "",
         description: "",
@@ -34,128 +50,192 @@ function EditProduct() {
                 color: "",
                 stock: "",
                 price: "",
-                isAvailable: true
-            }
+                isAvailable: true,
+            },
         ],
         dimensions: {
             length: "",
             width: "",
-            height: ""
+            height: "",
         },
         expiryDate: "",
         manufacturingDate: "",
         isFeatured: false,
         isNewArrival: false,
         isOnSale: false,
-        isTrending: false
+        isTrending: false,
     });
 
-    // load product
+    // LOAD PRODUCT
 
     useEffect(() => {
+
         const fetchProduct = async () => {
+
             try {
-                const res = await axios.get(`${API}/product/${id}`);
+
+                const res = await axios.get(
+                    `${API}/product/${id}`
+                );
+
                 setForm(res.data.data);
+
                 dispatch(updateProduct(res.data.data));
+
             } catch (err) {
+
                 console.log(err);
+
             }
         };
-        fetchProduct();
-    }, [id, API]);
 
-    // basic input
+        fetchProduct();
+
+    }, [id, API, dispatch]);
+
+    // BASIC INPUT
+
     const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
+
+        const {
+            name,
+            value,
+            type,
+            checked,
+        } = e.target;
+
         setForm({
             ...form,
-            [name]: type === "checkbox" ? checked : value
+            [name]:
+                type === "checkbox"
+                    ? checked
+                    : value,
         });
-        console.log(form);
     };
 
-    // images
-    const handleImageChange = (index, value) => {
+    // IMAGES
+
+    const handleImageChange = (
+        index,
+        value
+    ) => {
+
         const newImages = [...form.images];
+
         newImages[index] = value;
+
         setForm({
             ...form,
-            images: newImages
+            images: newImages,
         });
     };
 
     const addImage = () => {
+
         setForm({
             ...form,
-            images: [...form.images, ""]
+            images: [...form.images, ""],
         });
     };
 
-    // features
-    const handleFeatureChange = (index, value) => {
+    // FEATURES
+
+    const handleFeatureChange = (
+        index,
+        value
+    ) => {
+
         const newFeatures = [...form.features];
+
         newFeatures[index] = value;
+
         setForm({
             ...form,
-            features: newFeatures
+            features: newFeatures,
         });
     };
 
     const addFeature = () => {
+
         setForm({
             ...form,
-            features: [...form.features, ""]
+            features: [...form.features, ""],
         });
     };
 
-    // about
-    const handleAboutChange = (index, value) => {
+    // ABOUT
+
+    const handleAboutChange = (
+        index,
+        value
+    ) => {
+
         const newAbout = [...form.aboutItem];
+
         newAbout[index] = value;
+
         setForm({
             ...form,
-            aboutItem: newAbout
+            aboutItem: newAbout,
         });
     };
 
     const addAbout = () => {
+
         setForm({
             ...form,
-            aboutItem: [...form.aboutItem, ""]
+            aboutItem: [...form.aboutItem, ""],
         });
     };
 
-    // specification
-    const handleSpecificationChange = (key, value) => {
+    // SPECIFICATION
+
+    const handleSpecificationChange = (
+        key,
+        value
+    ) => {
+
         setForm({
             ...form,
             specifications: {
                 ...form.specifications,
-                [key]: value
-            }
+                [key]: value,
+            },
         });
     };
 
-    // variant
+    // VARIANT
 
-    const handleVariantChange = (index, field, value) => {
-        const newVariants = form.variants.map((variant, i) => {
-            if (i === index) {
-                return {
-                    ...variant,   // ✅ new object create
-                    [field]: value
-                };
-            }
-            return variant;
-        });
+    const handleVariantChange = (
+        index,
+        field,
+        value
+    ) => {
+
+        const newVariants =
+            form.variants.map(
+                (variant, i) => {
+
+                    if (i === index) {
+
+                        return {
+                            ...variant,
+                            [field]: value,
+                        };
+                    }
+
+                    return variant;
+                }
+            );
+
         setForm({
             ...form,
-            variants: newVariants
+            variants: newVariants,
         });
     };
 
     const addVariant = () => {
+
         setForm({
             ...form,
             variants: [
@@ -165,249 +245,470 @@ function EditProduct() {
                     color: "",
                     stock: "",
                     price: "",
-                    isAvailable: true
-                }
-            ]
+                    isAvailable: true,
+                },
+            ],
         });
     };
 
-    // dimension
+    // DIMENSIONS
 
-    const handleDimensionChange = (key, value) => {
+    const handleDimensionChange = (
+        key,
+        value
+    ) => {
+
         setForm({
             ...form,
             dimensions: {
                 ...form.dimensions,
-                [key]: value
-            }
+                [key]: value,
+            },
         });
     };
 
-    // update
+    // UPDATE
+
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         try {
+
             const res = await axios.put(
                 `${API}/updateproduct/${id}`,
                 form
             );
 
             dispatch(updateProduct(res.data.data));
-            toast.success("Product Updated Successfully");
-            navigate("/admindashboard/products");
+
+            toast.success(
+                "Product Updated Successfully"
+            );
+
+            navigate(
+                "/admindashboard/products"
+            );
 
         } catch (err) {
+
             console.log(err);
-            alert("Update failed");
+
+            toast.error("Update failed");
         }
     };
+
     return (
 
-        <div className="container-fluid p-4">
+        <div
+            className={`container-fluid min-vh-100 py-3 py-md-4 px-2 px-md-4 overflow-hidden ${theme === "dark"
+                    ? "bg-black text-light"
+                    : "bg-light text-dark"
+                }`}
+        >
 
-            <h3 className="fw-bold mb-4">
-                Edit Product
-            </h3>
+            {/* HEADER */}
 
-            <form onSubmit={handleSubmit}>
+            <div className="mb-4">
 
-                <div className="row">
+                <h3 className="fw-bold fs-3 fs-md-2">
+                    Edit Product
+                </h3>
 
-                    <div className="col-md-6 mb-2">
-                        <input
-                            name="name"
-                            value={form.name}
-                            placeholder="Product Name"
-                            className="form-control"
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-
-                    <div className="col-md-6 mb-2">
-                        <input
-                            name="brand"
-                            value={form.brand}
-                            placeholder="Brand"
-                            className="form-control"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="col-md-6 mb-2">
-                        <select
-                            name="category"
-                            value={form.category || ""}
-                            className="form-control"
-                            onChange={handleChange}
-                            requireds>
-                            <option value="">
-                                Select Category
-                            </option>
-                            <option>Electronics</option>
-                            <option>Clothing</option>
-                            <option>Shoes & Footwear</option>
-                            <option>Furniture</option>
-                            <option>Beauty & Personal Care</option>
-                            <option>Sports & Fitness</option>
-                            <option>Toys & Games</option>
-                            <option>Books & Stationery</option>
-                            <option>Home & Kitchen</option>
-                            <option>Automotive</option>
-                            <option>Health & Wellness</option>
-                            <option>Jewelry & Accessories</option>
-                            <option>Pet Supplies</option>
-                            <option>Baby Products</option>
-                            <option>Office Supplies</option>
-                            <option>Garden & Outdoor</option>
-                            <option>Others</option>
-                        </select>
-                    </div>
-
-                    <div className="col-md-6 mb-2">
-                        <input
-                            name="subcategory"
-                            value={form.subcategory}
-                            placeholder="Sub Category"
-                            className="form-control"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="col-md-4 mb-2">
-                        <input
-                            name="price"
-                            value={form.price}
-                            placeholder="Price"
-                            className="form-control"
-                            onChange={handleChange}
-                        />
-                    </div>
-                    <div className="col-md-4 mb-2">
-                        <input
-                            name="discountPrice"
-                            value={form.discountPrice}
-                            placeholder="discount Price"
-                            className="form-control"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                    <div className="col-md-4 mb-2">
-                        <input
-                            name="stock"
-                            value={form.stock}
-                            placeholder="Stock"
-                            className="form-control"
-                            onChange={handleChange}
-                        />
-                    </div>
-
-                </div>
-
-                <textarea
-                    name="description"
-                    value={form.description}
-                    className="form-control mb-3"
-                    onChange={handleChange}
-                />
-
-                <h6>Main Image</h6>
-                <input
-                    name="mainImage"
-                    value={form.mainImage}
-                    className="form-control mb-3"
-                    onChange={handleChange}
-                />
-
-                <h6>Images</h6>
-
-                {form.images.map((img, i) => (
-                    <input
-                        key={i}
-                        value={img}
-                        className="form-control mb-2"
-                        onChange={(e) =>
-                            handleImageChange(i, e.target.value)
-                        }
-                    />
-                ))}
-
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm mb-3"
-                    onClick={addImage}
+                <p
+                    className={`small mb-0 ${theme === "dark"
+                            ? "text-light"
+                            : "text-muted"
+                        }`}
                 >
-                    Add Image
-                </button>
+                    Update your product details
+                </p>
 
-                {/* Category Fields */}
+            </div>
 
-                <CategoryFields
-                    subcategory={form.subcategory}
-                    category={form.category}
-                    form={form}
-                    handleChange={handleChange}
-                    handleSpecificationChange={handleSpecificationChange}
-                    handleVariantChange={handleVariantChange}
-                    addVariant={addVariant}
-                    handleDimensionChange={handleDimensionChange}
-                />
+            {/* FORM CARD */}
 
-                {/* Features */}
+            <div
+                className={`rounded-4 shadow-sm p-3 p-md-4 ${theme === "dark"
+                        ? "bg-dark text-light"
+                        : "bg-white text-dark"
+                    }`}
+            >
 
-                <h6 className="mt-4">Features</h6>
+                <form onSubmit={handleSubmit}>
 
-                {form.features.map((f, i) => (
-                    <input
-                        key={i}
-                        value={f}
-                        className="form-control mb-2"
-                        onChange={(e) =>
-                            handleFeatureChange(i, e.target.value)
-                        }
+                    {/* BASIC INFO */}
+
+                    <div className="row">
+
+                        <div className="col-12 col-md-6 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Product Name
+                            </label>
+
+                            <input
+                                name="name"
+                                value={form.name}
+                                placeholder="Product Name"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                                required
+                            />
+
+                        </div>
+
+                        <div className="col-12 col-md-6 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Brand
+                            </label>
+
+                            <input
+                                name="brand"
+                                value={form.brand}
+                                placeholder="Brand"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+
+                        <div className="col-12 col-md-6 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Category
+                            </label>
+
+                            <select
+                                name="category"
+                                value={form.category || ""}
+                                className={`form-select ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            >
+
+                                <option value="">
+                                    Select Category
+                                </option>
+
+                                <option>Electronics</option>
+
+                                <option>Clothing</option>
+
+                                <option>Shoes & Footwear</option>
+
+                                <option>Furniture</option>
+
+                                <option>Beauty & Personal Care</option>
+
+                                <option>Sports & Fitness</option>
+
+                                <option>Toys & Games</option>
+
+                                <option>Books & Stationery</option>
+
+                                <option>Home & Kitchen</option>
+
+                                <option>Automotive</option>
+
+                                <option>Health & Wellness</option>
+
+                                <option>Jewelry & Accessories</option>
+
+                                <option>Pet Supplies</option>
+
+                                <option>Baby Products</option>
+
+                                <option>Office Supplies</option>
+
+                                <option>Garden & Outdoor</option>
+
+                                <option>Others</option>
+
+                            </select>
+
+                        </div>
+
+                        <div className="col-12 col-md-6 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Sub Category
+                            </label>
+
+                            <input
+                                name="subcategory"
+                                value={form.subcategory}
+                                placeholder="Sub Category"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+
+                        <div className="col-12 col-md-4 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Price
+                            </label>
+
+                            <input
+                                name="price"
+                                value={form.price}
+                                placeholder="Price"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+
+                        <div className="col-12 col-md-4 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Discount Price
+                            </label>
+
+                            <input
+                                name="discountPrice"
+                                value={form.discountPrice}
+                                placeholder="Discount Price"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+
+                        <div className="col-12 col-md-4 mb-3">
+
+                            <label className="form-label fw-semibold">
+                                Stock
+                            </label>
+
+                            <input
+                                name="stock"
+                                value={form.stock}
+                                placeholder="Stock"
+                                className={`form-control ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+
+                    </div>
+
+                    {/* DESCRIPTION */}
+
+                    <div className="mb-4">
+
+                        <label className="form-label fw-semibold">
+                            Description
+                        </label>
+
+                        <textarea
+                            name="description"
+                            value={form.description}
+                            rows={4}
+                            className={`form-control ${theme === "dark"
+                                    ? "bg-black text-light border-secondary"
+                                    : ""
+                                }`}
+                            onChange={handleChange}
+                        />
+
+                    </div>
+
+                    {/* MAIN IMAGE */}
+
+                    <div className="mb-4">
+
+                        <h5 className="fw-bold mb-3">
+                            Main Image
+                        </h5>
+
+                        <input
+                            name="mainImage"
+                            value={form.mainImage}
+                            className={`form-control ${theme === "dark"
+                                    ? "bg-black text-light border-secondary"
+                                    : ""
+                                }`}
+                            onChange={handleChange}
+                        />
+
+                    </div>
+
+                    {/* IMAGES */}
+
+                    <div className="mb-4">
+
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+
+                            <h5 className="fw-bold m-0">
+                                Product Images
+                            </h5>
+
+                            <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                onClick={addImage}
+                            >
+                                + Add Image
+                            </button>
+
+                        </div>
+
+                        {form.images.map((img, i) => (
+
+                            <input
+                                key={i}
+                                value={img}
+                                className={`form-control mb-2 ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={(e) =>
+                                    handleImageChange(
+                                        i,
+                                        e.target.value
+                                    )
+                                }
+                            />
+
+                        ))}
+
+                    </div>
+
+                    {/* CATEGORY FIELDS */}
+
+                    <CategoryFields
+                        subcategory={form.subcategory}
+                        category={form.category}
+                        form={form}
+                        handleChange={handleChange}
+                        handleSpecificationChange={handleSpecificationChange}
+                        handleVariantChange={handleVariantChange}
+                        addVariant={addVariant}
+                        handleDimensionChange={handleDimensionChange}
                     />
-                ))}
 
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm mb-3"
-                    onClick={addFeature}
-                >
-                    Add Feature
-                </button>
+                    {/* FEATURES */}
 
-                {/* About */}
+                    <div className="mt-4 mb-4">
 
-                <h6>About Item</h6>
+                        <div className="d-flex justify-content-between align-items-center mb-3">
 
-                {form.aboutItem.map((a, i) => (
-                    <input
-                        key={i}
-                        value={a}
-                        className="form-control mb-2"
-                        onChange={(e) =>
-                            handleAboutChange(i, e.target.value)
-                        }
-                    />
-                ))}
+                            <h5 className="fw-bold m-0">
+                                Features
+                            </h5>
 
-                <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={addAbout}
-                >
-                    Add About
-                </button>
+                            <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                onClick={addFeature}
+                            >
+                                + Add Feature
+                            </button>
 
-                <br />
-                <br />
+                        </div>
 
-                <button className="btn btn-success">
-                    Update Product
-                </button>
-            </form>
+                        {form.features.map((f, i) => (
+
+                            <input
+                                key={i}
+                                value={f}
+                                className={`form-control mb-2 ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={(e) =>
+                                    handleFeatureChange(
+                                        i,
+                                        e.target.value
+                                    )
+                                }
+                            />
+
+                        ))}
+
+                    </div>
+
+                    {/* ABOUT */}
+
+                    <div className="mb-4">
+
+                        <div className="d-flex justify-content-between align-items-center mb-3">
+
+                            <h5 className="fw-bold m-0">
+                                About Item
+                            </h5>
+
+                            <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                onClick={addAbout}
+                            >
+                                + Add About
+                            </button>
+
+                        </div>
+
+                        {form.aboutItem.map((a, i) => (
+
+                            <input
+                                key={i}
+                                value={a}
+                                className={`form-control mb-2 ${theme === "dark"
+                                        ? "bg-black text-light border-secondary"
+                                        : ""
+                                    }`}
+                                onChange={(e) =>
+                                    handleAboutChange(
+                                        i,
+                                        e.target.value
+                                    )
+                                }
+                            />
+
+                        ))}
+
+                    </div>
+
+                    {/* SUBMIT */}
+
+                    <div className="d-grid d-md-flex justify-content-md-end mt-4">
+
+                        <button className="btn btn-success px-4 py-2 fw-semibold">
+
+                            Update Product
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
         </div>
     );
 }

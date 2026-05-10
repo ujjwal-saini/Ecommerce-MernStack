@@ -1,159 +1,530 @@
-import React, { useState, useEffect } from 'react'
-import { useContext } from 'react'
-import { AuthContext } from '../../middleware/authContext'
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../middleware/authContext";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { IoSearchOutline } from "react-icons/io5";
+import { FaMoon, FaSun, FaBars } from "react-icons/fa";
+import MobileBar from "./MobileBar";
+
 function Nav() {
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
+  const {
+    user,
+    logout,
+    theme,
+    toggleTheme
+  } = useContext(AuthContext);
+
   const [productSearch, setproductSearch] = useState("");
-  const products = useSelector((state) => state.product.products);
   const [Suggestionfilter, setSuggestionfilter] = useState([]);
   const [activeIndex, setActiveIndex] = useState(-1);
+  const [mobileSidebar, setMobileSidebar] = useState(false);
 
-  const formSubmit = (e) => {
-    e.preventDefault();
-    setSuggestionfilter([]);
-    console.log(productSearch, "p");
-    navigate(`/admindashboard/products?search=${productSearch.trim()}`);
-  };
+  const products = useSelector(
+    (state) => state.product.products
+  );
 
-  const handleKeyDown = (e) => {
-    if (!Suggestionfilter.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((prev) => prev < Suggestionfilter.length - 1 ? prev + 1 : prev);
-    }
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((prev) => prev > 0 ? prev - 1 : 0
-      );
-    }
-    if (e.key === "Enter") {
-      if (activeIndex >= 0) {
-        e.preventDefault();
-        const selectedItem = Suggestionfilter[activeIndex];
-        navigate(`/admindashboard/productpreview/${selectedItem._id}`);
-        setSuggestionfilter([]);
-      }
-
-      setproductSearch("");
-    }
-
-  };
-
-  const suggestionFunc = () => {
-
-    if (!productSearch.trim()) {
-      setSuggestionfilter([]);
-      return;
-    }
-    const result = products.filter((item) =>
-      item.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.description.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.category.toLowerCase().includes(productSearch.toLowerCase()) ||
-      item.brand.toLowerCase().includes(productSearch.toLowerCase())
-    );
-    setSuggestionfilter(result);
-  }
+  // SEARCH FILTER
 
   useEffect(() => {
-    suggestionFunc();
+
+    if (!productSearch.trim()) {
+
+      setSuggestionfilter([]);
+
+      return;
+    }
+
+    const result = products.filter((item) =>
+
+      item.name.toLowerCase().includes(productSearch.toLowerCase()) ||
+
+      item.description.toLowerCase().includes(productSearch.toLowerCase()) ||
+
+      item.category.toLowerCase().includes(productSearch.toLowerCase()) ||
+
+      item.brand.toLowerCase().includes(productSearch.toLowerCase())
+
+    );
+
+    setSuggestionfilter(result);
+
   }, [productSearch, products]);
 
+  // FORM SUBMIT
+
+  const formSubmit = (e) => {
+
+    e.preventDefault();
+
+    setSuggestionfilter([]);
+
+    navigate(
+      `/admindashboard/products?search=${productSearch.trim()}`
+    );
+  };
+
+  // LOGOUT
 
   const handleLogout = async () => {
+
     await logout();
+
     navigate("/login");
   };
 
   return (
-    <div className="d-flex w-full items-center justify-content-between px-3 py-2 border-b bg-white border app-navbar">
-      <h2 className="text-xl font-semibold">Welcome Admin</h2>
-      <div className="d-flex items-center gap-1">
-        {/* SEARCH BAR */}
+
+    <div
+      className={`border-bottom px-2 px-md-3 py-2 ${theme === "dark"
+        ? "bg-black text-light"
+        : "bg-white text-dark"
+        }`}
+    >
+
+      {/* DESKTOP NAVBAR */}
+
+      <div className="d-none d-md-flex align-items-center gap-3">
+
+        {/* LEFT */}
+
+        <Link to={"/admindashboard"} className={`text-decoration-none m-0 fw-bold flex-shrink-0 fs-4 ${theme === "dark"
+          ? "bg-black text-light"
+          : "bg-white text-dark"} `} >
+          Welcome Admin
+        </Link>
+
+        {/* SEARCH */}
+
         <form
           onSubmit={formSubmit}
-          className="d-flex justify-content-center align-items-center flex-column flex-grow-1 mx-lg-3 mt-2 mt-lg-0 position-relative">
-          <div className="flex w-full">
+          className="position-relative flex-grow-1"
+        >
+
+          <div className="d-flex">
+
             <input
-              className="w-full px-3 py-1 border rounded-start"
+              className={`form-control border-end-0 ${theme === "dark"
+                ? "bg-dark text-light border-secondary"
+                : ""
+                }`}
               type="search"
-              placeholder="Search for shoes, mobiles, fashion..."
+              placeholder="Search products..."
               value={productSearch}
               onChange={(e) => {
+
                 setproductSearch(e.target.value);
+
                 setActiveIndex(-1);
+
               }}
+            />
 
-              onKeyDown={handleKeyDown}
-              style={{ width: "400px" }} />
-
-            <button className="bg-dark text-white px-3 rounded-end">
+            <button className="btn btn-dark">
               <IoSearchOutline />
             </button>
+
           </div>
 
+          {/* SEARCH SUGGESTIONS */}
+
           {Suggestionfilter.length > 0 && (
-            <div className="position-absolute top-100 start-0 w-100 bg-white shadow mt-1 rounded z-3">
-              {Suggestionfilter.slice(0, 6).map((item, index) => (
-                <Link
-                  key={index}
-                  to={`/admindashboard/productpreview/${item._id}`}
-                  onMouseDown={(e) => e.preventDefault()}
-                  onMouseEnter={() => setActiveIndex(index)}
-                  className={`d-flex align-items-center gap-2 p-2 text-dark text-decoration-none border-bottom 
-  ${activeIndex === index ? "bg-primary text-white" : ""}`}
-                  onClick={() => {
-                    setSuggestionfilter([]);
-                    setproductSearch("");
-                  }}
-                >
-                  {item.mainImage && (
-                    <img
-                      src={item.mainImage}
-                      alt=""
-                      width="40"
-                      height="40"
-                      className="rounded"
-                    />
-                  )}
-                  <div>
-                    <div style={{ fontSize: "14px" }}>{item.name}</div>
-                    <small className="text-muted">₹ {item.price}</small>
-                  </div>
-                </Link>
-              ))}
+
+            <div
+              className={`position-absolute top-100 start-0 w-100 shadow mt-1 rounded overflow-hidden ${theme === "dark"
+                ? "bg-dark text-light"
+                : "bg-white"
+                }`}
+              style={{
+                zIndex: 9999
+              }}
+            >
+
+              {Suggestionfilter
+                .slice(0, 6)
+                .map((item, index) => (
+
+                  <Link
+                    key={index}
+                    to={`/admindashboard/productpreview/${item._id}`}
+                    className={`d-flex align-items-center gap-2 p-2 text-decoration-none ${activeIndex === index
+                      ? "bg-primary text-white"
+                      : ""
+                      } ${theme === "dark"
+                        ? "text-light"
+                        : "text-dark"
+                      }`}
+                    onMouseEnter={() =>
+                      setActiveIndex(index)
+                    }
+                    onClick={() => {
+
+                      setSuggestionfilter([]);
+
+                      setproductSearch("");
+
+                    }}
+                  >
+
+                    {item.mainImage && (
+
+                      <img
+                        src={item.mainImage}
+                        width="40"
+                        height="40"
+                        className="rounded"
+                        alt=""
+                      />
+
+                    )}
+
+                    <div>
+
+                      <div style={{ fontSize: "14px" }}>
+                        {item.name}
+                      </div>
+
+                      <small>
+                        ₹ {item.price}
+                      </small>
+
+                    </div>
+
+                  </Link>
+
+                ))}
+
             </div>
+
           )}
+
         </form>
-        <div className="dropdown">
+
+        {/* RIGHT */}
+
+        <div className="d-flex align-items-center gap-2 flex-shrink-0">
+
+          {/* THEME BUTTON */}
+
           <button
-            className="btn dropdown-toggle d-flex align-items-center"
-            type="button"
-            data-bs-toggle="dropdown"
+            onClick={toggleTheme}
+            className={`btn ${theme === "dark"
+              ? "btn-outline-light"
+              : "btn-outline-dark"
+              }`}
           >
-            <img
-              src={user.profile.profilePic}
-              alt="profile"
-              className="rounded-circle me-2"
-              width="35"
-              height="35"
-            />
-            {user.name}
+
+            {theme === "dark"
+              ? <FaSun />
+              : <FaMoon />
+            }
+
           </button>
-          <ul className="dropdown-menu dropdown-menu-end shadow">
-            <li><Link className="dropdown-item" to="profile">Profile</Link></li>
-            <li><Link className="dropdown-item" to="setting">Settings</Link></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><Link onClick={handleLogout} className="dropdown-item text-danger">Logout</Link></li>
-          </ul>
+
+          {/* PROFILE */}
+
+          <div className="dropdown">
+
+            <button
+              className={`btn dropdown-toggle d-flex align-items-center ${theme === "dark"
+                ? "bg-dark text-light border-secondary"
+                : "bg-white"
+                }`}
+              data-bs-toggle="dropdown"
+            >
+
+              <img
+                src={user?.profile?.profilePic}
+                width="32"
+                height="32"
+                className="rounded-circle me-2"
+                alt=""
+              />
+
+              {user?.name}
+
+            </button>
+
+            <ul className="dropdown-menu dropdown-menu-end">
+
+              <li>
+
+                <Link
+                  className="dropdown-item"
+                  to="/admindashboard/profile"
+                >
+                  Profile
+                </Link>
+
+              </li>
+
+              <li>
+
+                <Link
+                  className="dropdown-item"
+                  to="/admindashboard/setting"
+                >
+                  Settings
+                </Link>
+
+              </li>
+
+              <li>
+                <hr className="dropdown-divider" />
+              </li>
+
+              <li>
+
+                <button
+                  className="dropdown-item text-danger"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+
+              </li>
+
+            </ul>
+
+          </div>
+
         </div>
+
       </div>
+
+      {/* =========================
+          MOBILE NAVBAR
+      ========================= */}
+
+      <div className="d-md-none">
+
+        {/* TOP ROW */}
+
+        <div className="d-flex justify-content-between align-items-center mb-2">
+
+          {/* LEFT */}
+
+          <div className="d-flex align-items-center gap-2">
+
+            <button
+              className="btn btn-dark"
+              onClick={() => setMobileSidebar(true)}
+            >
+              <FaBars />
+            </button>
+
+            <Link to={"/admindashboard"} className={`text-decoration-none m-0 fw-bold ${theme === "dark"
+              ? "bg-black text-light"
+              : "bg-white text-dark"} `}>
+              Welcome Admin
+            </Link>
+
+          </div>
+
+          {/* RIGHT */}
+
+          <div className="d-flex align-items-center gap-2">
+
+            {/* THEME */}
+
+            <button
+              onClick={toggleTheme}
+              className={`btn btn-sm ${theme === "dark"
+                ? "btn-outline-light"
+                : "btn-outline-dark"
+                }`}
+            >
+
+              {theme === "dark"
+                ? <FaSun />
+                : <FaMoon />
+              }
+
+            </button>
+
+            {/* PROFILE */}
+
+            <div className="dropdown">
+
+              <button
+                className={`btn btn-sm dropdown-toggle ${theme === "dark"
+                  ? "btn-dark"
+                  : "btn-light"
+                  }`}
+                data-bs-toggle="dropdown"
+              >
+
+                <img
+                  src={user?.profile?.profilePic}
+                  width="28"
+                  height="28"
+                  className="rounded-circle"
+                  alt=""
+                />
+
+              </button>
+
+              <ul className="dropdown-menu dropdown-menu-end">
+
+                <li>
+
+                  <Link
+                    className="dropdown-item"
+                    to="/admindashboard/profile"
+                  >
+                    Profile
+                  </Link>
+
+                </li>
+
+                <li>
+
+                  <Link
+                    className="dropdown-item"
+                    to="/admindashboard/setting"
+                  >
+                    Settings
+                  </Link>
+
+                </li>
+
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+
+                <li>
+
+                  <button
+                    className="dropdown-item text-danger"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+
+                </li>
+
+              </ul>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        {/* MOBILE SEARCH */}
+
+        <form
+          onSubmit={formSubmit}
+          className="position-relative w-100"
+        >
+
+          <div className="d-flex w-100">
+
+            <input
+              className={`form-control ${theme === "dark"
+                ? "bg-dark text-light border-secondary"
+                : ""
+                }`}
+              type="search"
+              placeholder="Search products..."
+              value={productSearch}
+              onChange={(e) => {
+
+                setproductSearch(e.target.value);
+
+                setActiveIndex(-1);
+
+              }}
+            />
+
+            <button className="btn btn-dark">
+              <IoSearchOutline />
+            </button>
+
+          </div>
+
+          {/* MOBILE SEARCH SUGGESTIONS */}
+
+          {Suggestionfilter.length > 0 && (
+
+            <div
+              className={`position-absolute top-100 start-0 w-100 shadow mt-1 rounded overflow-hidden ${theme === "dark"
+                ? "bg-dark text-light"
+                : "bg-white"
+                }`}
+              style={{
+                zIndex: 9999
+              }}
+            >
+
+              {Suggestionfilter
+                .slice(0, 6)
+                .map((item, index) => (
+
+                  <Link
+                    key={index}
+                    to={`/admindashboard/productpreview/${item._id}`}
+                    className={`d-flex align-items-center gap-2 p-2 text-decoration-none ${activeIndex === index
+                      ? "bg-primary text-white"
+                      : ""
+                      } ${theme === "dark"
+                        ? "text-light"
+                        : "text-dark"
+                      }`}
+                    onMouseEnter={() =>
+                      setActiveIndex(index)
+                    }
+                    onClick={() => {
+
+                      setSuggestionfilter([]);
+
+                      setproductSearch("");
+
+                    }}
+                  >
+
+                    {item.mainImage && (
+
+                      <img
+                        src={item.mainImage}
+                        width="40"
+                        height="40"
+                        className="rounded"
+                        alt=""
+                      />
+
+                    )}
+
+                    <div>
+
+                      <div style={{ fontSize: "14px" }}>
+                        {item.name}
+                      </div>
+
+                      <small>
+                        ₹ {item.price}
+                      </small>
+
+                    </div>
+
+                  </Link>
+
+                ))}
+
+            </div>
+
+          )}
+
+        </form>
+
+      </div>
+      <MobileBar
+        mobileSidebar={mobileSidebar}
+        setMobileSidebar={setMobileSidebar}
+        theme={theme}
+      />
     </div>
-  )
+  );
 }
 
-export default Nav
+export default Nav;

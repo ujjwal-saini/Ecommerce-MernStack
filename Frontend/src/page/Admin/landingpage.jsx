@@ -2,6 +2,7 @@ import React from "react";
 import Sidebar from "./sidebar";
 import Nav from "./nav";
 import { Outlet } from "react-router-dom";
+import MobileBootomnav from "./mobileBootomnav";
 
 function Adminpage() {
   return (
@@ -13,10 +14,11 @@ function Adminpage() {
 
         <Nav />
 
-        <div className="flex-grow-1 overflow-auto p-3 bg-light">
+        <div className="main-content flex-grow-1  bg-light">
           <Outlet />
         </div>
       </div>
+      <MobileBootomnav />
     </div>
   );
 }

@@ -56,15 +56,13 @@ export const getUserOrders = async (req, res) => {
 };
 
 
-
-// update order status
 export const updateOrderStatus = async (req, res) => {
 
     try {
 
         const order = await Order.findByIdAndUpdate(
             req.params.id,
-            { orderStatus: req.body.status },
+            { orderStatus: req.body.orderStatus },
             { new: true }
         );
 

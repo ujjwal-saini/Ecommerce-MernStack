@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AuthContext } from "../../../middleware/authContext";
 
 function CategoryFields({
   subcategory,
@@ -10,310 +11,467 @@ function CategoryFields({
   addVariant,
   handleDimensionChange
 }) {
-  console.log(form);
+
+  const { theme } = useContext(AuthContext);
+
   if (!category) return null;
 
+  const inputClass = `form-control ${theme === "dark"
+      ? "bg-dark text-light border-secondary"
+      : "bg-white text-dark"
+    }`;
+
+  const cardClass = `${theme === "dark"
+      ? "bg-dark border border-secondary text-light"
+      : "bg-light border text-dark"
+    }`;
+
   return (
+
     <div className="mt-4">
 
-      <h5 className="fw-bold mb-3">
+      <h5 className="fw-bold mb-3 fs-5 fs-md-4">
         {category} Specifications
       </h5>
 
-      {["phone", "laptop", "mobile"].includes(subcategory) && category === "Electronics" && (
-        <div>
+      {/* ===============================
+          ELECTRONICS
+      =============================== */}
 
-          <div className="row">
+      {["phone", "laptop", "mobile"].includes(subcategory) &&
+        category === "Electronics" && (
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="RAM (8GB)"
-                value={form.specifications?.RAM}
-                onChange={(e) =>
-                  handleSpecificationChange("RAM", e.target.value)
-                }
-              />
+          <div>
+
+            <div className="row g-2">
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="RAM (8GB)"
+                  value={form.specifications?.RAM || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "RAM",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="Storage"
+                  value={form.specifications?.Storage || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "Storage",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="OS"
+                  value={form.specifications?.OS || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "OS",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="Battery"
+                  value={form.specifications?.Battery || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "Battery",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="Display"
+                  value={form.specifications?.Display || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "Display",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
+              <div className="col-12 col-md-4">
+                <input
+                  className={inputClass}
+                  placeholder="Camera"
+                  value={form.specifications?.Camera || ""}
+                  onChange={(e) =>
+                    handleSpecificationChange(
+                      "Camera",
+                      e.target.value
+                    )
+                  }
+                />
+              </div>
+
             </div>
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="Storage"
-                value={form.specifications?.Storage}
-                onChange={(e) =>
-                  handleSpecificationChange("Storage", e.target.value)
-                }
-              />
-            </div>
+            {/* MOBILE VARIANTS */}
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="OS"
-                value={form.specifications?.OS || ""}
-                onChange={(e) =>
-                  handleSpecificationChange("OS", e.target.value)
-                }
-              />
-            </div>
+            <h6 className="mt-4 fw-bold">
+              Mobile Variants (Color)
+            </h6>
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="Battery"
-                value={form.specifications?.Battery || ""}
-                onChange={(e) =>
-                  handleSpecificationChange("Battery", e.target.value)
-                }
-              />
-            </div>
+            {form.variants.map((v, i) => (
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="Display"
-                value={form.specifications?.Display || ""}
-                onChange={(e) =>
-                  handleSpecificationChange("Display", e.target.value)
-                }
-              />
-            </div>
+              <div
+                key={i}
+                className={`rounded-4 p-3 mb-3 shadow-sm ${cardClass}`}
+              >
 
-            <div className="col-md-4 mb-2">
-              <input
-                className="form-control"
-                placeholder="Camera"
-                value={form.specifications?.Camera || ""}
-                onChange={(e) =>
-                  handleSpecificationChange("Camera", e.target.value)
-                }
-              />
-            </div>
+                <div className="row g-2">
+
+                  <div className="col-12 col-md-4">
+                    <input
+                      className={inputClass}
+                      placeholder="Color (Black)"
+                      value={v.color}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "color",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
+
+                  <div className="col-12 col-md-4">
+                    <input
+                      className={inputClass}
+                      placeholder="Stock"
+                      value={v.stock}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "stock",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
+
+                  <div className="col-12 col-md-4">
+                    <input
+                      className={inputClass}
+                      placeholder="Price"
+                      value={v.price}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "price",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
+
+                </div>
+
+              </div>
+
+            ))}
+
+            <button
+              type="button"
+              className="btn btn-primary btn-sm rounded-3 px-3"
+              onClick={addVariant}
+            >
+              Add Color Variant
+            </button>
 
           </div>
+        )}
 
-          {/* VARIANTS FOR MOBILE */}
+      {/* ===============================
+          CLOTHES & SHOES
+      =============================== */}
 
-          <h6 className="mt-4">Mobile Variants (Color)</h6>
+      {(subcategory === "clothes" ||
+        subcategory === "Shoes" ||
+        category === "clothes" ||
+        category === "Shoes") && (
 
-          {form.variants.map((v, i) => (
-            <div key={i} className="border p-3 mb-2 rounded">
+          <div>
 
-              <div className="row">
+            <h6 className="fw-bold">
+              Variants (Size / Color)
+            </h6>
 
-                <div className="col-md-4">
-                  <input
-                    className="form-control"
-                    placeholder="Color (Black)"
-                    value={v.color}
-                    onChange={(e) =>
-                      handleVariantChange(i, "color", e.target.value)
-                    }
-                  />
-                </div>
+            {form.variants.map((v, i) => (
 
-                <div className="col-md-4">
-                  <input
-                    className="form-control"
-                    placeholder="Stock"
-                    value={v.stock}
-                    onChange={(e) =>
-                      handleVariantChange(i, "stock", e.target.value)
-                    }
-                  />
-                </div>
+              <div
+                key={i}
+                className={`rounded-4 p-3 mb-3 shadow-sm ${cardClass}`}
+              >
 
-                <div className="col-md-4">
-                  <input
-                    className="form-control"
-                    placeholder="Price"
-                    value={v.price}
-                    onChange={(e) =>
-                      handleVariantChange(i, "price", e.target.value)
-                    }
-                  />
-                </div>
+                <div className="row g-2">
 
-              </div>
+                  <div className="col-12 col-md-3">
+                    <input
+                      className={inputClass}
+                      placeholder="Size"
+                      value={v.size}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "size",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
 
-            </div>
-          ))}
+                  <div className="col-12 col-md-3">
+                    <input
+                      className={inputClass}
+                      placeholder="Color"
+                      value={v.color}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "color",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
 
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            onClick={addVariant}
-          >
-            Add Color Variant
-          </button>
+                  <div className="col-12 col-md-3">
+                    <input
+                      className={inputClass}
+                      placeholder="Stock"
+                      value={v.stock}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "stock",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
 
-        </div>
-      )}
+                  <div className="col-12 col-md-3">
+                    <input
+                      className={inputClass}
+                      placeholder="Price"
+                      value={v.price}
+                      onChange={(e) =>
+                        handleVariantChange(
+                          i,
+                          "price",
+                          e.target.value
+                        )
+                      }
+                    />
+                  </div>
 
-      {/* ---------------- CLOTHES & SHOES ---------------- */}
-      {(subcategory === "clothes" || subcategory === "Shoes" || category === "clothes" || category === "Shoes") && (
-        <div>
-          <h6>Variants (Size / Color)</h6>
-          {form.variants.map((v, i) => (
-            <div key={i} className="border p-3 mb-2 rounded">
-              <div className="row">
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    placeholder="Size"
-                    onChange={(e) =>
-                      handleVariantChange(i, "size", e.target.value)
-                    }
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    placeholder="Color"
-                    onChange={(e) =>
-                      handleVariantChange(i, "color", e.target.value)
-                    }
-                  />
-                </div>
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    placeholder="Stock"
-                    onChange={(e) =>
-                      handleVariantChange(i, "stock", e.target.value)
-                    }
-                  />
-                </div>
-
-                <div className="col-md-3">
-                  <input
-                    className="form-control"
-                    placeholder="Price"
-                    onChange={(e) =>
-                      handleVariantChange(i, "price", e.target.value)
-                    }
-                  />
                 </div>
 
               </div>
 
-            </div>
-          ))}
+            ))}
 
-          <button
-            type="button"
-            className="btn btn-primary btn-sm"
-            onClick={addVariant}
-          >
-            Add Variant
-          </button>
+            <button
+              type="button"
+              className="btn btn-primary btn-sm rounded-3 px-3"
+              onClick={addVariant}
+            >
+              Add Variant
+            </button>
 
-        </div>
-      )}
+          </div>
+        )}
 
-      {/* ---------------- FURNITURE ---------------- */}
+      {/* ===============================
+          FURNITURE
+      =============================== */}
 
       {category === "Furniture" && (
-        <div className="row">
-          <div className="col-md-3">
-            <input
-              className="form-control"
-              placeholder="Length"
-              onChange={(e) =>
-                handleDimensionChange("length", e.target.value)
-              }
-            />
-          </div>
 
-          <div className="col-md-3">
-            <input
-              className="form-control"
-              placeholder="Width"
-              onChange={(e) =>
-                handleDimensionChange("width", e.target.value)
-              }
-            />
-          </div>
+        <div
+          className={`rounded-4 p-3 shadow-sm ${cardClass}`}
+        >
 
-          <div className="col-md-3">
-            <input
-              className="form-control"
-              placeholder="Height"
-              onChange={(e) =>
-                handleDimensionChange("height", e.target.value)
-              }
-            />
-          </div>
+          <div className="row g-2">
 
-          <div className="col-md-3">
-            <input
-              name="weight"
-              className="form-control"
-              placeholder="Weight"
-              onChange={handleChange}
-            />
+            <div className="col-12 col-md-3">
+              <input
+                className={inputClass}
+                placeholder="Length"
+                value={form.dimensions?.length || ""}
+                onChange={(e) =>
+                  handleDimensionChange(
+                    "length",
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+
+            <div className="col-12 col-md-3">
+              <input
+                className={inputClass}
+                placeholder="Width"
+                value={form.dimensions?.width || ""}
+                onChange={(e) =>
+                  handleDimensionChange(
+                    "width",
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+
+            <div className="col-12 col-md-3">
+              <input
+                className={inputClass}
+                placeholder="Height"
+                value={form.dimensions?.height || ""}
+                onChange={(e) =>
+                  handleDimensionChange(
+                    "height",
+                    e.target.value
+                  )
+                }
+              />
+            </div>
+
+            <div className="col-12 col-md-3">
+              <input
+                name="weight"
+                className={inputClass}
+                placeholder="Weight"
+                value={form.weight || ""}
+                onChange={handleChange}
+              />
+            </div>
+
           </div>
 
         </div>
       )}
 
-      {/* ---------------- FLAGS ---------------- */}
+      {/* ===============================
+          FLAGS
+      =============================== */}
 
-      <div className="mt-4">
+      <div
+        className={`mt-4 rounded-4 p-3 shadow-sm ${cardClass}`}
+      >
 
-        <h6>Product Flags</h6>
+        <h6 className="fw-bold mb-3">
+          Product Flags
+        </h6>
 
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="isFeatured"
-            checked={form.isFeatured}
-            className="form-check-input"
-            onChange={handleChange}
-          />
-          <label className="form-check-label">
-            Featured Product
-          </label>
-        </div>
+        <div className="row g-2">
 
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="isNewArrival"
-            checked={form.isNewArrival}
-            className="form-check-input"
-            onChange={handleChange}
-          />
-          <label className="form-check-label">
-            New Arrival
-          </label>
-        </div>
+          <div className="col-12 col-md-6">
 
-        <div className="form-check">
-          <input
-            type="checkbox"
-            name="isOnSale"
-            checked={form.isOnSale}
-            className="form-check-input"
-            onChange={handleChange}
-          />
-          <label className="form-check-label">
-            On Sale
-          </label>
-        </div>
+            <div className="form-check">
 
-        <div className="form-check">
-          <input
-            type="checkbox"
-            checked={form.isTrending}
-            name="isTrending"
-            className="form-check-input"
-            onChange={handleChange}
-          />
-          <label className="form-check-label">
-            Trending
-          </label>
+              <input
+                type="checkbox"
+                name="isFeatured"
+                checked={form.isFeatured}
+                className="form-check-input"
+                onChange={handleChange}
+              />
+
+              <label className="form-check-label">
+                Featured Product
+              </label>
+
+            </div>
+
+          </div>
+
+          <div className="col-12 col-md-6">
+
+            <div className="form-check">
+
+              <input
+                type="checkbox"
+                name="isNewArrival"
+                checked={form.isNewArrival}
+                className="form-check-input"
+                onChange={handleChange}
+              />
+
+              <label className="form-check-label">
+                New Arrival
+              </label>
+
+            </div>
+
+          </div>
+
+          <div className="col-12 col-md-6">
+
+            <div className="form-check">
+
+              <input
+                type="checkbox"
+                name="isOnSale"
+                checked={form.isOnSale}
+                className="form-check-input"
+                onChange={handleChange}
+              />
+
+              <label className="form-check-label">
+                On Sale
+              </label>
+
+            </div>
+
+          </div>
+
+          <div className="col-12 col-md-6">
+
+            <div className="form-check">
+
+              <input
+                type="checkbox"
+                checked={form.isTrending}
+                name="isTrending"
+                className="form-check-input"
+                onChange={handleChange}
+              />
+
+              <label className="form-check-label">
+                Trending
+              </label>
+
+            </div>
+
+          </div>
+
         </div>
 
       </div>

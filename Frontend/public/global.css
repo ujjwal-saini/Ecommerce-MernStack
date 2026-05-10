@@ -103,7 +103,24 @@ body[data-theme="dark"] input.form-control:focus {
   border-color: #444;
   box-shadow: none;
 }
+.table-color,
+.table-color thead,
+.table-color tbody,
+.table-color tr,
+.table-color th,
+.table-color td {
+  background-color: #0a0a0a !important;
+  color: #fff !important;
+  border-color: #222 !important;
+}
+.bg-dark-mode{
+  background-color: #0a0a0a !important;
+}
+/* hover */
 
+.table-color tbody tr:hover {
+  background-color: #141414 !important;
+}
 
 /* =========================================================
    CARDS / CONTAINERS
@@ -607,6 +624,9 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
+/* admin */
+
+
 
 /* =========================================================
    RESPONSIVE
@@ -614,6 +634,18 @@ body[data-theme="dark"] .btn-outline-theme:hover {
 
 /* TABLET + MOBILE */
 @media (max-width: 768px) {
+/* login signup forget */
+
+             .forgot-container{
+              min-height:100dvh;
+              overflow-y:auto;
+              padding:10px;
+            }
+             .update-container{
+              min-height:100dvh;
+              overflow-y:auto;
+              padding:10px;
+            }
 
   /* Sidebar */
   .sidebar {
@@ -636,6 +668,7 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   .sidebar.show {
     left: 0;
   }
+
   /* inicvisible scroll bar */
  .category-wrapper {
     gap: 12px !important;
@@ -658,6 +691,7 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   .category-text {
     font-size: 12px !important;
   }
+
 }
   /* Toggle Button */
   .mobile-toggle-btn {
@@ -679,7 +713,182 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   .order-modal {
     width: 95%;
   }
+
+
+
+
+
+
+
+ /* MAIN CONTENT */
+
+.main-content{
+  width:100%;
+  min-width:0;
+  overflow-x:auto;
 }
+
+/* ADMIN PAGE */
+
+.admin-orders-wrapper{
+  width:100%;
+  min-width:0;
+}
+
+.admin-table-wrapper{
+  width:100%;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* DESKTOP */
+
+.admin-table-wrapper table{
+  width:100%;
+}
+/* mobile side bar */
+/* =========================
+   MOBILE SIDEBAR
+========================= */
+
+.mobile-sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1040;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s;
+}
+
+.mobile-sidebar-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 280px;
+  height: 100vh;
+  z-index: 1050;
+  transition: 0.3s ease;
+  overflow-y: auto;
+}
+
+.mobile-sidebar.show {
+  left: 0;
+}
+
+.mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.mobile-link:hover {
+  background: #0d6efd;
+  color: black !important;
+}
+
+/* mobile nav bootm */
+/* =========================
+   MOBILE BOTTOM NAV
+========================= */
+
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 65px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #222;
+  z-index: 9999;
+}
+
+/* NAV LINK */
+
+.bottom-nav-link {
+  flex: 1;
+  height: 100%;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 11px;
+  transition: 0.3s;
+}
+
+.bottom-nav-link svg {
+  font-size: 20px;
+}
+
+/* ACTIVE */
+
+.active-bottom-nav {
+  color: #0d6efd !important;
+  font-weight: 600;
+}
+
+/* HOVER */
+
+.bottom-nav-link:hover {
+  color: #0d6efd !important;
+}
+/* MOBILE */
+
+@media (max-width:768px){
+
+  .flex-grow-1{
+  min-width:0 !important;
+}
+  .admin-orders-wrapper{
+    padding:0 !important;
+  }
+
+  .admin-table-wrapper{
+    overflow-x:auto;
+    border-radius:12px;
+  }
+
+  .admin-table-wrapper table{
+    min-width:900px;
+  }
+
+  .admin-table-wrapper .table th,
+  .admin-table-wrapper .table td{
+    white-space:nowrap;
+    font-size:11px !important;
+    padding:8px !important;
+  }
+
+  .admin-table-wrapper .table button,
+  .admin-table-wrapper .table select{
+    min-width:90px;
+    font-size:11px !important;
+  }
+
+  .admin-table-wrapper .table img{
+    width:55px !important;
+    height:55px !important;
+  }
+
+}
+
+
+
+
 
 
 /* MOBILE */

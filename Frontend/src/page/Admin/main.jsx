@@ -1,16 +1,41 @@
 import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
+
 import { AuthContext } from "../../middleware/authContext";
-import { FaUsers, FaBox, FaShoppingCart, FaRupeeSign } from "react-icons/fa";
+
+import {
+  FaUsers,
+  FaBox,
+  FaShoppingCart,
+  FaRupeeSign,
+} from "react-icons/fa";
+
 import { Link } from "react-router-dom";
-import { Chart as ChartJS, BarElement, CategoryScale, LinearScale, Tooltip, Legend, } from "chart.js";
+
+import {
+  Chart as ChartJS,
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
 import { Bar } from "react-chartjs-2";
+
 import Loader from "../../components/loading";
 
-ChartJS.register(BarElement, CategoryScale, LinearScale, Tooltip, Legend);
+ChartJS.register(
+  BarElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend
+);
 
 function Adminmain() {
-  const { API } = useContext(AuthContext);
+
+  const { API, theme } = useContext(AuthContext);
 
   const [stats, setStats] = useState({
     users: 0,
@@ -23,153 +48,456 @@ function Adminmain() {
   const [recentUsers, setRecentUsers] = useState([]);
   const [monthlySales, setMonthlySales] = useState([]);
   const [birthday, setBirthday] = useState([]);
-  const [loading, setLoading] = useState(true);
 
+  const [loading, setLoading] = useState(true);
+  console.log(recentUsers);
   useEffect(() => {
     fetchDashboardData();
   }, []);
 
   const fetchDashboardData = async () => {
+
     try {
+
       const res = await axios.get(`${API}/getAdminData`);
+
       const data = res.data;
+
       setStats({
         users: data.usersLength,
         products: data.productsLength,
         orders: data.ordersLength,
         revenue: data.totalRevenue,
       });
+
       setRecentOrders(data.recentOrders || []);
       setRecentUsers(data.recentUsers || []);
       setMonthlySales(data.monthlySales || []);
       setBirthday(data.birthdayUsers || []);
+
       setLoading(false);
+
     } catch (error) {
+
       console.log(error);
+
       setLoading(false);
     }
   };
 
+  // BAR CHART DATA
 
   const chartData = {
+
     labels: monthlySales.map((item) => item.month),
+
     datasets: [
       {
         label: "Revenue",
+
         data: monthlySales.map((item) => item.total),
+
         backgroundColor: "rgba(54, 162, 235, 0.6)",
+
+        borderRadius: 10,
       },
     ],
   };
 
   return (
-    <div className="container-fluid p-4 bg-light min-vh-100">
 
-      <h2 className="fw-bold mb-4">Admin Dashboard</h2>
+    <div
+      className={`container-fluid min-vh-100 p-2 p-md-4 ${theme === "dark"
+        ? "bg-black text-light"
+        : "bg-light text-dark"
+        }`}
+    >
+
+      {/* TITLE */}
+
+      <div className="mb-4">
+
+        <h2 className="fw-bold fs-3 fs-md-2">
+          Admin Dashboard
+        </h2>
+
+        <p className="small opacity-75 mb-0">
+          Overview of your store analytics
+        </p>
+
+      </div>
+
       {loading ? (
+
         <div className="text-center mt-5">
           <Loader />
         </div>
+
       ) : (
         <>
-          {/* Stats Cards */}
-          <div className="row g-4">
-            <Link to="customer" className="col-md-3 text-decoration-none text-dark">
-              <div className="card shadow border-0 h-100 rounded-4">
+
+          {/* =========================
+              STATS CARDS
+          ========================= */}
+
+          <div className="row g-3 g-md-4">
+
+            <Link
+              to="customer"
+              className="col-6 col-md-6 col-lg-3 text-decoration-none"
+            >
+
+              <div
+                className={`card border-0 rounded-4 h-100 shadow-sm ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
                 <div className="card-body">
-                  <FaUsers size={28} className="text-primary mb-2" />
-                  <h6>Total Users</h6>
-                  <h3 className="fw-bold">{stats.users}</h3>
+
+                  <FaUsers
+                    size={28}
+                    className="text-primary mb-2"
+                  />
+
+                  <h6 className="small">
+                    Total Users
+                  </h6>
+
+                  <h3 className="fw-bold">
+                    {stats.users}
+                  </h3>
+
                 </div>
+
               </div>
-            </Link>
-            <Link to="products" className="col-md-3 text-decoration-none text-dark">
-              <div className="card shadow border-0 h-100 rounded-4">
-                <div className="card-body">
-                  <FaBox size={28} className="text-success mb-2" />
-                  <h6>Total Products</h6>
-                  <h3 className="fw-bold">{stats.products}</h3>
-                </div>
-              </div>
+
             </Link>
 
-            <Link to="allorders" className="col-md-3 text-decoration-none text-dark">
-              <div className="card shadow border-0 h-100 rounded-4">
+            <Link
+              to="products"
+              className="col-6 col-md-6 col-lg-3 text-decoration-none"
+            >
+
+              <div
+                className={`card border-0 rounded-4 h-100 shadow-sm ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
                 <div className="card-body">
-                  <FaShoppingCart size={28} className="text-warning mb-2" />
-                  <h6>Total Orders</h6>
-                  <h3 className="fw-bold">{stats.orders}</h3>
+
+                  <FaBox
+                    size={28}
+                    className="text-success mb-2"
+                  />
+
+                  <h6 className="small">
+                    Total Products
+                  </h6>
+
+                  <h3 className="fw-bold">
+                    {stats.products}
+                  </h3>
+
                 </div>
+
               </div>
+
             </Link>
 
-            <Link to="analytic" className="col-md-3 text-decoration-none text-dark">
-              <div className="card shadow border-0 h-100 rounded-4">
+            <Link
+              to="allorders"
+              className="col-6 col-md-6 col-lg-3 text-decoration-none"
+            >
+
+              <div
+                className={`card border-0 rounded-4 h-100 shadow-sm ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
                 <div className="card-body">
-                  <FaRupeeSign size={28} className="text-danger mb-2" />
-                  <h6>Total Revenue</h6>
-                  <h3 className="fw-bold">₹ {stats.revenue}</h3>
+
+                  <FaShoppingCart
+                    size={28}
+                    className="text-warning mb-2"
+                  />
+
+                  <h6 className="small">
+                    Total Orders
+                  </h6>
+
+                  <h3 className="fw-bold">
+                    {stats.orders}
+                  </h3>
+
                 </div>
+
               </div>
+
+            </Link>
+
+            <Link
+              to="analytic"
+              className="col-6 col-md-6 col-lg-3 text-decoration-none"
+            >
+
+              <div
+                className={`card border-0 rounded-4 h-100 shadow-sm ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
+                <div className="card-body">
+
+                  <FaRupeeSign
+                    size={28}
+                    className="text-danger mb-2"
+                  />
+
+                  <h6 className="small">
+                    Total Revenue
+                  </h6>
+
+                  <h3 className="fw-bold fs-5 fs-md-3">
+                    ₹ {stats.revenue}
+                  </h3>
+
+                </div>
+
+              </div>
+
             </Link>
 
           </div>
 
-          {/* Chart + Birthday + Recent Users */}
-          <div className="row mt-4">
-            {/* Chart */}
-            <div className="col-md-8">
-              <div className="card shadow border-0 rounded-4">
+          {/* =========================
+              GRAPH SECTION
+          ========================= */}
+
+          <div className="row mt-4 g-4">
+
+            {/* BAR GRAPH */}
+
+            <div className="col-12 col-lg-8">
+
+              <div
+                className={`card border-0 rounded-4 shadow-sm h-100 ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
                 <div className="card-body">
-                  <h5 className="mb-3">Revenue Overview</h5>
-                  <Bar data={chartData} />
-                </div>
-              </div>
-            </div>
-            {/* Right Side */}
-            <div className="col-md-4">
-              {/* Birthday Card */}
-              <div className="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
-                <div
-                  className="p-4 text-white"
-                  style={{ background: "linear-gradient(135deg,#ff4b2b,#ff416c,#ff9a44)" }}>
-                  <div className="d-flex justify-content-between">
-                    <div>
-                      <h5 className="fw-bold">🎂 Birthday Celebration</h5>
-                      <small>Today's Users</small>
+
+                  <h5 className="mb-3">
+                    Revenue Overview
+                  </h5>
+
+                  <div
+                    style={{
+                      width: "100%",
+                      overflowX: "auto",
+                    }}
+                  >
+
+                    <div
+                      style={{
+                        minWidth: "500px",
+                      }}
+                    >
+
+                      <Bar data={chartData} />
+
                     </div>
-                    <h4>{birthday.length}</h4>
+
                   </div>
+
                 </div>
 
-                <div className="card-body bg-light">
+              </div>
+
+            </div>
+
+            {/* SECOND GRAPH */}
+
+            <div className="col-12 col-lg-4">
+
+              <div
+                className={`card border-0 rounded-4 shadow-sm h-100 ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
+                <div className="card-body">
+
+                  <h5 className="mb-4">
+                    Monthly Revenue
+                  </h5>
+
+                  <div className="d-flex flex-column gap-3">
+
+                    {monthlySales.map((item, index) => (
+
+                      <div key={index}>
+
+                        <div className="d-flex justify-content-between small mb-1">
+
+                          <span>
+                            {item.month}
+                          </span>
+
+                          <span>
+                            ₹ {item.total}
+                          </span>
+
+                        </div>
+
+                        <div
+                          className={`progress ${theme === "dark"
+                            ? "bg-secondary"
+                            : ""
+                            }`}
+                          style={{
+                            height: "10px",
+                            borderRadius: "20px",
+                          }}
+                        >
+
+                          <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{
+                              width: `${item.total /
+                                Math.max(
+                                  ...monthlySales.map(
+                                    (m) => m.total
+                                  )
+                                ) *
+                                100
+                                }%`,
+                            }}
+                          />
+
+                        </div>
+
+                      </div>
+
+                    ))}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          {/* =========================
+              BIRTHDAY + USERS
+          ========================= */}
+
+          <div className="row mt-4 g-4">
+
+            {/* BIRTHDAY */}
+
+            <div className="col-12 col-lg-6">
+
+              <div
+                className={`card border-0 rounded-4 shadow-sm overflow-hidden ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
+                <div
+                  className="p-4 text-white"
+                  style={{
+                    background:
+                      "linear-gradient(135deg,#ff4b2b,#ff416c,#ff9a44)",
+                  }}
+                >
+
+                  <div className="d-flex justify-content-between">
+
+                    <div>
+
+                      <h5 className="fw-bold">
+                        🎂 Birthday Celebration
+                      </h5>
+
+                      <small>
+                        Today's Users
+                      </small>
+
+                    </div>
+
+                    <h4>
+                      {birthday.length}
+                    </h4>
+
+                  </div>
+
+                </div>
+
+                <div
+                  className={`card-body ${theme === "dark"
+                    ? "bg-black"
+                    : "bg-light"
+                    }`}
+                >
+
                   {birthday.length === 0 ? (
+
                     <div className="text-center py-4">
+
                       <h6 className="text-muted">
                         No Birthdays Today 🎉
                       </h6>
+
                     </div>
+
                   ) : (
+
                     birthday.map((u, i) => (
+
                       <div
                         key={i}
-                        className="card border-0 shadow-sm mb-3 rounded-4">
-                        <div className="card-body d-flex justify-content-between align-items-center">
+                        className={`card border-0 shadow-sm mb-3 rounded-4 ${theme === "dark"
+                          ? "bg-dark text-light"
+                          : "bg-white text-dark"
+                          }`}
+                      >
+
+                        <div className="card-body d-flex justify-content-between align-items-center flex-wrap gap-3">
 
                           <div className="d-flex align-items-center">
+
                             <img
-                              className="rounded-circle text-white d-flex justify-content-center align-items-center"
+                              src={u.profile.profilePic}
+                              alt=""
+                              className="rounded-circle"
                               style={{
                                 width: "55px",
                                 height: "55px",
-                                background:
-                                  "linear-gradient(45deg,#ff416c,#ff4b2b)"
+                                objectFit: "cover",
                               }}
-                              src={u.profilePic} />
+                            />
+
                             <div className="ms-3">
+
                               <h6 className="fw-bold mb-0">
                                 {u.name}
                               </h6>
+
                               <small className="text-muted">
                                 {u.email}
                               </small>
@@ -177,6 +505,7 @@ function Adminmain() {
                               <div className="small text-muted">
                                 DOB: {u.dateOfBirth}
                               </div>
+
                             </div>
 
                           </div>
@@ -194,68 +523,179 @@ function Adminmain() {
                           </div>
 
                         </div>
+
                       </div>
+
                     ))
                   )}
 
                 </div>
+
               </div>
 
-              {/* Recent Users */}
-              <div className="card shadow border-0 rounded-4">
-                <div className="card-body">
-                  <h5>Recent Users</h5>
+            </div>
 
-                  <ul className="list-group mt-3">
+            {/* RECENT USERS */}
+
+            <div className="col-12 col-lg-6">
+
+              <div
+                className={`card border-0 rounded-4 shadow-sm h-100 ${theme === "dark"
+                  ? "bg-dark text-light"
+                  : "bg-white text-dark"
+                  }`}
+              >
+
+                <div className="card-body">
+
+                  <h5 className="mb-3">
+                    Recent Users
+                  </h5>
+
+                  <div className="d-flex flex-column gap-2">
+
                     {recentUsers.map((u, i) => (
-                      <li
+
+                      <div
                         key={i}
-                        className="list-group-item d-flex justify-content-between"
+                        className={`p-3 rounded-3 d-flex justify-content-between align-items-center flex-wrap gap-2 ${theme === "dark"
+                          ? "bg-black"
+                          : "bg-light"
+                          }`}
                       >
-                        {u.name}
-                        <span className="text-muted">
-                          {u.email}
-                        </span>
-                      </li>
+
+                        <div className="d-flex align-items-center gap-3">
+
+                          <img
+                            src={u.profile.profilePic}
+                            alt=""
+                            className="rounded-circle border"
+                            style={{
+                              width: "45px",
+                              height: "45px",
+                              objectFit: "cover",
+                            }}
+                          />
+
+                          <div>
+
+                            <div className="fw-semibold">
+                              {u.name}
+                            </div>
+
+                            <small className="text-muted">
+                              {u.email}
+                            </small>
+
+                          </div>
+
+                        </div>
+
+                      </div>
+
                     ))}
-                  </ul>
+
+                  </div>
 
                 </div>
+
               </div>
 
             </div>
+
           </div>
 
-          {/* Recent Orders */}
-          <div className="card mt-4 shadow border-0 rounded-4">
+          {/* =========================
+              RECENT ORDERS
+          ========================= */}
+
+          <div
+            className={`card mt-4 border-0 rounded-4 shadow-sm ${theme === "dark"
+              ? "bg-dark text-light"
+              : "bg-white text-dark"
+              }`}
+          >
+
             <div className="card-body">
-              <h5>Recent Orders</h5>
 
-              <table className="table mt-3">
-                <thead>
-                  <tr>
-                    <th>Customer</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Date</th>
-                  </tr>
-                </thead>
+              <h5 className="mb-3">
+                Recent Orders
+              </h5>
 
-                <tbody>
-                  {recentOrders.map((o, i) => (
-                    <tr key={i}>
-                      <td>{o.customerName}</td>
-                      <td>₹ {o.totalAmount}</td>
-                      <td>{o.orderStatus}</td>
-                      <td>
-                        {new Date(o.createdAt).toLocaleDateString()}
-                      </td>
+              <div className="table-responsive">
+
+                <table
+                  className={`table align-middle ${theme === "dark"
+                    ? "table-color"
+                    : ""
+                    }`}
+                >
+
+                  <thead>
+
+                    <tr>
+
+                      <th>Customer</th>
+
+                      <th>Amount</th>
+
+                      <th>Status</th>
+
+                      <th>Date</th>
+
                     </tr>
-                  ))}
-                </tbody>
 
-              </table>
+                  </thead>
+
+                  <tbody>
+
+                    {recentOrders.map((o, i) => (
+
+                      <tr key={i}>
+
+                        <td className="small">
+                          {o.customerName}
+                        </td>
+
+                        <td className="small fw-semibold">
+                          ₹ {o.totalAmount}
+                        </td>
+
+                        <td>
+
+                          <span
+                            className={`badge ${o.orderStatus === "Delivered"
+                              ? "bg-success"
+                              : o.orderStatus === "Pending"
+                                ? "bg-warning text-dark"
+                                : "bg-primary"
+                              }`}
+                          >
+                            {o.orderStatus}
+                          </span>
+
+                        </td>
+
+                        <td className="small">
+
+                          {new Date(
+                            o.createdAt
+                          ).toLocaleDateString()}
+
+                        </td>
+
+                      </tr>
+
+                    ))}
+
+                  </tbody>
+
+                </table>
+
+              </div>
+
             </div>
+
           </div>
 
         </>

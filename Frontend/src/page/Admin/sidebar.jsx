@@ -1,78 +1,220 @@
-import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState, useContext } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+
 import { Link, useNavigate } from "react-router-dom";
-import { House, Cart, BoxSeam, People, GraphUp, Gear, BoxArrowRight } from "react-bootstrap-icons";
-import { useContext } from "react";
+
+import {
+  House,
+  Cart,
+  BoxSeam,
+  People,
+  GraphUp,
+  Gear,
+  BoxArrowRight,
+} from "react-bootstrap-icons";
+
+import {
+  FaChevronDown,
+  FaChevronUp,
+} from "react-icons/fa";
+
 import { AuthContext } from "../../middleware/authContext";
+
 export default function Sidebar() {
-const { user , logout} = useContext(AuthContext);
+
+  const { user, logout, theme } =
+    useContext(AuthContext);
+
   const navigate = useNavigate();
 
+  const [openDropdown, setOpenDropdown] =
+    useState(false);
+
   const handleLogout = async () => {
-    await logout();      
-    navigate("/login"); 
+
+    await logout();
+
+    navigate("/login");
   };
+
   return (
-    <div className="d-flex">
+
+    <div className="d-none d-lg-block">
+
       <div
-        className="bg-dark text-white p-3"
-        style={{ width: "250px", minHeight: "100vh" }}>
-        <h4 className="text-center mb-4">Admin Panel</h4>
+        className={`p-3 ${theme === "dark"
+          ? "bg-black text-light"
+          : "bg-white text-dark"
+          }`}
+        style={{
+          width: "250px",
+          minHeight: "100vh",
+          borderRight:
+            theme === "dark"
+              ? "1px solid #222"
+              : "1px solid #ddd",
+        }}
+      >
 
-        <ul className="nav nav-pills flex-column mb-auto">
-          <li className="nav-item mb-2">
-            <Link to="" className="nav-link text-white d-flex align-items-center gap-2">
-              <House /> Dashboard
-            </Link>
-          </li>
+        {/* TOP */}
 
-          <li className="mb-2">
-            <Link to="allorders" className="nav-link text-white d-flex align-items-center gap-2">
-              <Cart /> Orders
-            </Link>
-          </li>
+        <h4 className="fw-bold text-center mb-4">
+          Admin Panel
+        </h4>
 
-          <li className="mb-2">
-            <Link to="products" className="nav-link text-white d-flex align-items-center gap-2">
-              <BoxSeam /> Products
-            </Link>
-          </li>
+        {/* MENU */}
 
-          <li className="mb-2">
-            <Link to="customer" className="nav-link text-white d-flex align-items-center gap-2">
-              <People /> Customers
-            </Link>
-          </li>
+        <div className="d-flex flex-column gap-2">
 
-          <li className="mb-2">
-            <Link to="analytic" className="nav-link text-white d-flex align-items-center gap-2">
-              <GraphUp /> Analytics
-            </Link>
-          </li>
+          {/* DASHBOARD */}
 
-          <li className="mb-2">
-            <Link to="setting" className="nav-link text-white d-flex align-items-center gap-2">
-              <Gear /> Settings
-            </Link>
-          </li>
-        </ul>
+          <Link
+            to=""
+            className={`mobile-link ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+          >
+            <House size={18} />
+            Dashboard
+          </Link>
 
-        <hr />
+          {/* MANAGEMENT DROPDOWN */}
 
-        <div>
+          <button
+            onClick={() =>
+              setOpenDropdown(!openDropdown)
+            }
+            className={`mobile-link border-0 w-100 d-flex justify-content-between align-items-center ${theme === "dark"
+              ? "bg-black text-light"
+              : "bg-white text-dark"
+              }`}
+          >
 
+            <div className="d-flex align-items-center gap-2">
+              <BoxSeam size={18} />
+              Management
+            </div>
 
-          {user && (
-            <button
-              onClick={handleLogout}
-              className="btn btn-outline-light w-100 d-flex align-items-center justify-content-center gap-2"
-            >
-              <BoxArrowRight /> Logout
-            </button>
+            {openDropdown
+              ? <FaChevronUp />
+              : <FaChevronDown />
+            }
+
+          </button>
+
+          {/* DROPDOWN */}
+
+          {openDropdown && (
+
+            <div className="d-flex flex-column gap-2 ps-3">
+
+              <Link
+                to="products"
+                className={`mobile-link ${theme === "dark"
+                  ? "text-light"
+                  : "text-dark"
+                  }`}
+              >
+                <BoxSeam size={17} />
+                Products
+              </Link>
+
+              <Link
+                to="allorders"
+                className={`mobile-link ${theme === "dark"
+                  ? "text-light"
+                  : "text-dark"
+                  }`}
+              >
+                <Cart size={17} />
+                Orders
+              </Link>
+
+              <Link
+                to="customer"
+                className={`mobile-link ${theme === "dark"
+                  ? "text-light"
+                  : "text-dark"
+                  }`}
+              >
+                <People size={17} />
+                Customers
+              </Link>
+
+              <Link
+                to="analytic"
+                className={`mobile-link ${theme === "dark"
+                  ? "text-light"
+                  : "text-dark"
+                  }`}
+              >
+                <GraphUp size={17} />
+                Analytics
+              </Link>
+
+            </div>
+
           )}
 
+          {/* SETTINGS */}
+
+          <Link
+            to="setting"
+            className={`mobile-link ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+          >
+            <Gear size={18} />
+            Settings
+          </Link>
+
         </div>
+
+        {/* BOTTOM */}
+
+        <div className="mt-4 pt-3 border-top">
+
+          {/* PROFILE */}
+
+          <Link
+            to="profile"
+            className={`mobile-link mb-2 ${theme === "dark"
+              ? "text-light"
+              : "text-dark"
+              }`}
+          >
+
+            <img
+              src={user?.profile?.profilePic}
+              width="28"
+              height="28"
+              className="rounded-circle"
+              alt=""
+            />
+
+            {user?.name}
+
+          </Link>
+
+          {/* LOGOUT */}
+
+          <button
+            onClick={handleLogout}
+            className={`mobile-link border-0 w-100 mt-2 ${theme === "dark"
+              ? "bg-black text-danger"
+              : "bg-white text-danger"
+              }`}
+          >
+            <BoxArrowRight size={18} />
+            Logout
+          </button>
+
+        </div>
+
       </div>
+
     </div>
   );
 }
