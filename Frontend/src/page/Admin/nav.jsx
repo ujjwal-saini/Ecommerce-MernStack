@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaMoon, FaSun, FaBars } from "react-icons/fa";
-import MobileBar from "./MobileBar";
+import MobileBar from "./mobileBar";
 
 function Nav() {
   const navigate = useNavigate();
