@@ -1,14 +1,14 @@
 import nodemailer from "nodemailer";
-console.log("EMAIL:", process.env.EMAIL_USER);
-console.log("PASS:", process.env.EMAIL_PASS);
+
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
+  secure: false,
 });
-
+console.log("namde", process.env.EMAIL_USER, process.env.EMAIL_PASS)
 export const sendOTPEmail = async (email, otp) => {
   await transporter.sendMail({
     from: `"ShopPoint" <${process.env.EMAIL_USER}>`,

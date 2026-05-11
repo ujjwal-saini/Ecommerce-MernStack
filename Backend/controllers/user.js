@@ -210,9 +210,7 @@ export const forgetPassword = async (req, res) => {
     user.resetOtp = otp;
     user.otpExpire = Date.now() + 5 * 60 * 1000; // 5 min
     await user.save();
-    console.log(user,
-      "si"
-    );
+    console.log(user, "si");
     console.log(email, otp, "ss")
     // send email
     await sendOTPEmail(email, otp)
