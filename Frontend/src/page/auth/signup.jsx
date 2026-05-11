@@ -144,59 +144,70 @@ function Signup() {
         <div className="col-lg-6 d-flex justify-content-center align-items-center">
 
           <div
-            className="w-100 px-3 px-md-4 py-3"
+            className="w-100 px-4 px-md-4 py-3"
             style={{
               maxWidth: "500px",
             }}
           >
 
-            {/* HEADING ROW */}
-            <div className="mb-3 position-relative w-100 text-center">
+            {/* THEME BTN */}
+            <div className="d-flex justify-content-end mb-1">
 
-              {/* Center Heading */}
-              <h1
-                className="fw-bold m-0"
+              <button
+                onClick={() =>
+                  toggleTheme(
+                    theme === "dark"
+                      ? "light"
+                      : "dark"
+                  )
+                }
+                className={`btn rounded-circle shadow-sm d-flex justify-content-center align-items-center ${theme === "dark"
+                  ? "btn-light text-dark"
+                  : "btn-dark text-light"
+                  }`}
                 style={{
-                  fontSize: "2.1rem",
-                  lineHeight: "1.1",
+                  width: "40px",
+                  height: "40px",
+                  border: "none",
+                }}
+              >
+
+                {theme === "dark"
+                  ? <FaSun size={16} />
+                  : <FaMoon size={16} />
+                }
+
+              </button>
+
+            </div>
+
+            {/* HEADING */}
+            <div className="mb-2 text-center">
+
+              <h1
+                className="fw-bold"
+                style={{
+                  fontSize: "2.0rem",
+                  lineHeight: "1.0",
                 }}
               >
                 Create Account
               </h1>
 
-              {/* Theme Button (Right Side) */}
-              <div className="position-absolute top-0 end-0">
-                <button
-                  onClick={() =>
-                    toggleTheme(theme === "dark" ? "light" : "dark")
-                  }
-                  className={`btn rounded-circle shadow-sm d-flex justify-content-center align-items-center ${theme === "dark"
-                    ? "btn-light text-dark"
-                    : "btn-dark text-light"
-                    }`}
-                  style={{
-                    width: "37px",
-                    height: "37px",
-                    border: "none",
-                  }}
-                >
-                  {theme === "dark" ? <FaSun size={15} /> : <FaMoon size={15} />}
-                </button>
-              </div>
-
+              <p
+                className={`mb-0 ${theme === "dark"
+                  ? "text-light opacity-75"
+                  : "text-muted"
+                  }`}
+                style={{
+                  fontSize: "14px",
+                }}
+              >
+                Join us and start shopping today
+              </p>
 
             </div>
-            <p
-              className={`mb-0 w-100 text-center ${theme === "dark"
-                ? "text-light opacity-75"
-                : "text-muted"
-                }`}
-              style={{
-                fontSize: "14px",
-              }}
-            >
-              Join us and start shopping today
-            </p>
+
             {/* FORM */}
             <form onSubmit={handleSubmit}>
 
@@ -316,7 +327,7 @@ function Signup() {
                   }
                   className="position-absolute end-0 me-3"
                   style={{
-                    top: "44px",
+                    top: "42px",
                     cursor: "pointer",
                     fontSize: "14px",
                     color:
@@ -333,7 +344,7 @@ function Signup() {
               </div>
 
               {/* IMAGE */}
-              <div className="mb-3">
+              <div className="mb-2">
 
                 <label
                   className="fw-semibold mb-1"
@@ -388,7 +399,7 @@ function Signup() {
               </button>
 
               {/* DIVIDER */}
-              <div className="d-flex align-items-center my-2">
+              <div className="d-flex align-items-center my-1">
 
                 <hr className="flex-grow-1" />
 
@@ -455,7 +466,7 @@ function Signup() {
 
               {/* LOGIN */}
               <p
-                className={`text-center mt-3 mb-0 ${theme === "dark"
+                className={`text-center mt-2 mb-0 ${theme === "dark"
                   ? "text-light opacity-75"
                   : "text-muted"
                   }`}
@@ -630,7 +641,7 @@ function Signup() {
         `}
       </style>
 
-    </div >
+    </div>
   );
 }
 

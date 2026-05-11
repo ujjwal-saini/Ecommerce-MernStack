@@ -284,8 +284,8 @@ function Login() {
                   : "btn-dark text-light"
                   }`}
                 style={{
-                  width: "48px",
-                  height: "48px",
+                  width: "42px",
+                  height: "42px",
                   border: "none",
                   transition: "0.3s ease",
                 }}
@@ -306,7 +306,7 @@ function Login() {
               <h1
                 className="fw-bold"
                 style={{
-                  fontSize: "2.8rem",
+                  fontSize: "2.0rem",
                 }}
               >
                 Welcome Back
@@ -317,6 +317,9 @@ function Login() {
                   ? "text-light opacity-75"
                   : "text-muted"
                   }`}
+                style={{
+                  fontSize: "14px",
+                }}
               >
                 Login to continue your shopping journey
               </p>
@@ -327,9 +330,11 @@ function Login() {
             <form onSubmit={handlesubmit}>
 
               {/* EMAIL */}
-              <div className="mb-3">
+              <div className="mb-2">
 
-                <label className="fw-semibold mb-2">
+                <label className="fw-semibold mb-2" style={{
+                  fontSize: "14px",
+                }}>
                   Email Address
                 </label>
 
@@ -342,9 +347,9 @@ function Login() {
                   placeholder="Enter your email"
                   required
                   style={{
-                    height: "58px",
+                    height: "48px",
                     borderRadius: "18px",
-                    fontSize: "15px",
+                    fontSize: "14px",
                   }}
                   onChange={(e) =>
                     setfrom({
@@ -359,7 +364,9 @@ function Login() {
               {/* PASSWORD */}
               <div className="mb-2 position-relative">
 
-                <label className="fw-semibold mb-2">
+                <label className="fw-semibold mb-2 " style={{
+                  fontSize: "14px",
+                }}>
                   Password
                 </label>
 
@@ -372,9 +379,9 @@ function Login() {
                   placeholder="Enter your password"
                   required
                   style={{
-                    height: "58px",
+                    height: "48px",
                     borderRadius: "18px",
-                    fontSize: "15px",
+                    fontSize: "14px",
                   }}
                   onChange={(e) =>
                     setfrom({
@@ -390,7 +397,7 @@ function Login() {
                   }
                   className="position-absolute end-0 me-4"
                   style={{
-                    top: "55px",
+                    top: "45px",
                     cursor: "pointer",
                     color:
                       theme === "dark"
@@ -426,7 +433,7 @@ function Login() {
                 disabled={activeLogin}
                 className="btn w-100 text-white fw-bold"
                 style={{
-                  height: "58px",
+                  height: "50px",
                   borderRadius: "18px",
                   background:
                     "linear-gradient(90deg,#ff7b00,#ff9d42)",
@@ -440,7 +447,7 @@ function Login() {
               </button>
 
               {/* DIVIDER */}
-              <div className="d-flex align-items-center my-3">
+              <div className="d-flex align-items-center my-2">
 
                 <hr className="flex-grow-1" />
 
@@ -469,7 +476,7 @@ function Login() {
                       : "btn-light border"
                       }`}
                     style={{
-                      height: "55px",
+                      height: "45px",
                       borderRadius: "16px",
                     }}
                   >
@@ -488,7 +495,7 @@ function Login() {
                       : "btn-light border"
                       }`}
                     style={{
-                      height: "55px",
+                      height: "45px",
                       borderRadius: "16px",
                     }}
                   >
@@ -502,10 +509,13 @@ function Login() {
 
               {/* SIGNUP */}
               <p
-                className={`text-center mt-4 ${theme === "dark"
+                className={`text-center mt-3 mb-3 ${theme === "dark"
                   ? "text-light opacity-75"
                   : "text-muted"
                   }`}
+                style={{
+                  fontSize: "14px",
+                }}
               >
                 Don’t have an account?
 
