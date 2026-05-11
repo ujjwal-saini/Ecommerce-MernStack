@@ -74,12 +74,21 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
-     wishlist: [
+    wishlist: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
       },
     ],
+    resetOtp: {
+      type: Number,
+      default: null,
+    },
+
+    otpExpire: {
+      type: Date,
+      default: null,
+    },
   },
   { timestamps: true }
 );

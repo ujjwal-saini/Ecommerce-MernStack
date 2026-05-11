@@ -33,23 +33,16 @@ function ForgotPassword() {
 
     // SEND OTP
     const handleSendOtp = async (e) => {
-
         e.preventDefault();
-
         const toastId =
             toast.loading("Sending OTP...");
-
         setLoading(true);
-
         try {
-
             const res = await axios.post(
                 `${API}/forget-password`,
                 { email }
             );
-
             if (res.status === 200) {
-
                 toast.update(toastId, {
                     render:
                         "OTP sent to your email",
@@ -57,9 +50,6 @@ function ForgotPassword() {
                     isLoading: false,
                     autoClose: 2000,
                 });
-
-                setverifyOtp(res.data.otp);
-
                 setOtpSent(true);
             }
 
@@ -82,28 +72,20 @@ function ForgotPassword() {
         }
     };
 
-    // VERIFY OTP
     const handleVerifyOtp = async (e) => {
-
         e.preventDefault();
+        try {
+            const res = await axios.post(`${API}/verify-otp`, {
+                email,
+                otp,
+            });
+            if (res.status === 200) {
+                toast.success("OTP Verified Successfully");
+                navigate(`/updatepass/reset/${email}`);
+            }
 
-        if (
-            parseInt(otp) ===
-            parseInt(otpverify)
-        ) {
-
-            toast.success(
-                "OTP Verified Successfully"
-            );
-
-            navigate(
-                `/updatepass/reset/${email}`
-            );
-
-        } else {
-
-            toast.error("Invalid OTP");
-
+        } catch (err) {
+            toast.error(err.response?.data?.message || "Invalid OTP");
         }
     };
 

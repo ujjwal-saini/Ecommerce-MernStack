@@ -5,6 +5,7 @@ import Product from "../models/products.js";
 import User from "../models/user.js";
 import cloudinary from "../connection/cloudnary.js";
 import path from "path";
+import { sendOTPEmail } from "../utils/sendMail.js";
 
 export const login = async (req, res) => {
   try {
@@ -193,21 +194,73 @@ export const cartLoader = async (req, res) => {
 };
 
 export const forgetPassword = async (req, res) => {
-  const { email } = req.body;
-  const otp = 12345;
+  try {
+    const { email } = req.body;
 
+    const user = await Users.findOne({ email });
 
-  const existingItem = Users.findOne({ email: email });
+    if (!user) {
+      return res.status(404).json({ message: "Email not found" });
+    }
 
-  if (!existingItem) {
-    return res.status(402).json({ message: "email is invalid" })
+    //  generate real OTP
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    // store OTP in DB (temporary field)
+    user.resetOtp = otp;
+    user.otpExpire = Date.now() + 5 * 60 * 1000; // 5 min
+    await user.save();
+
+    // send email
+    await sendOTPEmail(email, otp);
+
+    res.status(200).json({
+      message: "OTP sent successfully",
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
   }
+};
 
-  res.status(200).json({ message: "sent otp", otp });
+export const verifyOtp = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
 
+    const user = await Users.findOne({ email });
 
-}
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
+    console.log("DB OTP:", user.resetOtp);
+    console.log("INPUT OTP:", otp);
+
+    if (
+      Number(user.resetOtp) !== Number(otp)
+    ) {
+      return res.status(400).json({ message: "Invalid OTP" });
+    }
+
+    if (user.otpExpire < Date.now()) {
+      return res.status(400).json({ message: "OTP expired" });
+    }
+
+    // clear OTP after success
+    user.resetOtp = null;
+    user.otpExpire = null;
+    await user.save();
+
+    return res.status(200).json({
+      message: "OTP verified successfully",
+    });
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 export const resetPassword = async (req, res) => {
   try {
 
