@@ -213,9 +213,12 @@ export const forgetPassword = async (req, res) => {
     console.log(user, "si");
     console.log(email, otp, "ss")
     // send email
-    await sendOTPEmail(email, otp)
-      .then(() => console.log("Mail sent"))
-      .catch(err => console.log("Mail error:", err));
+    try {
+      const info = await sendOTPEmail(email, otp);
+      console.log("MAIL SENT SUCCESS:", info);
+    } catch (err) {
+      console.log("❌ MAIL FAILED:", err);
+    }
 
     res.status(200).json({
       message: "OTP sent successfully",
