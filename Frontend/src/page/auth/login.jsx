@@ -121,7 +121,7 @@ function Login() {
 
     <div
       className={`container-fluid login-container vh-100 overflow-hidden d-flex justify-content-center align-items-center p-2 p-md-3 ${theme === "dark"
-        ? "bg-dark"
+        ? "bg-dark-mode"
         : "bg-light"
         }`}
     >

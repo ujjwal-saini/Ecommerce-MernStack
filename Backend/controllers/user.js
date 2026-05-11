@@ -77,9 +77,11 @@ export const register = async (req, res) => {
         profilePic: uploadedImage.url,
       },
     });
+
     res.status(200).json({
       message: "User registered successfully"
     });
+
   } catch (error) {
     console.log("Register Error:", error);
     res.status(500).json({
@@ -102,9 +104,6 @@ export const updateUserProfile = async (req, res) => {
     } = req.body;
 
     let formattedDOB = null;
-    // if (dateOfBirth) {
-    //   formattedDOB = new Date(dateOfBirth).toISOString().split("T")[0];
-    // }
 
     const updateData = {
       "profile.phone": phone,
@@ -117,8 +116,11 @@ export const updateUserProfile = async (req, res) => {
     };
 
     if (req.file) {
-      updateData["profile.profilePic"] =
-        `${process.env.BASE_URL}/uploads/${req.file.filename}`;
+      const uploadedImage = await cloudinary.uploader.upload(req.file.path, {
+        resource_type: "image",
+      });
+
+      updateData["profile.profilePic"] = uploadedImage.secure_url;
     }
 
     const user = await Users.findByIdAndUpdate(
@@ -133,6 +135,7 @@ export const updateUserProfile = async (req, res) => {
     console.log(err);
     res.status(500).json({ success: false });
   }
+
 };
 
 // CHECK LOGIN
@@ -184,7 +187,6 @@ export const cartLoader = async (req, res) => {
       }
     }
     res.json(cartData);
-
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

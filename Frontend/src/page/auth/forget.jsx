@@ -19,14 +19,11 @@ function ForgotPassword() {
 
     const navigate = useNavigate();
 
-    const [email, setEmail] =
-        useState("");
+    const [email, setEmail] = useState("");
 
-    const [otp, setOtp] =
-        useState("");
+    const [otp, setOtp] = useState("");
 
-    const [otpSent, setOtpSent] =
-        useState(false);
+    const [otpSent, setOtpSent] = useState(false);
 
     const [otpverify, setverifyOtp] =
         useState("");
@@ -114,7 +111,7 @@ function ForgotPassword() {
 
         <div
             className={`container-fluid forgot-container vh-100 overflow-hidden d-flex justify-content-center align-items-center p-2 p-md-3 ${theme === "dark"
-                ? "bg-dark"
+                ? "bg-dark-mode"
                 : "bg-light"
                 }`}
         >

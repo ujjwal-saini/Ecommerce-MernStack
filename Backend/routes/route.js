@@ -1,14 +1,14 @@
 import express from "express";
 
-import { addProducts, getProducts, getSingleProduct, updateProduct, deleteProduct, productSearch ,addCommentproduct } from "../controllers/products.js";
+import { addProducts, getProducts, getSingleProduct, updateProduct, deleteProduct, productSearch, addCommentproduct } from "../controllers/products.js";
 import { register, login, checklogin, logout, updateUserProfile, cartLoader, forgetPassword, resetPassword, deleteAccount } from "../controllers/user.js";
 import { addToCart, updateCartItem, removeCartItem } from "../controllers/cart.js";
 import protect from "../middleware/authmiddleware.js";
 import upload from "../middleware/upload.js";
-import {placeOrder,getAllOrders,getUserOrders,updateOrderStatus,cancelorder } from "../controllers/productorder.js";
-import { adminDashboard ,getAllCustomers , deleteCustomer } from "../controllers/adminController.js"
+import { placeOrder, getAllOrders, getUserOrders, updateOrderStatus, cancelorder } from "../controllers/productorder.js";
+import { adminDashboard, getAllCustomers, deleteCustomer } from "../controllers/adminController.js"
 import { aiChatProduct } from "../controllers/aiHelper.js"
-import { addWishlist ,removeWishlist , getWishlist } from "../controllers/wishlist.js";
+import { addWishlist, removeWishlist, getWishlist } from "../controllers/wishlist.js";
 const router = express.Router();
 
 // authentication check already login cookies
@@ -42,10 +42,10 @@ router.post("/removewishlist", removeWishlist);
 router.get("/wishlist/:userId", getWishlist);
 
 //orders
-router.post("/orders",placeOrder);
-router.get("/getorders",getAllOrders);
-router.get("/myorders/:userId",getUserOrders);
-router.put("/orders/:id",updateOrderStatus);
+router.post("/orders", placeOrder);
+router.get("/getorders", getAllOrders);
+router.get("/myorders/:userId", getUserOrders);
+router.put("/orders/:id", updateOrderStatus);
 router.put("/cancelorder/:id", cancelorder);
 
 // add to cart
@@ -55,7 +55,7 @@ router.post("/removecart", removeCartItem);
 
 
 // admin
-router.get("/getAdminData",adminDashboard);
+router.get("/getAdminData", adminDashboard);
 router.get("/customers", getAllCustomers);
 router.delete("/deletecustomer/:id", deleteCustomer);
 

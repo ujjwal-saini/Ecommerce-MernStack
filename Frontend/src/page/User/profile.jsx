@@ -1,38 +1,20 @@
-import React, {
-  useContext,
-  useEffect,
-  useState
-} from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
-
 import { AuthContext } from "../../middleware/authContext";
-
 import Loader from "../../components/loading";
-
 import { toast } from "react-toastify";
 
 function Profile() {
 
-  const {
-    user,
-    fetchMe,
-    theme,
-    API
-  } = useContext(AuthContext);
-
+  const { user, fetchMe, theme, API } = useContext(AuthContext);
   const [editMode, setEditMode] = useState(false);
-
   const [formData, setFormData] = useState(null);
-
   const [profilePic, setProfilePic] = useState(null);
-
   const [preview, setPreview] = useState(null);
 
+
   useEffect(() => {
-
     if (user) {
-
       setFormData({
         phone: user.profile?.phone || "",
         dateOfBirth:
@@ -48,7 +30,6 @@ function Profile() {
         fullAddress:
           user.profile?.address?.fullAddress || "",
       });
-
       setPreview(user.profile?.profilePic);
     }
 
@@ -76,13 +57,9 @@ function Profile() {
   // IMAGE CHANGE
 
   const handleImageChange = (e) => {
-
     const file = e.target.files[0];
-
     setProfilePic(file);
-
     if (file) {
-
       setPreview(
         URL.createObjectURL(file)
       );
@@ -246,8 +223,8 @@ function Profile() {
               <input
                 type="file"
                 className={`form-control mt-3 ${theme === "dark"
-                    ? "bg-black text-light border-secondary"
-                    : ""
+                  ? "bg-black text-light border-secondary"
+                  : ""
                   }`}
                 onChange={handleImageChange}
               />
@@ -270,8 +247,8 @@ function Profile() {
 
                 <button
                   className={`btn ${theme === "dark"
-                      ? "btn-outline-light"
-                      : "btn-secondary"
+                    ? "btn-outline-light"
+                    : "btn-secondary"
                     }`}
                   onClick={() =>
                     setEditMode(false)
@@ -458,8 +435,8 @@ function Profile() {
 
                 <button
                   className={`btn btn-sm ${theme === "dark"
-                      ? "btn-outline-light"
-                      : "btn-primary"
+                    ? "btn-outline-light"
+                    : "btn-primary"
                     }`}
                   onClick={() =>
                     setEditMode(true)

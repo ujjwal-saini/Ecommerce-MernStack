@@ -119,6 +119,7 @@ function Category() {
               <img
                 src={cat.img}
                 alt={cat.name}
+                loading="lazy"
                 className="category-img"
                 style={{
                   width: "100%",

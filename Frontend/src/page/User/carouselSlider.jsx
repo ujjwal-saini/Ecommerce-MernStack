@@ -44,23 +44,26 @@ function CarouselSlider() {
           <img
             src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/fc36d6153544611.6331e2e4b2de3.jpg"
             className="d-block w-100"
-            alt="slide1" />
+            alt="slide1"
+            loading="lazy" />
         </div>
 
         <div className="carousel-item">
           <Link to={'productdetail/69d3b0252edcbe211aa67ffb'}>
-         
-          <img
-            src="https://www.designinfo.in/wp-content/uploads/2023/10/HP-Laptop-15s-AMD-Ryzen-5-5500U-9.webp"
-            className="d-block w-100"
-            alt="slide2" />
-             </Link>
+
+            <img
+              src="https://www.designinfo.in/wp-content/uploads/2023/10/HP-Laptop-15s-AMD-Ryzen-5-5500U-9.webp"
+              className="d-block w-100"
+              alt="slide2"
+              loading="lazy" />
+          </Link>
         </div>
 
         <div className="carousel-item">
           <img
             src="https://cdn.shopify.com/s/files/1/0627/5517/files/02-26-20_Aidan_264883.jpg?v=1603213851"
             className="d-block w-100"
+            loading="lazy"
             alt="slide3" />
         </div>
 
@@ -68,12 +71,15 @@ function CarouselSlider() {
           <img
             src="https://rajanyas.com/cdn/shop/files/Gray_Minimalist_New_Collection_Banner.png?v=1762946994&width=3840"
             className="d-block w-100"
+
+            loading="lazy"
             alt="slide4" />
         </div>
 
         <div className="carousel-item">
           <img src="https://marketplace.canva.com/EAFoEJMTGiI/1/0/1600w/canva-beige-aesthetic-new-arrival-fashion-banner-landscape-cNjAcBMeF9s.jpg"
             className="d-block w-100"
+            loading="lazy"
             alt="slide5" />
         </div>
       </div>

@@ -122,7 +122,7 @@ function Signup() {
 
     <div
       className={`container-fluid signup-container vh-100 overflow-hidden d-flex justify-content-center align-items-center p-2 ${theme === "dark"
-        ? "bg-dark"
+        ? "bg-dark-mode"
         : "bg-light"
         }`}
     >
@@ -150,42 +150,12 @@ function Signup() {
             }}
           >
 
-            {/* THEME BTN */}
-            <div className="d-flex justify-content-end mb-2">
+            {/* HEADING ROW */}
+            <div className="mb-3 position-relative w-100 text-center">
 
-              <button
-                onClick={() =>
-                  toggleTheme(
-                    theme === "dark"
-                      ? "light"
-                      : "dark"
-                  )
-                }
-                className={`btn rounded-circle shadow-sm d-flex justify-content-center align-items-center ${theme === "dark"
-                  ? "btn-light text-dark"
-                  : "btn-dark text-light"
-                  }`}
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  border: "none",
-                }}
-              >
-
-                {theme === "dark"
-                  ? <FaSun size={15} />
-                  : <FaMoon size={15} />
-                }
-
-              </button>
-
-            </div>
-
-            {/* HEADING */}
-            <div className="mb-3 text-center">
-
+              {/* Center Heading */}
               <h1
-                className="fw-bold"
+                className="fw-bold m-0"
                 style={{
                   fontSize: "2.1rem",
                   lineHeight: "1.1",
@@ -194,20 +164,39 @@ function Signup() {
                 Create Account
               </h1>
 
-              <p
-                className={`mb-0 ${theme === "dark"
-                  ? "text-light opacity-75"
-                  : "text-muted"
-                  }`}
-                style={{
-                  fontSize: "14px",
-                }}
-              >
-                Join us and start shopping today
-              </p>
+              {/* Theme Button (Right Side) */}
+              <div className="position-absolute top-0 end-0">
+                <button
+                  onClick={() =>
+                    toggleTheme(theme === "dark" ? "light" : "dark")
+                  }
+                  className={`btn rounded-circle shadow-sm d-flex justify-content-center align-items-center ${theme === "dark"
+                    ? "btn-light text-dark"
+                    : "btn-dark text-light"
+                    }`}
+                  style={{
+                    width: "37px",
+                    height: "37px",
+                    border: "none",
+                  }}
+                >
+                  {theme === "dark" ? <FaSun size={15} /> : <FaMoon size={15} />}
+                </button>
+              </div>
+
 
             </div>
-
+            <p
+              className={`mb-0 w-100 text-center ${theme === "dark"
+                ? "text-light opacity-75"
+                : "text-muted"
+                }`}
+              style={{
+                fontSize: "14px",
+              }}
+            >
+              Join us and start shopping today
+            </p>
             {/* FORM */}
             <form onSubmit={handleSubmit}>
 
@@ -641,7 +630,7 @@ function Signup() {
         `}
       </style>
 
-    </div>
+    </div >
   );
 }
 
