@@ -7,7 +7,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 function OrderSummary() {
-
   const cartItems = useSelector((state) => state.cart.items);
   const { user, API } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,7 +18,6 @@ function OrderSummary() {
   );
 
   const placeOrder = async () => {
-
     if (!cartItems.length) {
       toast.error("Cart is empty ❌");
       return;
@@ -27,56 +25,43 @@ function OrderSummary() {
 
     const toastId = toast.loading("Placing your order...");
 
-    const orderData = {
-      user: user._id,
-      customerName: user.name,
-      phone: user.profile.phone,
-      email: user.email,
-      address: user.profile.address.fullAddress,
-      items: cartItems.map(item => ({
-        name: item.name,
-        price: item.discountPrice || item.price,
-        image: item.mainImage,
-        quantity: item.qty
-      })),
-      totalAmount: total,
-      paymentMethod: "COD",
-      orderStatus: "Pending"
-    };
-
     try {
+      const orderData = {
+        user: user._id,
+        customerName: user.name,
+        phone: user.profile.phone,
+        email: user.email,
+        address: user.profile.address.fullAddress,
+        items: cartItems.map((item) => ({
+          name: item.name,
+          price: item.discountPrice || item.price,
+          image: item.mainImage,
+          quantity: item.qty,
+        })),
+        totalAmount: total,
+        paymentMethod: "COD",
+        orderStatus: "Pending",
+      };
 
       const res = await axios.post(`${API}/orders`, orderData, {
-        withCredentials: true
+        withCredentials: true,
       });
 
       if (res.data) {
-
         toast.update(toastId, {
-          render: "Order placed successfully ",
+          render: "Order placed successfully",
           type: "success",
           isLoading: false,
-          autoClose: 2000
+          autoClose: 2000,
         });
 
         dispatch(clearCart());
 
-        setTimeout(() => {
-          navigate("/success");
-        }, 2000);
+        setTimeout(() => navigate("/success"), 2000);
       }
-
     } catch (error) {
-
       toast.dismiss(toastId);
-
-      if (error.response) {
-        toast.error(error.response.data.message);
-      } else {
-        toast.error("Server not responding ❌");
-      }
-
-      console.log(error);
+      toast.error(error.response?.data?.message || "Server error ❌");
     }
   };
 
@@ -88,16 +73,16 @@ function OrderSummary() {
 
       {cartItems.map((item) => (
         <div key={item._id} className="d-flex justify-content-between">
-          <p>{item.name}</p>
-          <p>₹{item.discountPrice || item.price * item.qty}</p>
+          <p className="mb-1">{item.name}</p>
+          <p className="mb-1">
+            ₹{(item.discountPrice || item.price) * item.qty}
+          </p>
         </div>
       ))}
 
       <hr />
 
-      <h5 className="text-success">
-        Total ₹{total}
-      </h5>
+      <h5 className="text-success">Total ₹{total}</h5>
 
       <button
         className="btn btn-success w-100 mt-3"
@@ -105,6 +90,8 @@ function OrderSummary() {
       >
         Place Order
       </button>
+
+
 
     </div>
   );

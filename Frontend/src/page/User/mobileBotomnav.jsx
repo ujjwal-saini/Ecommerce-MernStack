@@ -23,8 +23,8 @@ function MobileBottomNav() {
   return (
     <div
       className={`d-lg-none position-fixed bottom-0 start-0 w-100 ${theme === "dark"
-          ? "bg-black border-top border-secondary"
-          : "bg-white border-top"
+        ? "bg-black border-top border-secondary"
+        : "bg-white border-top"
         }`}
       style={{
         zIndex: 2000,
@@ -37,8 +37,8 @@ function MobileBottomNav() {
         <Link
           to="/"
           className={`text-decoration-none d-flex flex-column align-items-center ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            ? "text-light"
+            : "text-dark"
             }`}
         >
           <FaHome size={20} />
@@ -47,10 +47,10 @@ function MobileBottomNav() {
 
         {/* SHOP */}
         <Link
-          to="/allproducts"
+          to="/allproducts/all"
           className={`text-decoration-none d-flex flex-column align-items-center ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            ? "text-light"
+            : "text-dark"
             }`}
         >
           <FaShopify size={20} />
@@ -61,8 +61,8 @@ function MobileBottomNav() {
         <Link
           to="/addtocart"
           className={`text-decoration-none d-flex flex-column align-items-center position-relative ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            ? "text-light"
+            : "text-dark"
             }`}
         >
           🛒
@@ -87,8 +87,8 @@ function MobileBottomNav() {
         <Link
           to="/wishlist"
           className={`text-decoration-none d-flex flex-column align-items-center ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            ? "text-light"
+            : "text-dark"
             }`}
         >
           ❤️
@@ -99,8 +99,8 @@ function MobileBottomNav() {
         <Link
           to="/profile"
           className={`text-decoration-none d-flex flex-column align-items-center ${theme === "dark"
-              ? "text-light"
-              : "text-dark"
+            ? "text-light"
+            : "text-dark"
             }`}
         >
           <img

@@ -951,3 +951,24 @@ body[data-theme="dark"] .btn-outline-theme:hover {
   }
 
 }
+
+
+
+
+.order-summary-wrapper {
+  position: sticky;
+  top: 90px;
+}
+
+/* safety */
+.checkout-container {
+  overflow: visible;
+}
+
+/* mobile fix */
+@media (max-width: 768px) {
+  .order-summary-wrapper {
+    position: relative;
+    top: auto;
+  }
+}

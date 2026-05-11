@@ -6,19 +6,31 @@ import OrderSummary from "./OrderSummary";
 
 function Orders() {
   return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Checkout</h2>
-      <div className="row">
-        <div className="col-md-8">
+    <div className="container-fluid py-4">
+
+      <h2 className="fw-bold mb-4 text-center text-md-start">
+        Checkout
+      </h2>
+
+      <div className="row g-4">
+
+        {/* LEFT SIDE */}
+        <div className="col-lg-8">
+
           <AddressSection />
           <DeliverySection />
           <PaymentSection />
-        </div>
-        <div className="col-md-4">
-          <OrderSummary />
-        </div>
-      </div>
 
+        </div>
+
+        {/* RIGHT SIDE - STICKY SUMMARY */}
+        <div className="col-lg-4">
+          <div className="order-summary-wrapper">
+            <OrderSummary />
+          </div>
+        </div>
+
+      </div>
     </div>
   );
 }

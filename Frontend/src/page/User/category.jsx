@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-
 import { AuthContext } from "../../middleware/authContext";
 import { Link } from "react-router-dom";
 
@@ -38,7 +37,6 @@ const categories = [
     name: "Books",
     img: "https://images.unsplash.com/photo-1512820790803-83ca734da794",
   },
-
   {
     name: "Watches",
     img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
@@ -70,83 +68,182 @@ const categories = [
 ];
 
 function Category() {
+
   const { theme } = useContext(AuthContext);
 
   return (
+
     <div
-      className={`container-fluid py-3 ${theme === "dark"
-        ? "theme-black text-light"
-        : "bg-light text-dark"
+      className={`container-fluid py-4 ${theme === "dark"
+          ? "theme-black text-light"
+          : "bg-white text-dark"
         }`}
     >
-      {/* CATEGORY LIST */}
-      <div
-        className="category-wrapper d-flex overflow-auto hide-scrollbar px-1"
-        style={{
-          gap: "18px",
-          scrollBehavior: "smooth",
-        }}
-      >
+
+      {/* TITLE */}
+
+      <div className="d-flex justify-content-between align-items-center mb-4">
+
+        <h3 className="fw-bold m-0">
+          Shop by Categories
+        </h3>
+
+      </div>
+
+      {/* CATEGORY SCROLL */}
+
+      <div className="category-wrapper hide-scrollbar">
+
         {categories.map((cat, index) => (
+
           <Link
             to={`allproducts/${cat.name}`}
             key={index}
-            className="category-link text-center text-decoration-none"
-            style={{
-              minWidth: "105px",
-            }}
+            className="category-link text-decoration-none"
           >
-            {/* IMAGE */}
+
             <div
-              className={`category-card ${theme === "dark"
-                ? "border border-secondary"
-                : "bg-white"
+              className={`modern-category-card ${theme === "dark"
+                  ? "dark-card"
+                  : "light-card"
                 }`}
-              style={{
-                width: "105px",
-                height: "110px",
-                borderRadius: "32px",
-                overflow: "hidden",
-                margin: "auto",
-                padding: "2px",
-                boxShadow:
-                  theme === "dark"
-                    ? "0 2px 10px rgba(255,255,255,0.05)"
-                    : "0 2px 10px rgba(0,0,0,0.08)",
-                transition: "0.3s",
-              }}
             >
-              <img
-                src={cat.img}
-                alt={cat.name}
-                loading="lazy"
-                className="category-img"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "30px",
-                }}
-              />
+
+              {/* IMAGE */}
+
+              <div className="category-img-wrapper">
+
+                <img
+                  src={cat.img}
+                  alt={cat.name}
+                  loading="lazy"
+                  className="modern-category-img"
+                />
+
+              </div>
+
+              {/* TEXT */}
+
+              <h6
+                className={`category-name ${theme === "dark"
+                    ? "text-light"
+                    : "text-dark"
+                  }`}
+              >
+                {cat.name}
+              </h6>
+
             </div>
 
-            {/* TEXT */}
-            <p
-              className={`category-text mt-2 mb-0 ${theme === "dark"
-                ? "text-light"
-                : "text-dark"
-                }`}
-              style={{
-                fontSize: "14px",
-                fontWeight: "500",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {cat.name}
-            </p>
           </Link>
+
         ))}
+
       </div>
+
+      {/* CSS */}
+
+      <style>{`
+
+        .category-wrapper {
+          display: flex;
+          gap: 22px;
+          overflow-x: auto;
+          scroll-behavior: smooth;
+          padding-bottom: 10px;
+        }
+
+        .category-link {
+          flex: 0 0 auto;
+        }
+
+        .modern-category-card {
+          width: 190px;
+          border-radius: 26px;
+          overflow: hidden;
+          transition: 0.35s ease;
+          cursor: pointer;
+          padding: 12px;
+        }
+
+        .light-card {
+          background: #fff;
+          box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .dark-card {
+          background: #151515;
+          border: 1px solid #2d2d2d;
+          box-shadow: 0 4px 20px rgba(255,255,255,0.03);
+        }
+
+        .modern-category-card:hover {
+          transform: translateY(-8px);
+        }
+
+        .category-img-wrapper {
+          width: 100%;
+          height: 170px;
+          border-radius: 22px;
+          overflow: hidden;
+        }
+
+        .modern-category-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: 0.5s ease;
+        }
+
+        .modern-category-card:hover .modern-category-img {
+          transform: scale(1.08);
+        }
+
+        .category-name {
+          margin-top: 14px;
+          text-align: center;
+          font-weight: 700;
+          font-size: 1rem;
+        }
+
+        /* HIDE SCROLLBAR */
+
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 768px) {
+
+          .category-wrapper {
+            gap: 14px;
+          }
+
+          .modern-category-card {
+            width: 140px;
+            padding: 10px;
+            border-radius: 18px;
+          }
+
+          .category-img-wrapper {
+            height: 120px;
+            border-radius: 16px;
+          }
+
+          .category-name {
+            font-size: 0.9rem;
+            margin-top: 10px;
+          }
+        }
+
+      `}</style>
+
     </div>
   );
 }
