@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
         isLoggedIn,
         setIsLoggedIn,
         user,
-        setUser,  
+        setUser,
         role: user?.role,
         loading,
         fetchMe,

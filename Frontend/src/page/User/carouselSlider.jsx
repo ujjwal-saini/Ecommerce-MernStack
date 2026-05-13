@@ -72,7 +72,7 @@ function CarouselSlider() {
           <Link to={"productdetail/69d3b0252edcbe211aa67ffb"}>
 
             <img
-              src="https://www.designinfo.in/wp-content/uploads/2023/10/HP-Laptop-15s-AMD-Ryzen-5-5500U-9.webp"
+              src="https://m.media-amazon.com/images/S/aplus-media-library-service-media/f52b67ad-39b1-4c29-bf5d-b9ee1b509e87.__CR0,0,1464,600_PT0_SX1464_V1___.jpeg"
               className="d-block w-100 custom-banner-img"
               alt="slide2"
               loading="lazy"
@@ -141,41 +141,6 @@ function CarouselSlider() {
         <span className="carousel-control-next-icon"></span>
       </button>
 
-      {/* CSS */}
-
-      <style>{`
-
-        .custom-carousel {
-          width: 100%;
-        }
-
-        /* HEIGHT FIX */
-
-        .custom-banner-img {
-          height: 420px;
-          object-fit: cover;
-          border-radius: 22px;
-        }
-
-        /* INDICATORS */
-
-        .custom-indicators button {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 992px) {
-
-          .custom-banner-img {
-            height: 220px;
-            border-radius: 14px;
-          }
-        }
-
-      `}</style>
 
     </div>
   );

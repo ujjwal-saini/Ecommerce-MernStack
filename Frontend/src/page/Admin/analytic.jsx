@@ -135,14 +135,11 @@ function Analytic() {
     datasets: [
       {
         label: "Orders",
-
         data: monthlySales.map(
           (m) => m.orders
         ),
-
         backgroundColor:
           "rgba(25,135,84,0.8)",
-
         borderRadius: 8,
       }
     ]
@@ -154,41 +151,28 @@ function Analytic() {
       className={`container-fluid min-vh-100 px-2 px-md-4 py-3 ${theme === "dark"
         ? "bg-black text-light"
         : "bg-light text-dark"
-        }`}
-    >
-
+        }`}>
       {/* HEADER */}
-
       <div className="mb-4">
-
         <h2 className="fw-bold fs-3 fs-md-2">
           📊 Website Analytics
         </h2>
-
         <p
           className={`small mb-0 ${theme === "dark"
             ? "text-light"
             : "text-muted"
-            }`}
-        >
+            }`}>
           Revenue & order insights overview
         </p>
-
       </div>
-
       {/* TOP CARDS */}
-
       <div className="row g-3 mb-4">
-
         <div className="col-6 col-md-3">
-
           <div
             className={`rounded-4 shadow-sm p-3 h-100 ${theme === "dark"
               ? "bg-dark-mode text-light"
               : "bg-white"
-              }`}
-          >
-
+              }`} >
             <h6 className="small mb-2">
               Total Revenue
             </h6>

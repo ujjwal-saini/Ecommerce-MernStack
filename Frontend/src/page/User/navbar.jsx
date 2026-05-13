@@ -78,7 +78,7 @@ function Navbar() {
             to="/"
           >
             <FaShopify
-              className="me-2"
+              className="me-1"
               style={{ color: "#ff7b00", fontSize: 28 }}
             />
             Shopra
@@ -147,7 +147,7 @@ function Navbar() {
 
         {/* RIGHT ICONS */}
 
-        <div className="d-flex align-items-center gap-2 ms-auto order-2">
+        <div className="d-flex align-items-center gap-1 ms-auto order-2">
           {/* THEME */}
           <button onClick={toggleTheme} className="btn btn-outline-secondary">
             {theme === "dark" ? <FaSun /> : <FaMoon />}
@@ -269,7 +269,7 @@ function Navbar() {
               style={{
                 background: "linear-gradient(90deg,#ff7b00,#ff9d42)",
                 borderRadius: "12px",
-                padding: "8px 18px",
+                padding: "8px 14px",
               }}
             >
               Login

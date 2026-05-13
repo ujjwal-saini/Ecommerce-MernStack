@@ -122,30 +122,21 @@ function Profile() {
       setEditMode(false);
 
     } catch (err) {
-
       toast.dismiss(toastId);
-
       if (err.response) {
-
         toast.error(
           err.response.data.message
         );
-
       } else {
-
         toast.error(
           "Server not responding"
         );
-
       }
-
       console.error(err);
-
     }
   };
 
   // THEME CLASSES
-
   const containerClass = `
     container-fluid
     py-3
@@ -189,11 +180,9 @@ function Profile() {
   return (
 
     <div className={containerClass}>
-
       {/* =========================
           EDIT MODE
       ========================= */}
-
       {editMode && (
 
         <div className={cardClass}>
